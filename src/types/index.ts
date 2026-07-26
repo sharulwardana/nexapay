@@ -147,6 +147,7 @@ export interface ChatMessage {
 }
 
 export type ProductCategory =
+  | 'GAMES'
   | 'GAME_TOPUP'
   | 'VOUCHER'
   | 'PULSA'

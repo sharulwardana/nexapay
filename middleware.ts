@@ -1,42 +1,46 @@
-import NextAuth from "next-auth"
-import authConfig from "./auth.config"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { getToken } from "next-auth/jwt"
 
-const { auth } = NextAuth(authConfig)
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ 
+    req, 
+    secret: process.env.AUTH_SECRET,
+  });
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
+  const isLoggedIn = !!token;
   const isAuthPage = req.nextUrl.pathname.startsWith('/login');
   const isApiAuthRoute = req.nextUrl.pathname.startsWith('/api/auth');
 
   // Allow access to auth API routes
   if (isApiAuthRoute) {
-    return;
+    return NextResponse.next();
   }
 
-  // Redirect to dashboard if logged in and trying to access auth pages
+  // Redirect to home if logged in and trying to access auth pages
   if (isLoggedIn && isAuthPage) {
-    return Response.redirect(new URL('/', req.nextUrl));
+    return NextResponse.redirect(new URL('/', req.url));
   }
 
   // Protect /dashboard
   if (req.nextUrl.pathname.startsWith('/dashboard') && !isLoggedIn) {
-    return Response.redirect(new URL('/login', req.nextUrl));
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  // Protect /admin — default deny: redirect unless role is explicitly ADMIN
+  // Protect /admin — redirect unless role is explicitly ADMIN
   if (req.nextUrl.pathname.startsWith('/admin')) {
     if (!isLoggedIn) {
-      return Response.redirect(new URL('/login', req.nextUrl));
+      return NextResponse.redirect(new URL('/login', req.url));
     }
-    // Default deny: if role is missing or not ADMIN, redirect.
-    // This prevents bypass when JWT doesn't have the role field populated.
-    if (!req.auth?.user?.role || req.auth.user.role !== 'ADMIN') {
-      return Response.redirect(new URL('/', req.nextUrl));
+    if (!token?.role || token.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/', req.url));
     }
   }
-})
 
-// Optionally, don't invoke Middleware on some paths
+  return NextResponse.next();
+}
+
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
+

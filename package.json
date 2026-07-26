@@ -5,7 +5,7 @@
   "description": "NexaPay — Premium Digital Top-Up & Gaming Platform",
   "scripts": {
     "dev": "node --max-old-space-size=8192 node_modules/next/dist/bin/next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "prisma generate",

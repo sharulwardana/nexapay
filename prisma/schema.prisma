@@ -35,9 +35,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  // TODO (Phase 3): Change to "postgresql" and update DATABASE_URL
-  // provider = "postgresql"
+  provider = "postgresql"
 }
 
 model Account {

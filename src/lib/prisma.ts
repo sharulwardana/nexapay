@@ -1,10 +1,9 @@
 import { PrismaClient } from "../../prisma/generated/client"
-import { PrismaLibSql } from "@prisma/adapter-libsql"
+import { PrismaPg } from "@prisma/adapter-pg"
 
 const prismaClientSingleton = () => {
-  const dbPath = process.env.DATABASE_URL || 'file:./dev.db';
-  const adapter = new PrismaLibSql({ url: dbPath });
-  
+  const connectionString = process.env.DATABASE_URL
+  const adapter = new PrismaPg({ connectionString })
   return new PrismaClient({ adapter })
 }
 
@@ -17,3 +16,5 @@ const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 export default prisma
 
 if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma
+
+

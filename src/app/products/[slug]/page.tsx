@@ -22,7 +22,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     include: {
       denominations: {
         where: { isActive: true },
-        orderBy: { sortOrder: 'asc' },
+        orderBy: { price: 'asc' },
       },
     },
   });

@@ -1,9 +1,9 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { useState, useRef } from 'react';
 import { Home, Gamepad2, ShoppingBag, Ticket, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,9 +17,14 @@ const navItems = [
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [isShrunk, setIsShrunk] = useState(false);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastScrollY.current;
@@ -32,7 +37,7 @@ export default function MobileNav() {
   });
 
   const isTopUpDetailPage = pathname.startsWith('/topup/') && pathname.split('/').length > 2;
-  if (pathname.startsWith('/admin') || isTopUpDetailPage) {
+  if (!mounted || pathname.startsWith('/admin') || isTopUpDetailPage) {
     return null;
   }
 

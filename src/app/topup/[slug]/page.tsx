@@ -23,7 +23,7 @@ export default async function TopUpDetailPage({ params }: { params: Promise<{ sl
     include: {
       denominations: {
         where: { isActive: true },
-        orderBy: { sortOrder: 'asc' }
+        orderBy: { price: 'asc' }
       }
     }
   });

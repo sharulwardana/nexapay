@@ -92,7 +92,7 @@ export default function SearchOverlay() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Tanya AI: 'game tembak-tembakan'..."
-                    className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/50 text-foreground"
+                    className="flex-1 bg-transparent text-[16px] tablet:text-sm outline-none placeholder:text-muted-foreground/50 text-foreground"
                     autoFocus
                     aria-label="Cari produk"
                   />

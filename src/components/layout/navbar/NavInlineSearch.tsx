@@ -205,7 +205,7 @@ export default function NavInlineSearch() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Ketik nama game/produk..."
-                  className="flex-1 bg-transparent text-xs font-semibold outline-none text-foreground placeholder:text-muted-foreground/60"
+                  className="flex-1 bg-transparent text-[16px] font-semibold outline-none text-foreground placeholder:text-muted-foreground/60 placeholder:text-xs"
                   autoFocus
                 />
                 <button

@@ -23,9 +23,9 @@ export default function MobileNav() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastScrollY.current;
-    if (latest > 80 && diff > 8) {
+    if (latest > 75 && diff > 7) {
       setIsShrunk(true);
-    } else if (diff < -6 || latest < 30) {
+    } else if (diff < -5 || latest < 30) {
       setIsShrunk(false);
     }
     lastScrollY.current = latest;
@@ -38,16 +38,18 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-2 left-0 right-0 z-50 lg:hidden px-4 pointer-events-none"
+      className="fixed bottom-2.5 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
+      {/* Instagram-Style Smooth GPU Floating Dock */}
       <div
         className={cn(
-          "pointer-events-auto max-w-[350px] w-full mx-auto rounded-full bg-card/90 backdrop-blur-xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.35),0_0_15px_rgba(255,115,0,0.12)] p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
-          isShrunk ? "h-11 scale-95" : "h-13 scale-100"
+          "pointer-events-auto max-w-[360px] w-[92%] mx-auto rounded-full bg-card/90 backdrop-blur-2xl border border-white/20 shadow-[0_10px_35px_rgba(0,0,0,0.38),0_0_20px_rgba(255,115,0,0.14)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+          isShrunk ? "h-11 py-1 scale-[0.97] translate-y-1" : "h-14 py-1.5 scale-100 translate-y-0"
         )}
       >
-        <div className="grid grid-cols-5 items-center h-full w-full">
+        {/* 100% Perfectly Equidistant 5-Column Grid */}
+        <div className="grid grid-cols-5 items-center h-full w-full px-1.5">
           {navItems.map((item) => {
             const isActive = item.href === '/'
               ? pathname === '/'
@@ -58,16 +60,16 @@ export default function MobileNav() {
                 href={item.href}
                 className="relative flex flex-col items-center justify-center w-full h-full select-none"
               >
-                {/* Active Indicator Glow Pill - Uniform Size for all slots */}
+                {/* Active Glow Pill - Perfectly Symmetrical Inset */}
                 {isActive && (
                   <motion.div
                     layoutId="mobile-nav-active-pill"
-                    className="absolute inset-x-0.5 inset-y-0.5 bg-primary/20 rounded-full border border-primary/45 shadow-[0_0_12px_rgba(255,115,0,0.35)]"
+                    className="absolute inset-x-1 inset-y-0.5 bg-primary/20 rounded-full border border-primary/45 shadow-[0_0_14px_rgba(255,115,0,0.35)]"
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
                 
-                {/* Geometrically Centered Icon Container */}
+                {/* Fixed Centered Icon Frame */}
                 <div className="w-5 h-5 flex items-center justify-center relative z-10">
                   <item.icon className={cn(
                     'w-4.5 h-4.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
@@ -76,12 +78,12 @@ export default function MobileNav() {
                   )} />
                 </div>
                 
-                {/* Label Text */}
+                {/* Instagram Smooth GPU Fade & Scale Label */}
                 <span className={cn(
                   'text-[10px] relative z-10 tracking-tight leading-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-bottom pointer-events-none text-center',
                   isShrunk
                     ? 'opacity-0 scale-75 -translate-y-1 max-h-0 overflow-hidden mt-0'
-                    : 'opacity-100 scale-100 translate-y-0 max-h-4 mt-0.5',
+                    : 'opacity-100 scale-100 translate-y-0 max-h-4 mt-1',
                   isActive ? 'font-black text-primary' : 'font-medium text-muted-foreground'
                 )}>
                   {item.label}

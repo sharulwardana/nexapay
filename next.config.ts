@@ -11,7 +11,7 @@ const nextConfig = {
     optimizeCss: false,
     useTypeScriptCli: true,
   },
-  serverExternalPackages: ['@libsql/client', '@prisma/adapter-libsql'],
+  serverExternalPackages: ['@prisma/adapter-pg', 'pg'],
 
   // ─── Security Headers ───────────────────────────────────────────
   // Addresses: CSRF protection, clickjacking, MIME sniffing, HSTS, CSP

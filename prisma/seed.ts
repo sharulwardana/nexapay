@@ -12,7 +12,18 @@ async function main() {
   for (const prod of digitalProducts) {
     const product = await prisma.product.upsert({
       where: { slug: prod.slug },
-      update: {},
+      update: {
+        name: prod.name,
+        category: prod.category,
+        subcategory: prod.subcategory,
+        description: prod.description,
+        image: prod.image || '',
+        bannerImage: prod.bannerImage,
+        publisher: prod.publisher,
+        isActive: prod.isActive,
+        isFeatured: prod.isFeatured,
+        isPopular: prod.isPopular,
+      },
       create: {
         name: prod.name,
         slug: prod.slug,

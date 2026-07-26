@@ -40,7 +40,7 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-4 left-0 right-0 z-50 lg:hidden px-4 pointer-events-none"
+      className="fixed bottom-1.5 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <motion.div
@@ -50,7 +50,7 @@ export default function MobileNav() {
           scale: isShrunk ? 0.96 : 1,
         }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        className="pointer-events-auto max-w-[340px] w-full mx-auto rounded-full bg-background/85 backdrop-blur-2xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(255,115,0,0.12)] px-2 transition-shadow"
+        className="pointer-events-auto max-w-[340px] w-full mx-auto rounded-full bg-card/75 backdrop-blur-xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.25),0_0_15px_rgba(255,115,0,0.1)] px-2 transition-all"
       >
         <div className="grid grid-cols-5 items-center relative z-10 w-full">
           {navItems.map((item) => {

@@ -1,3 +1,34 @@
+// ─── NexaPay Database Schema ────────────────────────────────────────
+//
+// MIGRATION NOTES (Phase 3):
+// 
+// 1. DATABASE ENGINE:
+//    Current: SQLite (development only — single-writer, not suitable for production)
+//    Target:  PostgreSQL 16 (Neon/Supabase/Railway for production)
+//    Action:  Change provider below from "sqlite" to "postgresql"
+//            and update DATABASE_URL in .env.local to a PostgreSQL connection string.
+//
+// 2. MONETARY FIELDS (Float → Int):
+//    Current: Float (e.g., walletBalance Float, price Float)
+//    Issue:   Floating point arithmetic causes rounding errors in financial calculations
+//    Target:  Int (store values in smallest unit — Rupiah, no decimals)
+//    Fields to migrate:
+//      - User.walletBalance
+//      - Denomination.price, .originalPrice, .flashSalePrice, .discount
+//      - Transaction.amount, .discount, .totalAmount
+//      - Promo.value, .minPurchase, .maxDiscount
+//      - Referral.bonus
+//    Action:  After switching to PostgreSQL, run prisma migrate to create migration history.
+//
+// 3. MIGRATION STRATEGY:
+//    a. Switch provider to "postgresql"
+//    b. Run `npx prisma migrate dev --name init` to create initial migration
+//    c. Change Float fields to Int
+//    d. Run `npx prisma migrate dev --name monetary-int-conversion`
+//    e. Update all API routes to handle Int values (remove Math.floor where unnecessary)
+//
+// ────────────────────────────────────────────────────────────────────
+
 generator client {
   provider = "prisma-client-js"
   output   = "./generated/client"
@@ -5,6 +36,8 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  // TODO (Phase 3): Change to "postgresql" and update DATABASE_URL
+  // provider = "postgresql"
 }
 
 model Account {
@@ -54,13 +87,15 @@ model User {
   password      String?
   phone         String?
   role          String    @default("USER")
-  walletBalance Float     @default(0)
+  walletBalance Int       @default(0)
   loyaltyLevel  String    @default("BRONZE")
   loyaltyPoints Int       @default(0)
   referralCode  String?   @unique
   referredBy    String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  lastCheckIn   DateTime?
+  lastScratch   DateTime?
 
   accounts       Account[]
   sessions       Session[]
@@ -107,14 +142,14 @@ model Denomination {
   productId      String
   label          String
   value          Int
-  price          Float
-  originalPrice  Float?
-  discount       Float?
+  price          Int
+  originalPrice  Int?
+  discount       Int?
   stock          Int       @default(-1)
   isActive       Boolean   @default(true)
   isPopular      Boolean   @default(false)
   isFlashSale    Boolean   @default(false)
-  flashSalePrice Float?
+  flashSalePrice Int?
   flashSaleEnd   DateTime?
   sortOrder      Int       @default(0)
 
@@ -131,9 +166,9 @@ model Transaction {
   productId      String
   denominationId String
   quantity       Int       @default(1)
-  amount         Float
-  discount       Float     @default(0)
-  totalAmount    Float
+  amount         Int
+  discount       Int       @default(0)
+  totalAmount    Int
   paymentMethod  String
   status         String    @default("PENDING")
   gameUserId     String?
@@ -166,9 +201,9 @@ model Promo {
   name         String
   description  String?
   type         String
-  value        Float
-  minPurchase  Float    @default(0)
-  maxDiscount  Float?
+  value        Int
+  minPurchase  Int      @default(0)
+  maxDiscount  Int?
   usageLimit   Int      @default(-1)
   usageCount   Int      @default(0)
   perUserLimit Int      @default(1)
@@ -229,7 +264,7 @@ model Referral {
   id         String   @id @default(cuid())
   referrerId String
   refereeId  String
-  bonus      Float    @default(0)
+  bonus      Int      @default(0)
   status     String   @default("pending")
   createdAt  DateTime @default(now())
 

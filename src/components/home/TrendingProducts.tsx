@@ -5,35 +5,31 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { games } from '@/data/games';
-import { digitalProducts } from '@/data/products';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/constants';
-import TiltCard from '@/components/shared/TiltCard';
+import type { ProductWithDenominations } from '@/types';
 
 const iconMap: Record<string, React.ElementType> = {
   Gamepad2, Ticket, Smartphone, Wifi, Zap, Gift, Tv, Wallet,
 };
 
 const itemVariant = {
-  hidden: { opacity: 0, y: 16, scale: 0.97 },
+  hidden: { opacity: 0, y: 16 },
   visible: (i: number) => ({
-    opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.35, delay: i * 0.04, ease: [0.33, 1, 0.68, 1] },
+    opacity: 1, y: 0,
+    transition: { duration: 0.35, delay: i * 0.04, ease: [0.33, 1, 0.68, 1] as const },
   }),
 };
 
-export default function TrendingProducts() {
+export default function TrendingProducts({ games }: { games: ProductWithDenominations[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const [activeCategory, setActiveCategory] = useState('ALL');
 
-  const allProducts = [...games, ...digitalProducts];
   const filteredProducts =
     activeCategory === 'ALL'
-      ? allProducts.filter((p) => p.isFeatured).slice(0, 12)
-      : allProducts.filter((p) => p.category === activeCategory).slice(0, 12);
+      ? games.filter((p) => p.isFeatured).slice(0, 12)
+      : games.filter((p) => p.category === activeCategory).slice(0, 12);
 
   return (
     <section ref={ref} className="section-padding surface">
@@ -57,7 +53,7 @@ export default function TrendingProducts() {
           </Link>
         </motion.div>
 
-        {/* Category Tabs — pill style */}
+        {/* Category Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -105,45 +101,38 @@ export default function TrendingProducts() {
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
                 variants={itemVariant}
-                className="group relative"
               >
-                <TiltCard>
-                  <Link
-                    href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
-                    className="group flex flex-col bg-card/80 backdrop-blur-xl border border-white/5 rounded-3xl overflow-hidden shadow-lg hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:border-primary/50 transition-all duration-300 relative z-10"
-                  >
-                    {/* Image Container (Square) */}
-                    <div className="relative w-full aspect-square bg-muted/30 overflow-hidden">
-                      {product.image ? (
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex flex-col items-center justify-center gap-2">
-                          <Wallet className="w-10 h-10 text-primary/50" />
-                        </div>
-                      )}
-                      
-                      {/* Inner Hover Glow */}
-                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-overlay"></div>
-                    </div>
+                <Link
+                  href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
+                  className="group flex flex-col bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-200"
+                >
+                  {/* Image */}
+                  <div className="relative w-full aspect-square bg-muted/30 overflow-hidden">
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 flex flex-col items-center justify-center gap-2">
+                        <Wallet className="w-10 h-10 text-primary/40" />
+                      </div>
+                    )}
+                  </div>
 
-                    {/* Content Section (Always Visible, Glassmorphism) */}
-                    <div className="p-3 tablet:p-4 text-center bg-card/50 backdrop-blur-md relative z-20 border-t border-white/5 group-hover:bg-card transition-colors duration-300">
-                      <h3 className="font-bold text-sm tablet:text-base text-foreground line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
-                        {product.name}
-                      </h3>
-                      <p className="text-[10px] tablet:text-xs text-muted-foreground line-clamp-1">
-                        {product.publisher || product.category}
-                      </p>
-                    </div>
-                  </Link>
-                </TiltCard>
+                  {/* Content */}
+                  <div className="p-3 tablet:p-4 text-center">
+                    <h3 className="font-bold text-sm tablet:text-base text-foreground line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="text-[10px] tablet:text-xs text-muted-foreground line-clamp-1">
+                      {product.publisher || product.category}
+                    </p>
+                  </div>
+                </Link>
               </motion.div>
             );
           })}

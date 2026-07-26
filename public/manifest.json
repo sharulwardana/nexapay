@@ -1,21 +1,27 @@
 {
-  "name": "NexaPay",
+  "name": "NexaPay - Top Up Game & Produk Digital",
   "short_name": "NexaPay",
-  "description": "Top Up Game & Produk Digital Termurah",
+  "description": "Platform top-up game & produk digital terpercaya, tercepat, dan teraman di Indonesia. Top up Mobile Legends, Free Fire, Genshin Impact, pulsa, token PLN, dan lainnya.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0F1C",
-  "theme_color": "#00E5FF",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["games", "shopping", "utilities"],
+  "lang": "id",
+  "dir": "ltr"
 }

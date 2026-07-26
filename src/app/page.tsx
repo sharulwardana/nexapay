@@ -1,32 +1,58 @@
+import { Suspense } from 'react';
+import prisma from '@/lib/prisma';
+import dynamic from 'next/dynamic';
+import Navbar from '@/components/layout/Navbar';
 import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
-import HeroSection from '@/components/home/HeroSection';
 import PromoCarousel from '@/components/home/PromoCarousel';
 import PopularGames from '@/components/home/PopularGames';
 import TrendingProducts from '@/components/home/TrendingProducts';
 import FlashSale from '@/components/home/FlashSale';
-import Testimonials from '@/components/home/Testimonials';
 import StatsCounter from '@/components/home/StatsCounter';
 import PaymentPartners from '@/components/home/PaymentPartners';
-import LiveChat from '@/components/shared/LiveChat';
 
-export default function HomePage() {
+// Lazy load heavy / below-fold components to reduce initial JS bundle
+const Testimonials = dynamic(() => import('@/components/home/Testimonials'));
+
+function SectionSkeleton() {
+  return (
+    <div className="section-padding">
+      <div className="container-app h-48 rounded-2xl bg-muted/20 animate-pulse" />
+    </div>
+  );
+}
+
+export const revalidate = 60; // ISR: revalidate home page every 60s
+
+export default async function HomePage() {
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+    include: {
+      denominations: {
+        where: { isActive: true },
+      },
+    },
+    orderBy: { sortOrder: 'asc' },
+  });
+
+  const games = products as unknown as import('@/types').ProductWithDenominations[];
+
   return (
     <>
-
-      <main id="main-content" className="min-h-screen pt-28 tablet:pt-32 pb-24">
-        <HeroSection />
+      <Navbar />
+      <main id="main-content" className="min-h-screen pb-24">
         <PromoCarousel />
-        <PopularGames />
-        <FlashSale />
-        <TrendingProducts />
+        <PopularGames games={games} />
+        <FlashSale games={games} />
+        <TrendingProducts games={games} />
         <StatsCounter />
-        <Testimonials />
+        <Suspense fallback={<SectionSkeleton />}>
+          <Testimonials />
+        </Suspense>
         <PaymentPartners />
       </main>
       <Footer />
       <MobileNav />
-      <LiveChat />
     </>
   );
 }

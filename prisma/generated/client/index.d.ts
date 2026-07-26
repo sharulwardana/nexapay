@@ -134,7 +134,7 @@ export class PrismaClient<
    * Read more in our [docs](https://pris.ly/d/client).
    */
 
-  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.PrismaClientConstructorArgs<ClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
@@ -424,8 +424,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.8.0
-   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+   * Prisma Client JS version: 7.9.0
+   * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
    */
   export type PrismaVersion = {
     client: string
@@ -560,6 +560,19 @@ export namespace Prisma {
   };
 
   /**
+   * Resolved type of the argument passed to the `PrismaClient` constructor.
+   *
+   * When called without a narrower options type (the common case), this resolves
+   * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+   * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+   * the argument is missing or incomplete. When the user supplies a narrower
+   * options type (e.g. via a literal), it falls back to `Subset` to keep
+   * filtering out unknown properties.
+   */
+  export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> =
+    [PrismaClientOptions] extends [Options] ? PrismaClientOptions : Subset<Options, PrismaClientOptions>;
+
+  /**
    * SelectSubset
    * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
    * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -591,7 +604,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
+      ((Without<T, U> & U) | (Without<U, T> & T)) & object
     : U : T
 
 
@@ -2095,11 +2108,26 @@ export namespace Prisma {
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+     * 
+     * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+     * 
+     * Learn more: https://pris.ly/d/driver-adapters
+     * 
+     * @example
+     * ```ts
+     * import { PrismaPg } from '@prisma/adapter-pg'
+     * import { PrismaClient } from './generated/prisma/client'
+     * 
+     * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+     * const prisma = new PrismaClient({ adapter })
+     * ```
      */
     adapter?: runtime.SqlDriverAdapterFactory
     /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+     * 
+     * Learn more: https://pris.ly/d/accelerate
      */
     accelerateUrl?: string
     /**
@@ -5657,6 +5685,8 @@ export namespace Prisma {
     referredBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    lastCheckIn: Date | null
+    lastScratch: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -5675,6 +5705,8 @@ export namespace Prisma {
     referredBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    lastCheckIn: Date | null
+    lastScratch: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -5693,6 +5725,8 @@ export namespace Prisma {
     referredBy: number
     createdAt: number
     updatedAt: number
+    lastCheckIn: number
+    lastScratch: number
     _all: number
   }
 
@@ -5723,6 +5757,8 @@ export namespace Prisma {
     referredBy?: true
     createdAt?: true
     updatedAt?: true
+    lastCheckIn?: true
+    lastScratch?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -5741,6 +5777,8 @@ export namespace Prisma {
     referredBy?: true
     createdAt?: true
     updatedAt?: true
+    lastCheckIn?: true
+    lastScratch?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -5759,6 +5797,8 @@ export namespace Prisma {
     referredBy?: true
     createdAt?: true
     updatedAt?: true
+    lastCheckIn?: true
+    lastScratch?: true
     _all?: true
   }
 
@@ -5864,6 +5904,8 @@ export namespace Prisma {
     referredBy: string | null
     createdAt: Date
     updatedAt: Date
+    lastCheckIn: Date | null
+    lastScratch: Date | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -5901,6 +5943,8 @@ export namespace Prisma {
     referredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    lastCheckIn?: boolean
+    lastScratch?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
@@ -5929,6 +5973,8 @@ export namespace Prisma {
     referredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    lastCheckIn?: boolean
+    lastScratch?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5947,6 +5993,8 @@ export namespace Prisma {
     referredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    lastCheckIn?: boolean
+    lastScratch?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -5965,9 +6013,11 @@ export namespace Prisma {
     referredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    lastCheckIn?: boolean
+    lastScratch?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "phone" | "role" | "walletBalance" | "loyaltyLevel" | "loyaltyPoints" | "referralCode" | "referredBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "phone" | "role" | "walletBalance" | "loyaltyLevel" | "loyaltyPoints" | "referralCode" | "referredBy" | "createdAt" | "updatedAt" | "lastCheckIn" | "lastScratch", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -6012,6 +6062,8 @@ export namespace Prisma {
       referredBy: string | null
       createdAt: Date
       updatedAt: Date
+      lastCheckIn: Date | null
+      lastScratch: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -6452,13 +6504,15 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
-    readonly walletBalance: FieldRef<"User", 'Float'>
+    readonly walletBalance: FieldRef<"User", 'Int'>
     readonly loyaltyLevel: FieldRef<"User", 'String'>
     readonly loyaltyPoints: FieldRef<"User", 'Int'>
     readonly referralCode: FieldRef<"User", 'String'>
     readonly referredBy: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly lastCheckIn: FieldRef<"User", 'DateTime'>
+    readonly lastScratch: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -9192,14 +9246,14 @@ export namespace Prisma {
     readonly productId: FieldRef<"Denomination", 'String'>
     readonly label: FieldRef<"Denomination", 'String'>
     readonly value: FieldRef<"Denomination", 'Int'>
-    readonly price: FieldRef<"Denomination", 'Float'>
-    readonly originalPrice: FieldRef<"Denomination", 'Float'>
-    readonly discount: FieldRef<"Denomination", 'Float'>
+    readonly price: FieldRef<"Denomination", 'Int'>
+    readonly originalPrice: FieldRef<"Denomination", 'Int'>
+    readonly discount: FieldRef<"Denomination", 'Int'>
     readonly stock: FieldRef<"Denomination", 'Int'>
     readonly isActive: FieldRef<"Denomination", 'Boolean'>
     readonly isPopular: FieldRef<"Denomination", 'Boolean'>
     readonly isFlashSale: FieldRef<"Denomination", 'Boolean'>
-    readonly flashSalePrice: FieldRef<"Denomination", 'Float'>
+    readonly flashSalePrice: FieldRef<"Denomination", 'Int'>
     readonly flashSaleEnd: FieldRef<"Denomination", 'DateTime'>
     readonly sortOrder: FieldRef<"Denomination", 'Int'>
   }
@@ -10578,9 +10632,9 @@ export namespace Prisma {
     readonly productId: FieldRef<"Transaction", 'String'>
     readonly denominationId: FieldRef<"Transaction", 'String'>
     readonly quantity: FieldRef<"Transaction", 'Int'>
-    readonly amount: FieldRef<"Transaction", 'Float'>
-    readonly discount: FieldRef<"Transaction", 'Float'>
-    readonly totalAmount: FieldRef<"Transaction", 'Float'>
+    readonly amount: FieldRef<"Transaction", 'Int'>
+    readonly discount: FieldRef<"Transaction", 'Int'>
+    readonly totalAmount: FieldRef<"Transaction", 'Int'>
     readonly paymentMethod: FieldRef<"Transaction", 'String'>
     readonly status: FieldRef<"Transaction", 'String'>
     readonly gameUserId: FieldRef<"Transaction", 'String'>
@@ -11816,9 +11870,9 @@ export namespace Prisma {
     readonly name: FieldRef<"Promo", 'String'>
     readonly description: FieldRef<"Promo", 'String'>
     readonly type: FieldRef<"Promo", 'String'>
-    readonly value: FieldRef<"Promo", 'Float'>
-    readonly minPurchase: FieldRef<"Promo", 'Float'>
-    readonly maxDiscount: FieldRef<"Promo", 'Float'>
+    readonly value: FieldRef<"Promo", 'Int'>
+    readonly minPurchase: FieldRef<"Promo", 'Int'>
+    readonly maxDiscount: FieldRef<"Promo", 'Int'>
     readonly usageLimit: FieldRef<"Promo", 'Int'>
     readonly usageCount: FieldRef<"Promo", 'Int'>
     readonly perUserLimit: FieldRef<"Promo", 'Int'>
@@ -16170,7 +16224,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Referral", 'String'>
     readonly referrerId: FieldRef<"Referral", 'String'>
     readonly refereeId: FieldRef<"Referral", 'String'>
-    readonly bonus: FieldRef<"Referral", 'Float'>
+    readonly bonus: FieldRef<"Referral", 'Int'>
     readonly status: FieldRef<"Referral", 'String'>
     readonly createdAt: FieldRef<"Referral", 'DateTime'>
   }
@@ -20907,7 +20961,9 @@ export namespace Prisma {
     referralCode: 'referralCode',
     referredBy: 'referredBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    lastCheckIn: 'lastCheckIn',
+    lastScratch: 'lastScratch'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -21155,16 +21211,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
+   * Reference to a field of type 'Boolean'
    */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Float'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
   /**
    * Deep Input Types
@@ -21369,13 +21425,15 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
     role?: StringFilter<"User"> | string
-    walletBalance?: FloatFilter<"User"> | number
+    walletBalance?: IntFilter<"User"> | number
     loyaltyLevel?: StringFilter<"User"> | string
     loyaltyPoints?: IntFilter<"User"> | number
     referralCode?: StringNullableFilter<"User"> | string | null
     referredBy?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    lastCheckIn?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastScratch?: DateTimeNullableFilter<"User"> | Date | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -21403,6 +21461,8 @@ export namespace Prisma {
     referredBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    lastCheckIn?: SortOrderInput | SortOrder
+    lastScratch?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
@@ -21427,12 +21487,14 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
     role?: StringFilter<"User"> | string
-    walletBalance?: FloatFilter<"User"> | number
+    walletBalance?: IntFilter<"User"> | number
     loyaltyLevel?: StringFilter<"User"> | string
     loyaltyPoints?: IntFilter<"User"> | number
     referredBy?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    lastCheckIn?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastScratch?: DateTimeNullableFilter<"User"> | Date | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -21460,6 +21522,8 @@ export namespace Prisma {
     referredBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    lastCheckIn?: SortOrderInput | SortOrder
+    lastScratch?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -21479,13 +21543,15 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: StringWithAggregatesFilter<"User"> | string
-    walletBalance?: FloatWithAggregatesFilter<"User"> | number
+    walletBalance?: IntWithAggregatesFilter<"User"> | number
     loyaltyLevel?: StringWithAggregatesFilter<"User"> | string
     loyaltyPoints?: IntWithAggregatesFilter<"User"> | number
     referralCode?: StringNullableWithAggregatesFilter<"User"> | string | null
     referredBy?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    lastCheckIn?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    lastScratch?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type ProductWhereInput = {
@@ -21609,14 +21675,14 @@ export namespace Prisma {
     productId?: StringFilter<"Denomination"> | string
     label?: StringFilter<"Denomination"> | string
     value?: IntFilter<"Denomination"> | number
-    price?: FloatFilter<"Denomination"> | number
-    originalPrice?: FloatNullableFilter<"Denomination"> | number | null
-    discount?: FloatNullableFilter<"Denomination"> | number | null
+    price?: IntFilter<"Denomination"> | number
+    originalPrice?: IntNullableFilter<"Denomination"> | number | null
+    discount?: IntNullableFilter<"Denomination"> | number | null
     stock?: IntFilter<"Denomination"> | number
     isActive?: BoolFilter<"Denomination"> | boolean
     isPopular?: BoolFilter<"Denomination"> | boolean
     isFlashSale?: BoolFilter<"Denomination"> | boolean
-    flashSalePrice?: FloatNullableFilter<"Denomination"> | number | null
+    flashSalePrice?: IntNullableFilter<"Denomination"> | number | null
     flashSaleEnd?: DateTimeNullableFilter<"Denomination"> | Date | string | null
     sortOrder?: IntFilter<"Denomination"> | number
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
@@ -21650,14 +21716,14 @@ export namespace Prisma {
     productId?: StringFilter<"Denomination"> | string
     label?: StringFilter<"Denomination"> | string
     value?: IntFilter<"Denomination"> | number
-    price?: FloatFilter<"Denomination"> | number
-    originalPrice?: FloatNullableFilter<"Denomination"> | number | null
-    discount?: FloatNullableFilter<"Denomination"> | number | null
+    price?: IntFilter<"Denomination"> | number
+    originalPrice?: IntNullableFilter<"Denomination"> | number | null
+    discount?: IntNullableFilter<"Denomination"> | number | null
     stock?: IntFilter<"Denomination"> | number
     isActive?: BoolFilter<"Denomination"> | boolean
     isPopular?: BoolFilter<"Denomination"> | boolean
     isFlashSale?: BoolFilter<"Denomination"> | boolean
-    flashSalePrice?: FloatNullableFilter<"Denomination"> | number | null
+    flashSalePrice?: IntNullableFilter<"Denomination"> | number | null
     flashSaleEnd?: DateTimeNullableFilter<"Denomination"> | Date | string | null
     sortOrder?: IntFilter<"Denomination"> | number
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
@@ -21694,14 +21760,14 @@ export namespace Prisma {
     productId?: StringWithAggregatesFilter<"Denomination"> | string
     label?: StringWithAggregatesFilter<"Denomination"> | string
     value?: IntWithAggregatesFilter<"Denomination"> | number
-    price?: FloatWithAggregatesFilter<"Denomination"> | number
-    originalPrice?: FloatNullableWithAggregatesFilter<"Denomination"> | number | null
-    discount?: FloatNullableWithAggregatesFilter<"Denomination"> | number | null
+    price?: IntWithAggregatesFilter<"Denomination"> | number
+    originalPrice?: IntNullableWithAggregatesFilter<"Denomination"> | number | null
+    discount?: IntNullableWithAggregatesFilter<"Denomination"> | number | null
     stock?: IntWithAggregatesFilter<"Denomination"> | number
     isActive?: BoolWithAggregatesFilter<"Denomination"> | boolean
     isPopular?: BoolWithAggregatesFilter<"Denomination"> | boolean
     isFlashSale?: BoolWithAggregatesFilter<"Denomination"> | boolean
-    flashSalePrice?: FloatNullableWithAggregatesFilter<"Denomination"> | number | null
+    flashSalePrice?: IntNullableWithAggregatesFilter<"Denomination"> | number | null
     flashSaleEnd?: DateTimeNullableWithAggregatesFilter<"Denomination"> | Date | string | null
     sortOrder?: IntWithAggregatesFilter<"Denomination"> | number
   }
@@ -21716,9 +21782,9 @@ export namespace Prisma {
     productId?: StringFilter<"Transaction"> | string
     denominationId?: StringFilter<"Transaction"> | string
     quantity?: IntFilter<"Transaction"> | number
-    amount?: FloatFilter<"Transaction"> | number
-    discount?: FloatFilter<"Transaction"> | number
-    totalAmount?: FloatFilter<"Transaction"> | number
+    amount?: IntFilter<"Transaction"> | number
+    discount?: IntFilter<"Transaction"> | number
+    totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
     status?: StringFilter<"Transaction"> | string
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
@@ -21779,9 +21845,9 @@ export namespace Prisma {
     productId?: StringFilter<"Transaction"> | string
     denominationId?: StringFilter<"Transaction"> | string
     quantity?: IntFilter<"Transaction"> | number
-    amount?: FloatFilter<"Transaction"> | number
-    discount?: FloatFilter<"Transaction"> | number
-    totalAmount?: FloatFilter<"Transaction"> | number
+    amount?: IntFilter<"Transaction"> | number
+    discount?: IntFilter<"Transaction"> | number
+    totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
     status?: StringFilter<"Transaction"> | string
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
@@ -21844,9 +21910,9 @@ export namespace Prisma {
     productId?: StringWithAggregatesFilter<"Transaction"> | string
     denominationId?: StringWithAggregatesFilter<"Transaction"> | string
     quantity?: IntWithAggregatesFilter<"Transaction"> | number
-    amount?: FloatWithAggregatesFilter<"Transaction"> | number
-    discount?: FloatWithAggregatesFilter<"Transaction"> | number
-    totalAmount?: FloatWithAggregatesFilter<"Transaction"> | number
+    amount?: IntWithAggregatesFilter<"Transaction"> | number
+    discount?: IntWithAggregatesFilter<"Transaction"> | number
+    totalAmount?: IntWithAggregatesFilter<"Transaction"> | number
     paymentMethod?: StringWithAggregatesFilter<"Transaction"> | string
     status?: StringWithAggregatesFilter<"Transaction"> | string
     gameUserId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -21873,9 +21939,9 @@ export namespace Prisma {
     name?: StringFilter<"Promo"> | string
     description?: StringNullableFilter<"Promo"> | string | null
     type?: StringFilter<"Promo"> | string
-    value?: FloatFilter<"Promo"> | number
-    minPurchase?: FloatFilter<"Promo"> | number
-    maxDiscount?: FloatNullableFilter<"Promo"> | number | null
+    value?: IntFilter<"Promo"> | number
+    minPurchase?: IntFilter<"Promo"> | number
+    maxDiscount?: IntNullableFilter<"Promo"> | number | null
     usageLimit?: IntFilter<"Promo"> | number
     usageCount?: IntFilter<"Promo"> | number
     perUserLimit?: IntFilter<"Promo"> | number
@@ -21912,9 +21978,9 @@ export namespace Prisma {
     name?: StringFilter<"Promo"> | string
     description?: StringNullableFilter<"Promo"> | string | null
     type?: StringFilter<"Promo"> | string
-    value?: FloatFilter<"Promo"> | number
-    minPurchase?: FloatFilter<"Promo"> | number
-    maxDiscount?: FloatNullableFilter<"Promo"> | number | null
+    value?: IntFilter<"Promo"> | number
+    minPurchase?: IntFilter<"Promo"> | number
+    maxDiscount?: IntNullableFilter<"Promo"> | number | null
     usageLimit?: IntFilter<"Promo"> | number
     usageCount?: IntFilter<"Promo"> | number
     perUserLimit?: IntFilter<"Promo"> | number
@@ -21956,9 +22022,9 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Promo"> | string
     description?: StringNullableWithAggregatesFilter<"Promo"> | string | null
     type?: StringWithAggregatesFilter<"Promo"> | string
-    value?: FloatWithAggregatesFilter<"Promo"> | number
-    minPurchase?: FloatWithAggregatesFilter<"Promo"> | number
-    maxDiscount?: FloatNullableWithAggregatesFilter<"Promo"> | number | null
+    value?: IntWithAggregatesFilter<"Promo"> | number
+    minPurchase?: IntWithAggregatesFilter<"Promo"> | number
+    maxDiscount?: IntNullableWithAggregatesFilter<"Promo"> | number | null
     usageLimit?: IntWithAggregatesFilter<"Promo"> | number
     usageCount?: IntWithAggregatesFilter<"Promo"> | number
     perUserLimit?: IntWithAggregatesFilter<"Promo"> | number
@@ -22188,7 +22254,7 @@ export namespace Prisma {
     id?: StringFilter<"Referral"> | string
     referrerId?: StringFilter<"Referral"> | string
     refereeId?: StringFilter<"Referral"> | string
-    bonus?: FloatFilter<"Referral"> | number
+    bonus?: IntFilter<"Referral"> | number
     status?: StringFilter<"Referral"> | string
     createdAt?: DateTimeFilter<"Referral"> | Date | string
     referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -22213,7 +22279,7 @@ export namespace Prisma {
     NOT?: ReferralWhereInput | ReferralWhereInput[]
     referrerId?: StringFilter<"Referral"> | string
     refereeId?: StringFilter<"Referral"> | string
-    bonus?: FloatFilter<"Referral"> | number
+    bonus?: IntFilter<"Referral"> | number
     status?: StringFilter<"Referral"> | string
     createdAt?: DateTimeFilter<"Referral"> | Date | string
     referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -22241,7 +22307,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Referral"> | string
     referrerId?: StringWithAggregatesFilter<"Referral"> | string
     refereeId?: StringWithAggregatesFilter<"Referral"> | string
-    bonus?: FloatWithAggregatesFilter<"Referral"> | number
+    bonus?: IntWithAggregatesFilter<"Referral"> | number
     status?: StringWithAggregatesFilter<"Referral"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Referral"> | Date | string
   }
@@ -22715,6 +22781,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -22742,6 +22810,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -22762,13 +22832,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -22789,13 +22861,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -22823,6 +22897,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -22834,13 +22910,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -22852,13 +22930,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProductCreateInput = {
@@ -23039,14 +23119,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     product?: ProductUpdateOneRequiredWithoutDenominationsNestedInput
@@ -23058,14 +23138,14 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     transactions?: TransactionUncheckedUpdateManyWithoutDenominationNestedInput
@@ -23092,14 +23172,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -23109,14 +23189,14 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -23179,9 +23259,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23209,9 +23289,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23260,9 +23340,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23287,9 +23367,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23349,9 +23429,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    value?: FloatFieldUpdateOperationsInput | number
-    minPurchase?: FloatFieldUpdateOperationsInput | number
-    maxDiscount?: NullableFloatFieldUpdateOperationsInput | number | null
+    value?: IntFieldUpdateOperationsInput | number
+    minPurchase?: IntFieldUpdateOperationsInput | number
+    maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     usageLimit?: IntFieldUpdateOperationsInput | number
     usageCount?: IntFieldUpdateOperationsInput | number
     perUserLimit?: IntFieldUpdateOperationsInput | number
@@ -23367,9 +23447,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    value?: FloatFieldUpdateOperationsInput | number
-    minPurchase?: FloatFieldUpdateOperationsInput | number
-    maxDiscount?: NullableFloatFieldUpdateOperationsInput | number | null
+    value?: IntFieldUpdateOperationsInput | number
+    minPurchase?: IntFieldUpdateOperationsInput | number
+    maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     usageLimit?: IntFieldUpdateOperationsInput | number
     usageCount?: IntFieldUpdateOperationsInput | number
     perUserLimit?: IntFieldUpdateOperationsInput | number
@@ -23403,9 +23483,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    value?: FloatFieldUpdateOperationsInput | number
-    minPurchase?: FloatFieldUpdateOperationsInput | number
-    maxDiscount?: NullableFloatFieldUpdateOperationsInput | number | null
+    value?: IntFieldUpdateOperationsInput | number
+    minPurchase?: IntFieldUpdateOperationsInput | number
+    maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     usageLimit?: IntFieldUpdateOperationsInput | number
     usageCount?: IntFieldUpdateOperationsInput | number
     perUserLimit?: IntFieldUpdateOperationsInput | number
@@ -23421,9 +23501,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    value?: FloatFieldUpdateOperationsInput | number
-    minPurchase?: FloatFieldUpdateOperationsInput | number
-    maxDiscount?: NullableFloatFieldUpdateOperationsInput | number | null
+    value?: IntFieldUpdateOperationsInput | number
+    minPurchase?: IntFieldUpdateOperationsInput | number
+    maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     usageLimit?: IntFieldUpdateOperationsInput | number
     usageCount?: IntFieldUpdateOperationsInput | number
     perUserLimit?: IntFieldUpdateOperationsInput | number
@@ -23681,7 +23761,7 @@ export namespace Prisma {
 
   export type ReferralUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referrer?: UserUpdateOneRequiredWithoutReferralsGivenNestedInput
@@ -23692,7 +23772,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
     refereeId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23708,7 +23788,7 @@ export namespace Prisma {
 
   export type ReferralUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23717,7 +23797,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
     refereeId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24244,17 +24324,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -24362,6 +24431,8 @@ export namespace Prisma {
     referredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    lastCheckIn?: SortOrder
+    lastScratch?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -24385,6 +24456,8 @@ export namespace Prisma {
     referredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    lastCheckIn?: SortOrder
+    lastScratch?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -24403,6 +24476,8 @@ export namespace Prisma {
     referredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    lastCheckIn?: SortOrder
+    lastScratch?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -24422,22 +24497,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -24541,17 +24600,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
@@ -24626,22 +24674,6 @@ export namespace Prisma {
     stock?: SortOrder
     flashSalePrice?: SortOrder
     sortOrder?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type DenominationScalarRelationFilter = {
@@ -25269,14 +25301,6 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -25687,14 +25711,6 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type ProductUpdateOneRequiredWithoutDenominationsNestedInput = {
     create?: XOR<ProductCreateWithoutDenominationsInput, ProductUncheckedCreateWithoutDenominationsInput>
     connectOrCreate?: ProductCreateOrConnectWithoutDenominationsInput
@@ -26020,17 +26036,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
@@ -26043,22 +26048,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -26077,6 +26066,17 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -26088,22 +26088,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -26122,6 +26106,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     favorites?: FavoriteCreateNestedManyWithoutUserInput
@@ -26148,6 +26134,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     favorites?: FavoriteUncheckedCreateNestedManyWithoutUserInput
@@ -26183,13 +26171,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUpdateManyWithoutUserNestedInput
@@ -26209,13 +26199,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -26242,6 +26234,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     favorites?: FavoriteCreateNestedManyWithoutUserInput
@@ -26268,6 +26262,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     favorites?: FavoriteUncheckedCreateNestedManyWithoutUserInput
@@ -26303,13 +26299,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUpdateManyWithoutUserNestedInput
@@ -26329,13 +26327,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -26703,9 +26703,9 @@ export namespace Prisma {
     productId?: StringFilter<"Transaction"> | string
     denominationId?: StringFilter<"Transaction"> | string
     quantity?: IntFilter<"Transaction"> | number
-    amount?: FloatFilter<"Transaction"> | number
-    discount?: FloatFilter<"Transaction"> | number
-    totalAmount?: FloatFilter<"Transaction"> | number
+    amount?: IntFilter<"Transaction"> | number
+    discount?: IntFilter<"Transaction"> | number
+    totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
     status?: StringFilter<"Transaction"> | string
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
@@ -26802,7 +26802,7 @@ export namespace Prisma {
     id?: StringFilter<"Referral"> | string
     referrerId?: StringFilter<"Referral"> | string
     refereeId?: StringFilter<"Referral"> | string
-    bonus?: FloatFilter<"Referral"> | number
+    bonus?: IntFilter<"Referral"> | number
     status?: StringFilter<"Referral"> | string
     createdAt?: DateTimeFilter<"Referral"> | Date | string
   }
@@ -27029,14 +27029,14 @@ export namespace Prisma {
     productId?: StringFilter<"Denomination"> | string
     label?: StringFilter<"Denomination"> | string
     value?: IntFilter<"Denomination"> | number
-    price?: FloatFilter<"Denomination"> | number
-    originalPrice?: FloatNullableFilter<"Denomination"> | number | null
-    discount?: FloatNullableFilter<"Denomination"> | number | null
+    price?: IntFilter<"Denomination"> | number
+    originalPrice?: IntNullableFilter<"Denomination"> | number | null
+    discount?: IntNullableFilter<"Denomination"> | number | null
     stock?: IntFilter<"Denomination"> | number
     isActive?: BoolFilter<"Denomination"> | boolean
     isPopular?: BoolFilter<"Denomination"> | boolean
     isFlashSale?: BoolFilter<"Denomination"> | boolean
-    flashSalePrice?: FloatNullableFilter<"Denomination"> | number | null
+    flashSalePrice?: IntNullableFilter<"Denomination"> | number | null
     flashSaleEnd?: DateTimeNullableFilter<"Denomination"> | Date | string | null
     sortOrder?: IntFilter<"Denomination"> | number
   }
@@ -27262,6 +27262,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     favorites?: FavoriteCreateNestedManyWithoutUserInput
@@ -27288,6 +27290,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     favorites?: FavoriteUncheckedCreateNestedManyWithoutUserInput
@@ -27407,13 +27411,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUpdateManyWithoutUserNestedInput
@@ -27433,13 +27439,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     favorites?: FavoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -27516,14 +27524,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     product?: ProductUpdateOneRequiredWithoutDenominationsNestedInput
@@ -27534,14 +27542,14 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -27562,6 +27570,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -27588,6 +27598,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -27623,13 +27635,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -27649,13 +27663,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -27682,6 +27698,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -27708,6 +27726,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -27788,13 +27808,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -27814,13 +27836,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -27898,6 +27922,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -27924,6 +27950,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -27955,6 +27983,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -27981,6 +28011,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -28016,13 +28048,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -28042,13 +28076,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -28079,13 +28115,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -28105,13 +28143,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -28138,6 +28178,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -28164,6 +28206,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -28199,13 +28243,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -28225,13 +28271,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -28258,6 +28306,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -28284,6 +28334,8 @@ export namespace Prisma {
     referredBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -28319,13 +28371,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -28345,13 +28399,15 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
-    walletBalance?: FloatFieldUpdateOperationsInput | number
+    walletBalance?: IntFieldUpdateOperationsInput | number
     loyaltyLevel?: StringFieldUpdateOperationsInput | string
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -28521,9 +28577,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28549,9 +28605,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28575,9 +28631,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28645,7 +28701,7 @@ export namespace Prisma {
 
   export type ReferralUpdateWithoutReferrerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referee?: UserUpdateOneRequiredWithoutReferralsUsedNestedInput
@@ -28654,7 +28710,7 @@ export namespace Prisma {
   export type ReferralUncheckedUpdateWithoutReferrerInput = {
     id?: StringFieldUpdateOperationsInput | string
     refereeId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28662,14 +28718,14 @@ export namespace Prisma {
   export type ReferralUncheckedUpdateManyWithoutReferrerInput = {
     id?: StringFieldUpdateOperationsInput | string
     refereeId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReferralUpdateWithoutRefereeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referrer?: UserUpdateOneRequiredWithoutReferralsGivenNestedInput
@@ -28678,7 +28734,7 @@ export namespace Prisma {
   export type ReferralUncheckedUpdateWithoutRefereeInput = {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28686,7 +28742,7 @@ export namespace Prisma {
   export type ReferralUncheckedUpdateManyWithoutRefereeInput = {
     id?: StringFieldUpdateOperationsInput | string
     referrerId?: StringFieldUpdateOperationsInput | string
-    bonus?: FloatFieldUpdateOperationsInput | number
+    bonus?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28794,14 +28850,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     transactions?: TransactionUpdateManyWithoutDenominationNestedInput
@@ -28811,14 +28867,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     transactions?: TransactionUncheckedUpdateManyWithoutDenominationNestedInput
@@ -28828,14 +28884,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     value?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    originalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    price?: IntFieldUpdateOperationsInput | number
+    originalPrice?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
     stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isPopular?: BoolFieldUpdateOperationsInput | boolean
     isFlashSale?: BoolFieldUpdateOperationsInput | boolean
-    flashSalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    flashSalePrice?: NullableIntFieldUpdateOperationsInput | number | null
     flashSaleEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -28844,9 +28900,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28872,9 +28928,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28898,9 +28954,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     denominationId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28966,9 +29022,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28994,9 +29050,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29020,9 +29076,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    amount?: FloatFieldUpdateOperationsInput | number
-    discount?: FloatFieldUpdateOperationsInput | number
-    totalAmount?: FloatFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    discount?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null

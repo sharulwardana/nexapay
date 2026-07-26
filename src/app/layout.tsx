@@ -1,15 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Toaster } from 'sonner';
-import SearchOverlay from '@/components/shared/SearchOverlay';
 import ScrollToTop from '@/components/shared/ScrollToTop';
-import ScratchAndWin from '@/components/shared/ScratchAndWin';
-import Navbar from '@/components/layout/Navbar';
 import PwaRegistry from '@/components/providers/PwaRegistry';
 import AuthProvider from '@/components/providers/AuthProvider';
 import JsonLd from '@/components/shared/JsonLd';
+import ClientOverlays from '@/components/shared/ClientOverlays';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -101,24 +100,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans text-foreground antialiased min-h-screen relative bg-transparent`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen`}
       >
         <JsonLd />
-        {/* Advanced Modern Ambient Background */}
-        <div className="fixed inset-0 -z-50 pointer-events-none transition-colors duration-500">
-          {/* Light Mode: Glowing Ambient Gradient (Hidden in Dark Mode) */}
-          <div className="absolute inset-0 bg-[#f3f4f6] dark:opacity-0 transition-opacity duration-500" />
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px] dark:opacity-0" />
-          <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] rounded-full bg-indigo-500/15 blur-[120px] dark:opacity-0" />
-          <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[30%] rounded-full bg-violet-500/15 blur-[120px] dark:opacity-0" />
-          
-          {/* Dark Mode: Deep Space Background (Hidden in Light Mode) */}
-          <div className="absolute inset-0 bg-background opacity-0 dark:opacity-100 transition-opacity duration-500" />
-          {/* Subtle indigo glow for dark mode */}
-          <div className="absolute top-[-10%] left-[40%] w-[50%] h-[30%] rounded-full bg-indigo-500/5 blur-[120px] opacity-0 dark:opacity-100" />
-        </div>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -134,11 +120,10 @@ export default function RootLayout({
             >
               Lewati ke konten utama
             </a>
-            <Navbar />
+            {/* Navbar is imported on individual pages to avoid double rendering */}
             {children}
-            <SearchOverlay />
+            <ClientOverlays />
             <ScrollToTop />
-            <ScratchAndWin />
             <PwaRegistry />
             <Toaster
               position="top-center"

@@ -5,11 +5,14 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
@@ -17,19 +20,43 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    
     try {
+      if (activeTab === 'register') {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password, referralCode }),
+        });
+        
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data.message || 'Gagal membuat akun');
+          setIsLoading(false);
+          return;
+        }
+        toast.success('Akun berhasil dibuat!');
+      }
+
+      // Perform sign in
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
+      }).catch((err) => {
+        // Auth.js v5 throws when credential authorization fails or returns redirect HTML
+        return { error: 'CredentialsSignin' };
       });
+
       if (result?.error) {
-        console.error(result.error);
+        toast.error('Email atau password salah. Silakan periksa kembali!');
         setIsLoading(false);
       } else {
+        toast.success('Berhasil masuk!');
         window.location.href = '/';
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast.error('Terjadi kesalahan saat masuk');
       console.error(error);
       setIsLoading(false);
     }
@@ -45,12 +72,12 @@ export default function LoginPage() {
       <div className="absolute inset-0 gradient-hero" />
       <div className="absolute inset-0 grid-pattern opacity-30" />
       <motion.div
-        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-indigo-500/10 blur-[120px]"
+        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-cyan-500/10 blur-[120px]"
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 8, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[120px]"
+        className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-teal-500/10 blur-[120px]"
         animate={{ scale: [1.2, 1, 1.2] }}
         transition={{ duration: 10, repeat: Infinity }}
       />
@@ -145,6 +172,8 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium mb-1.5">Nama Lengkap</label>
                 <input
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Masukkan nama kamu"
                   className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
                 />
@@ -184,6 +213,21 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {activeTab === 'register' && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5">Kode Referral (Opsional)</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                    placeholder="Masukkan kode referral teman"
+                    className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm uppercase focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+                  />
+                </div>
+              </div>
+            )}
+
             {activeTab === 'login' && (
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -199,7 +243,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-primary text-white font-semibold shadow-neon-violet hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all disabled:opacity-70"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-primary text-white font-semibold hover:shadow-lg transition-all disabled:opacity-70"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">

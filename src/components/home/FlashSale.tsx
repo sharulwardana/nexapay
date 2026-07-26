@@ -5,23 +5,34 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Clock, Zap, ArrowRight } from 'lucide-react';
-import { games } from '@/data/games';
 import { formatCurrency, cn } from '@/lib/utils';
 import { getGameColor, GAME_INITIALS } from '@/lib/colors';
+import type { ProductWithDenominations } from '@/types';
 
-function CountdownTimer({ endDate }: { endDate: string }) {
+function calculateTimeLeft(endDate: string | Date) {
+  const diff = new Date(endDate).getTime() - Date.now();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  };
+}
+
+function CountdownTimer({ endDate }: { endDate: string | Date }) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setTimeLeft(calculateTimeLeft(endDate));
     const timer = setInterval(() => {
-      const diff = new Date(endDate).getTime() - Date.now();
-      if (diff <= 0) { clearInterval(timer); return; }
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
+      const next = calculateTimeLeft(endDate);
+      setTimeLeft(next);
+      if (next.days === 0 && next.hours === 0 && next.minutes === 0 && next.seconds === 0) {
+        clearInterval(timer);
+      }
     }, 1000);
     return () => clearInterval(timer);
   }, [endDate]);
@@ -29,10 +40,10 @@ function CountdownTimer({ endDate }: { endDate: string }) {
   return (
     <div className="flex gap-1.5">
       {[
-        { value: timeLeft.days, label: 'H' },
-        { value: timeLeft.hours, label: 'J' },
-        { value: timeLeft.minutes, label: 'M' },
-        { value: timeLeft.seconds, label: 'D' },
+        { value: mounted ? timeLeft.days : 0, label: 'H' },
+        { value: mounted ? timeLeft.hours : 0, label: 'J' },
+        { value: mounted ? timeLeft.minutes : 0, label: 'M' },
+        { value: mounted ? timeLeft.seconds : 0, label: 'D' },
       ].map((unit, i) => (
         <div key={unit.label} className="text-center">
           <div className="w-9 h-9 tablet:w-11 tablet:h-11 rounded-lg bg-card border border-border flex items-center justify-center font-heading font-bold text-sm tablet:text-base text-foreground tabular-nums">
@@ -49,11 +60,11 @@ const itemVariant = {
   hidden: { opacity: 0, y: 16 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.4, delay: i * 0.08, ease: [0.33, 1, 0.68, 1] },
+    transition: { duration: 0.4, delay: i * 0.08, ease: [0.33, 1, 0.68, 1] as const },
   }),
 };
 
-export default function FlashSale() {
+export default function FlashSale({ games }: { games: ProductWithDenominations[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
@@ -102,7 +113,7 @@ export default function FlashSale() {
             const gc = getGameColor(item.gameSlug);
             return (
               <motion.div
-                key={item.id}
+                key={`${item.gameSlug}-${item.id || index}`}
                 custom={index}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
@@ -119,8 +130,8 @@ export default function FlashSale() {
                         src={item.gameImage}
                         alt={item.gameName}
                         fill
+                        sizes="64px"
                         className="object-cover"
-                        unoptimized
                       />
                     ) : (
                       <div className={cn('w-full h-full bg-gradient-to-br flex items-center justify-center', gc.from, gc.to)}>

@@ -1,5 +1,9 @@
 import { defineConfig } from '@prisma/config';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+// Load .env.local since Next.js stores local env vars there
+dotenv.config({ path: '.env.local' });
+dotenv.config(); // fallback to .env just in case
 
 export default defineConfig({
   datasource: {

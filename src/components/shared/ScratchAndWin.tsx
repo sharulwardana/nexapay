@@ -1,19 +1,67 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, X, Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { Gift, X, Loader2, Coins } from 'lucide-react';
 import { toast } from 'sonner';
+import { useSession } from 'next-auth/react';
+import { formatCurrency } from '@/lib/utils';
 
 export default function ScratchAndWin() {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isScratched, setIsScratched] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const promoCode = 'NEXAWIN50';
+  const [pointsWon, setPointsWon] = useState<number | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [hasPlayedToday, setHasPlayedToday] = useState(false);
+  const [isShrunk, setIsShrunk] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const { scrollY } = useScroll();
 
   useEffect(() => {
-    if (!isOpen || isScratched) return;
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+    if (latest > previous && latest > 80) {
+      setIsShrunk(true);
+    } else if (latest < previous || latest < 40) {
+      setIsShrunk(false);
+    }
+  });
+  
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // When opened, try to fetch the prize if not already played
+  useEffect(() => {
+    if (isOpen && !isScratched && !isFetching && pointsWon === null && session) {
+      setIsFetching(true);
+      fetch('/api/user/scratch', { method: 'POST' })
+        .then(async (res) => {
+          const data = await res.json();
+          if (res.ok) {
+            setPointsWon(data.pointsWon);
+          } else {
+            // Already played or error
+            setHasPlayedToday(true);
+            toast.error(data.message || 'Gagal mengambil data');
+          }
+        })
+        .catch(() => {
+          toast.error('Terjadi kesalahan jaringan');
+        })
+        .finally(() => {
+          setIsFetching(false);
+        });
+    }
+  }, [isOpen, session, isScratched, pointsWon, isFetching]);
+
+  useEffect(() => {
+    if (!isOpen || isScratched || hasPlayedToday || isFetching || pointsWon === null) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -73,8 +121,7 @@ export default function ScratchAndWin() {
         setIsScratched(true);
         canvas.style.opacity = '0';
         setTimeout(() => {
-          navigator.clipboard.writeText(promoCode);
-          toast.success('Kode promo disalin otomatis!');
+          toast.success(`Selamat! Kamu mendapatkan ${pointsWon} Points!`);
         }, 500);
       }
     };
@@ -100,27 +147,29 @@ export default function ScratchAndWin() {
       canvas.removeEventListener('touchmove', scratch);
       canvas.removeEventListener('touchend', handleUp);
     };
-  }, [isOpen, isScratched]);
+  }, [isOpen, isScratched, hasPlayedToday, isFetching, pointsWon]);
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(promoCode);
-    setIsCopied(true);
-    toast.success('Kode promo disalin otomatis!');
-    setTimeout(() => setIsCopied(false), 2000);
-  };
+  if (!session) return null; // Don't show floating gift button if not logged in
 
   return (
     <>
       {/* Floating Gift Button */}
       <motion.button
         initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        animate={{ 
+          scale: 1,
+          y: isMobile ? (isShrunk ? 16 : 0) : 0
+        }}
+        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
         whileHover={{ scale: 1.1, rotate: 10 }}
         whileTap={{ scale: 0.9 }}
-        onClick={() => setIsOpen(true)}
-        className="hidden lg:flex fixed bottom-[140px] right-6 w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.4)] items-center justify-center z-50 animate-bounce"
+        onClick={() => {
+          setIsOpen(true);
+          if (hasPlayedToday) setIsScratched(true);
+        }}
+        className="flex fixed bottom-[156px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
       >
-        <Gift className="w-6 h-6 text-white" />
+        <Gift className="w-5 h-5 tablet:w-6 tablet:h-6 text-white" />
       </motion.button>
 
       {/* Scratch Modal */}
@@ -148,42 +197,47 @@ export default function ScratchAndWin() {
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                <Gift className="w-8 h-8 text-primary" />
+              <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto mb-4">
+                <Gift className="w-8 h-8" />
               </div>
-              
-              <h3 className="text-xl font-black mb-2">Voucher Spesial!</h3>
-              <p className="text-sm text-muted-foreground mb-6">Gosok kartu di bawah ini untuk melihat kode promo rahasia.</p>
+              <h2 className="heading-3 mb-2">Gosok & Menang!</h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                Gosok kartu di bawah ini untuk mendapatkan hadiah kejutan Loyalty Points harian.
+              </p>
 
-              <div className="relative w-full h-32 bg-muted/30 rounded-2xl border-2 border-dashed border-border overflow-hidden flex items-center justify-center">
-                {/* Revealed Code */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-0">
-                  <p className="text-xs text-primary font-bold mb-1 uppercase tracking-widest">Kode Promo</p>
-                  <p className="text-3xl font-black font-mono tracking-wider">{promoCode}</p>
-                </div>
+              <div className="relative w-full h-40 rounded-2xl overflow-hidden bg-muted border-2 border-dashed border-border flex items-center justify-center select-none">
+                {isFetching ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                    <span className="text-xs text-muted-foreground">Menyiapkan kartu...</span>
+                  </div>
+                ) : hasPlayedToday ? (
+                  <div className="text-center p-4">
+                    <h3 className="font-bold text-muted-foreground mb-1">Yah, Sudah Habis</h3>
+                    <p className="text-xs text-muted-foreground">Kamu sudah menggosok kartu hari ini. Kembali lagi besok!</p>
+                  </div>
+                ) : (
+                  <>
+                    {/* The revealed prize underneath */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                      <p className="text-sm font-bold text-muted-foreground mb-1">SELAMAT! KAMU DAPAT</p>
+                      <div className="flex items-center gap-2">
+                        <Coins className="w-6 h-6 text-yellow-500" />
+                        <span className="text-3xl font-black gradient-text">+{pointsWon}</span>
+                      </div>
+                      <p className="text-xs font-bold text-primary mt-1">Loyalty Points</p>
+                    </div>
 
-                {/* Scratch Canvas Overlay */}
-                <canvas
-                  ref={canvasRef}
-                  width={320}
-                  height={128}
-                  className="absolute inset-0 w-full h-full cursor-pointer z-10 transition-opacity duration-1000"
-                  style={{ touchAction: 'none' }}
-                />
+                    {/* The scratchable overlay */}
+                    <canvas
+                      ref={canvasRef}
+                      width={300}
+                      height={160}
+                      className="absolute inset-0 w-full h-full cursor-crosshair transition-opacity duration-500 touch-none"
+                    />
+                  </>
+                )}
               </div>
-
-              {/* Action after reveal */}
-              {isScratched && (
-                <motion.button
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  onClick={copyCode}
-                  className="mt-6 w-full py-3 rounded-xl gradient-primary text-white font-bold flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-neon-violet"
-                >
-                  {isCopied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                  {isCopied ? 'Tersalin!' : 'Salin Kode Promo'}
-                </motion.button>
-              )}
             </motion.div>
           </div>
         )}

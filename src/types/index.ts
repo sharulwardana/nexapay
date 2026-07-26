@@ -3,14 +3,17 @@ export interface Product {
   name: string;
   slug: string;
   category: ProductCategory;
-  subcategory?: string;
-  description?: string;
+  subcategory?: string | null;
+  description?: string | null;
   image: string;
-  bannerImage?: string;
-  publisher?: string;
+  bannerImage?: string | null;
+  publisher?: string | null;
   isActive: boolean;
   isFeatured: boolean;
   isPopular: boolean;
+  sortOrder?: number;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
   denominations: Denomination[];
 }
 
@@ -20,14 +23,14 @@ export interface Denomination {
   label: string;
   value: number;
   price: number;
-  originalPrice?: number;
-  discount?: number;
+  originalPrice?: number | null;
+  discount?: number | null;
   stock: number;
   isActive: boolean;
   isPopular: boolean;
   isFlashSale: boolean;
-  flashSalePrice?: number;
-  flashSaleEnd?: string;
+  flashSalePrice?: number | null;
+  flashSaleEnd?: string | Date | null;
 }
 
 export interface Transaction {
@@ -128,9 +131,12 @@ export interface Testimonial {
   id: string;
   name: string;
   avatar: string;
+  avatarBg?: string;
   role: string;
   rating: number;
-  text: string;
+  content: string;
+  text?: string;
+  verified?: boolean;
 }
 
 export interface ChatMessage {
@@ -196,3 +202,20 @@ export interface AdminStats {
   salesData: { date: string; revenue: number; transactions: number }[];
   topProducts: { name: string; revenue: number; count: number }[];
 }
+
+export interface ProductWithDenominations extends Omit<Product, 'denominations' | 'category'> {
+  category: string;
+  denominations: Denomination[];
+}
+
+/**
+ * Product with full denomination data — used for TopUp listing page.
+ */
+export interface ProductWithActiveDenominations extends Omit<Product, 'denominations' | 'category'> {
+  category: string;
+  denominations: {
+    price: number;
+    isFlashSale: boolean;
+  }[];
+}
+

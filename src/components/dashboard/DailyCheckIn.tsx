@@ -12,14 +12,20 @@ export default function DailyCheckIn() {
   const [isAnimating, setIsAnimating] = useState(false);
   const { playSuccess, playClick } = useSoundEffect();
 
-  const handleClaim = () => {
+  const handleClaim = async () => {
     if (hasClaimed || isAnimating) return;
     
     playClick();
     setIsAnimating(true);
     
-    setTimeout(() => {
-      setIsAnimating(false);
+    try {
+      const res = await fetch('/api/user/checkin', { method: 'POST' });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Gagal claim');
+      }
+
       setHasClaimed(true);
       playSuccess();
       
@@ -28,7 +34,7 @@ export default function DailyCheckIn() {
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#00E5FF', '#F59E0B', '#10B981'],
+        colors: ['#F97316', '#F59E0B', '#10B981'], // Orange, Yellow, Green
         disableForReducedMotion: true
       });
 
@@ -39,7 +45,7 @@ export default function DailyCheckIn() {
           </div>
           <div>
             <p className="text-sm font-bold text-foreground">Reward Harian Berhasil Diklaim!</p>
-            <p className="text-xs text-yellow-500">+500 NexaPoints</p>
+            <p className="text-xs text-yellow-500">{data.message}</p>
           </div>
         </div>,
         {
@@ -47,7 +53,11 @@ export default function DailyCheckIn() {
           className: 'bg-card/90 border border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.2)] backdrop-blur-md rounded-2xl',
         }
       );
-    }, 1200); // 1.2s loading state for suspense
+    } catch (error: any) {
+      toast.error(error.message || 'Terjadi kesalahan saat check-in');
+    } finally {
+      setIsAnimating(false);
+    }
   };
 
   return (
@@ -58,7 +68,7 @@ export default function DailyCheckIn() {
         "w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-500 group relative overflow-hidden",
         hasClaimed 
           ? "border-green-500/20 bg-green-500/5 cursor-default" 
-          : "border-primary/30 bg-primary/5 hover:bg-primary/10 hover:shadow-[0_0_20px_rgba(99,102,241,0.1)]"
+          : "border-primary/30 bg-primary/5 hover:bg-primary/10"
       )}
     >
       {/* Shimmer effect for unclaimed state */}
@@ -93,7 +103,7 @@ export default function DailyCheckIn() {
           "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase flex items-center gap-1.5 transition-all duration-500",
           hasClaimed 
             ? "bg-green-500/20 text-green-500 border border-green-500/30" 
-            : "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(99,102,241,0.4)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.6)]"
+            : "bg-primary text-primary-foreground shadow-neon-violet"
         )}>
           {isAnimating ? (
             <><Loader2 className="w-3 h-3 animate-spin" /> Mengklaim</>

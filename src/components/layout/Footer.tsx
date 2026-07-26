@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
 const footerLinks = {
@@ -28,18 +31,24 @@ const footerLinks = {
 
 const paymentLogos = [
   'QRIS', 'GoPay', 'OVO', 'DANA', 'ShopeePay',
-  'BCA', 'BNI', 'BRI', 'Mandiri', 'USDT',
+  'BCA', 'BNI', 'BRI', 'Mandiri', 'Alfamart', 'Indomaret',
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="relative border-t border-border bg-background">
       {/* Subtle top gradient line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-      <div className="container-app py-16 tablet:py-20">
+      <div className="container-app py-12 tablet:py-16 pb-24 tablet:pb-24">
         {/* Links Grid */}
-        <div className="grid grid-cols-2 tablet:grid-cols-4 gap-8 tablet:gap-12 mb-16">
+        <div className="grid grid-cols-2 tablet:grid-cols-4 gap-8 tablet:gap-12 mb-12">
           {/* Brand */}
           <div className="col-span-2 tablet:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
@@ -85,11 +94,11 @@ export default function Footer() {
         </div>
 
         {/* Payment Partners */}
-        <div className="border-t border-border pt-8 mb-8">
-          <p className="label mb-3">Partner Pembayaran</p>
+        <div className="border-t border-border/40 pt-6 mb-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80 mb-3">Partner Pembayaran Resmi</p>
           <div className="flex flex-wrap gap-2">
             {paymentLogos.map((name) => (
-              <span key={name} className="px-2.5 py-1 rounded-md bg-muted text-[11px] font-medium text-muted-foreground">
+              <span key={name} className="px-2.5 py-1 rounded-lg bg-muted/30 border border-border/40 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors">
                 {name}
               </span>
             ))}
@@ -97,7 +106,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border pt-6 flex flex-col tablet:flex-row items-center justify-between gap-4">
+        <div className="border-t border-border/50 pt-6 flex flex-col tablet:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
             © 2026 NexaPay. All rights reserved.
           </p>
@@ -105,14 +114,14 @@ export default function Footer() {
             <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
             <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
-              <MapPin className="w-3 h-3" /> Jakarta, ID
+              <MapPin className="w-3 h-3 text-primary" /> Jakarta, ID
             </span>
           </div>
         </div>
       </div>
 
       {/* Mobile nav spacer */}
-      <div className="h-16 lg:hidden" />
+      <div className="h-20 lg:hidden" />
     </footer>
   );
 }

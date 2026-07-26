@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, ArrowRight, Gamepad2, TrendingUp, Clock, Sparkles, Bot } from 'lucide-react';
-import { games } from '@/data/games';
-import { digitalProducts } from '@/data/products';
 import { cn } from '@/lib/utils';
-import { useSearchStore } from '@/stores/globalStore';
+import { useSearchStore } from '@/store/globalStore';
 
 const trendingSearches = [
   'Mobile Legends', 'Genshin Impact', 'Free Fire', 'VALORANT',
@@ -18,13 +16,32 @@ export default function SearchOverlay() {
   const { isOpen, setIsOpen } = useSearchStore();
   const [query, setQuery] = useState('');
 
-  const allProducts = [...games, ...digitalProducts];
-  const results = query.length >= 2
-    ? allProducts.filter((p) =>
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.publisher?.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 8)
-    : [];
+  const [results, setResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (query.length < 2) {
+        setResults([]);
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        
+        const combined = (data.results || []).slice(0, 8);
+        setResults(combined);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(fetchResults, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [query]);
 
   const handleClose = () => {
     setIsOpen(false);

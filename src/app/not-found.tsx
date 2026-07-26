@@ -10,11 +10,7 @@ export default function NotFound() {
       {/* Background */}
       <div className="absolute inset-0 gradient-hero" />
       <div className="absolute inset-0 grid-pattern opacity-30" />
-      <motion.div
-        className="absolute top-1/3 left-1/3 w-80 h-80 rounded-full bg-neon-violet/10 blur-[100px]"
-        animate={{ scale: [1, 1.3, 1] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
+
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -40,7 +36,7 @@ export default function NotFound() {
         <div className="flex flex-col xs:flex-row items-center justify-center gap-3">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold shadow-neon-violet hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold hover:shadow-lg transition-all"
           >
             <Home className="w-4 h-4" />
             Kembali ke Home

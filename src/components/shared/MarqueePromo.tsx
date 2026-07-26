@@ -6,8 +6,8 @@ export default function MarqueePromo() {
     "🎮 Top Up Valorant VP sekarang dapet bonus 10% Extra!",
   ];
 
-  // We duplicate the array to ensure smooth infinite scrolling
-  const duplicatedPromos = [...promos, ...promos, ...promos];
+  // We duplicate the array EXACTLY TWICE to ensure smooth infinite scrolling with translateX(-50%)
+  const duplicatedPromos = [...promos, ...promos];
 
   return (
     <div className="w-full bg-primary/10 border-b border-primary/20 overflow-hidden py-1.5 relative z-40">

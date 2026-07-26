@@ -17,6 +17,23 @@ export default auth((req) => {
   if (isLoggedIn && isAuthPage) {
     return Response.redirect(new URL('/', req.nextUrl));
   }
+
+  // Protect /dashboard
+  if (req.nextUrl.pathname.startsWith('/dashboard') && !isLoggedIn) {
+    return Response.redirect(new URL('/login', req.nextUrl));
+  }
+
+  // Protect /admin — default deny: redirect unless role is explicitly ADMIN
+  if (req.nextUrl.pathname.startsWith('/admin')) {
+    if (!isLoggedIn) {
+      return Response.redirect(new URL('/login', req.nextUrl));
+    }
+    // Default deny: if role is missing or not ADMIN, redirect.
+    // This prevents bypass when JWT doesn't have the role field populated.
+    if (!req.auth?.user?.role || req.auth.user.role !== 'ADMIN') {
+      return Response.redirect(new URL('/', req.nextUrl));
+    }
+  }
 })
 
 // Optionally, don't invoke Middleware on some paths

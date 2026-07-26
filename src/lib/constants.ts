@@ -6,6 +6,7 @@ export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://nexapay.id';
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Top Up', href: '/topup' },
+  { label: 'Lacak Pesanan', href: '/track' },
   { label: 'Produk Digital', href: '/products' },
   { label: 'Promo', href: '/promo' },
   { label: 'News', href: '/news' },
@@ -96,7 +97,7 @@ export const PAYMENT_METHODS = [
   {
     id: 'alfamart',
     name: 'Alfamart',
-    category: 'Convenience Store',
+    category: 'Minimarket',
     icon: '/images/payments/alfamart.svg',
     description: 'Bayar di Alfamart terdekat',
     fee: 5000,
@@ -104,18 +105,10 @@ export const PAYMENT_METHODS = [
   {
     id: 'indomaret',
     name: 'Indomaret',
-    category: 'Convenience Store',
+    category: 'Minimarket',
     icon: '/images/payments/indomaret.svg',
     description: 'Bayar di Indomaret terdekat',
     fee: 5000,
-  },
-  {
-    id: 'usdt',
-    name: 'USDT (TRC-20)',
-    category: 'Crypto',
-    icon: '/images/payments/usdt.svg',
-    description: 'Bayar dengan USDT',
-    fee: 0,
   },
 ] as const;
 
@@ -130,13 +123,6 @@ export const CATEGORIES = [
   { id: 'EWALLET_TOPUP', label: 'E-Wallet', icon: 'Wallet', color: 'from-blue-500 to-indigo-600' },
 ] as const;
 
-export const STATS = [
-  { label: 'Pengguna Aktif', value: 2500000, suffix: '+' },
-  { label: 'Transaksi Sukses', value: 15000000, suffix: '+' },
-  { label: 'Game Tersedia', value: 500, suffix: '+' },
-  { label: 'Partner Payment', value: 50, suffix: '+' },
-] as const;
-
 export const LOYALTY_LEVELS = {
   BRONZE: { name: 'Bronze', minPoints: 0, color: '#CD7F32', discount: 0 },
   SILVER: { name: 'Silver', minPoints: 1000, color: '#C0C0C0', discount: 2 },
@@ -144,3 +130,16 @@ export const LOYALTY_LEVELS = {
   PLATINUM: { name: 'Platinum', minPoints: 15000, color: '#E5E4E2', discount: 8 },
   DIAMOND: { name: 'Diamond', minPoints: 50000, color: '#B9F2FF', discount: 12 },
 } as const;
+
+/**
+ * Shared utility: derive loyalty discount percentage from points.
+ * Used by both frontend (userStore) and backend (checkout API).
+ */
+export function getLoyaltyDiscount(points: number): number {
+  if (points >= LOYALTY_LEVELS.DIAMOND.minPoints) return LOYALTY_LEVELS.DIAMOND.discount;
+  if (points >= LOYALTY_LEVELS.PLATINUM.minPoints) return LOYALTY_LEVELS.PLATINUM.discount;
+  if (points >= LOYALTY_LEVELS.GOLD.minPoints) return LOYALTY_LEVELS.GOLD.discount;
+  if (points >= LOYALTY_LEVELS.SILVER.minPoints) return LOYALTY_LEVELS.SILVER.discount;
+  return LOYALTY_LEVELS.BRONZE.discount;
+}
+

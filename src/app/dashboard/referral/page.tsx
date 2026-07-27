@@ -15,10 +15,29 @@ export default async function ReferralPage() {
   }
 
   // Fetch user data for referral code
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { referralCode: true }
   });
+
+  // Auto-generate unique referral code if user doesn't have one yet
+  if (!user?.referralCode) {
+    const randomCode = 'NXP-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    try {
+      user = await prisma.user.update({
+        where: { id: session.user.id },
+        data: { referralCode: randomCode },
+        select: { referralCode: true }
+      });
+    } catch {
+      const fallbackCode = 'NXP-' + Date.now().toString(36).substring(3, 9).toUpperCase();
+      user = await prisma.user.update({
+        where: { id: session.user.id },
+        data: { referralCode: fallbackCode },
+        select: { referralCode: true }
+      });
+    }
+  }
 
   // Fetch referrals given by this user
   const referrals = await prisma.referral.findMany({

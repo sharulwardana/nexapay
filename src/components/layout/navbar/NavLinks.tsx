@@ -10,11 +10,11 @@ import { NAV_LINKS } from '@/lib/constants';
 
 const productCategories = [
   { name: 'Game Top Up', href: '/topup', icon: Gamepad2 },
-  { name: 'Voucher', href: '/products?cat=VOUCHER', icon: Gift },
-  { name: 'Pulsa & Data', href: '/products?cat=PULSA', icon: Smartphone },
-  { name: 'Token PLN', href: '/products?cat=PLN', icon: Zap },
-  { name: 'Streaming', href: '/products?cat=STREAMING', icon: Tv },
-  { name: 'E-Wallet', href: '/products?cat=EWALLET_TOPUP', icon: Wallet },
+  { name: 'Voucher', href: '/products?category=VOUCHER', icon: Gift },
+  { name: 'Pulsa & Data', href: '/products?category=PULSA', icon: Smartphone },
+  { name: 'Token PLN', href: '/products?category=PLN', icon: Zap },
+  { name: 'Streaming', href: '/products?category=STREAMING', icon: Tv },
+  { name: 'E-Wallet', href: '/products?category=EWALLET', icon: Wallet },
 ];
 
 export default function NavLinks() {
@@ -41,25 +41,26 @@ export default function NavLinks() {
                 )}
               >
                 {link.label}
-                <ChevronDown className="w-3 h-3" />
+                <ChevronDown className={cn('w-3 h-3 transition-transform duration-200', isProductDropdownOpen && 'rotate-180')} />
               </Link>
 
               <AnimatePresence>
                 {isProductDropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 4, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                    className="absolute top-full left-0 mt-1 w-56 p-1.5 rounded-xl glass-card border shadow-xl z-50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.1 }}
+                    className="absolute top-full left-0 mt-1 w-56 p-1.5 rounded-xl bg-card/95 backdrop-blur-xl border border-border shadow-xl z-50"
                   >
                     {productCategories.map((cat) => (
                       <Link
                         key={cat.href}
                         href={cat.href}
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors"
+                        className="group flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors"
                       >
-                        <cat.icon className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-[13px] font-medium">{cat.name}</span>
+                        <cat.icon className="w-4 h-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <span className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">{cat.name}</span>
                       </Link>
                     ))}
                   </motion.div>

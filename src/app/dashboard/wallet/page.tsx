@@ -21,17 +21,18 @@ export default async function WalletPage() {
   });
 
   // Fetch real transaction history related to wallet
-  const transactions = await prisma.transaction.findMany({
-    where: { 
-      userId: session.user.id,
-      OR: [
-        { paymentMethod: 'NEXA_WALLET' },
-        { productId: 'wallet-topup' }
-      ]
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 20
-  });
+  let transactions: any[] = [];
+  try {
+    transactions = await prisma.transaction.findMany({
+      where: { 
+        userId: session.user.id,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 20
+    });
+  } catch (error) {
+    console.error('Failed to fetch wallet transactions:', error);
+  }
 
   // Map to the format expected by the client
   const history = transactions.map(t => ({

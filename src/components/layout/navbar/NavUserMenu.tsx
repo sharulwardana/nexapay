@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,6 +8,7 @@ import { User, LogIn, LayoutDashboard, Wallet, LogOut, Star, ShieldCheck } from 
 import { useSoundEffect } from '@/hooks/useSoundEffect';
 import { LOYALTY_LEVELS } from '@/lib/constants';
 import { formatCurrency } from '@/lib/utils';
+import { getLiveWalletBalance } from '@/actions/wallet';
 
 interface NavUserMenuProps {
   isOpen: boolean;
@@ -33,6 +34,13 @@ export default function NavUserMenu({
   progressPercent
 }: NavUserMenuProps) {
   const { playHover, playClick } = useSoundEffect();
+  const [liveBalance, setLiveBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getLiveWalletBalance().then((bal) => setLiveBalance(bal));
+    }
+  }, [isOpen, isLoggedIn]);
 
   useEffect(() => {
     if (isOpen && window.innerWidth < 768) {
@@ -151,7 +159,9 @@ export default function NavUserMenu({
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">NexaPay Wallet</p>
-                      <p className="text-xs font-bold text-foreground">{formatCurrency(session?.user?.walletBalance || 0)}</p>
+                      <p className="text-xs font-bold text-foreground">
+                        {formatCurrency(liveBalance !== null ? liveBalance : (session?.user?.walletBalance || 0))}
+                      </p>
                     </div>
                   </Link>
                 </div>

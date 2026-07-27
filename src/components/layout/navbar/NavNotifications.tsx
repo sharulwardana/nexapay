@@ -143,18 +143,13 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
               </div>
 
               {/* Mobile Explicit Bottom Dismiss Bar */}
-              <div className="p-2.5 border-t border-border/40 bg-background/95 backdrop-blur-md flex-shrink-0 flex flex-col gap-1.5">
+              <div className="tablet:hidden p-2.5 border-t border-border/40 bg-background/95 backdrop-blur-md flex-shrink-0">
                 <button
                   onClick={() => { playClick(); onToggle(); }}
-                  className="tablet:hidden w-full py-2 rounded-xl bg-muted/60 hover:bg-muted text-foreground text-xs font-bold flex items-center justify-center gap-1.5 border border-border/50 transition-all active:scale-[0.98]"
+                  className="w-full py-2 rounded-xl bg-muted/60 hover:bg-muted text-foreground text-xs font-bold flex items-center justify-center gap-1.5 border border-border/50 transition-all active:scale-[0.98]"
                 >
                   <X className="w-3.5 h-3.5 text-muted-foreground" /> Tutup Notifikasi
                 </button>
-                {notifications.length > 0 && (
-                  <span className="text-[10px] text-center text-muted-foreground font-medium">
-                    {notifications.length > 6 ? `Menampilkan 6 dari ${notifications.length} notifikasi` : 'Klik background hitam / tombol Tutup di atas untuk menutup'}
-                  </span>
-                )}
               </div>
             </motion.div>
           </>

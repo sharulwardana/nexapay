@@ -7,17 +7,17 @@ import {
   LayoutDashboard, Package, Users, Receipt, Megaphone, Image as ImageIcon, BarChart3,
   TrendingUp, DollarSign, ShoppingCart, CreditCard, ShieldCheck, Zap, X, LogOut, Menu
 } from 'lucide-react';
-import { cn, formatCurrency, formatNumber } from '@/lib/utils';
+import { cn, formatCurrency, formatNumber, formatPaymentMethod } from '@/lib/utils';
 import { signOut } from 'next-auth/react';
 
 const sidebarItems = [
-  { label: 'Overview', href: '/admin', icon: LayoutDashboard },
-  { label: 'Products', href: '/admin/products', icon: Package },
-  { label: 'Transactions', href: '/admin/transactions', icon: Receipt },
-  { label: 'Customers', href: '/admin/users', icon: Users },
-  { label: 'Campaigns', href: '/admin/promos', icon: Megaphone },
-  { label: 'Banners', href: '/admin/banners', icon: ImageIcon },
-  { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  { label: 'Ringkasan', href: '/admin', icon: LayoutDashboard },
+  { label: 'Produk', href: '/admin/products', icon: Package },
+  { label: 'Transaksi', href: '/admin/transactions', icon: Receipt },
+  { label: 'Pelanggan', href: '/admin/users', icon: Users },
+  { label: 'Promo & Voucher', href: '/admin/promos', icon: Megaphone },
+  { label: 'Banner Hero', href: '/admin/banners', icon: ImageIcon },
+  { label: 'Analitik', href: '/admin/analytics', icon: BarChart3 },
 ];
 
 export default function AnalyticsClient({
@@ -93,16 +93,28 @@ export default function AnalyticsClient({
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={false}
+                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
                 )}
               >
-                {isActive && <motion.div layoutId="sidebar-active" className="absolute inset-0 bg-white/10 rounded-xl" />}
-                {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-violet-400 rounded-r-full shadow-[0_0_10px_#a78bfa]" />}
-                <item.icon className={cn("w-4 h-4 relative z-10", isActive ? "text-violet-400" : "text-white/40 group-hover:text-white/70")} />
-                <span className="relative z-10">{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-pill"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 bg-gradient-to-r from-violet-600/25 via-fuchsia-600/15 to-transparent border border-violet-500/30 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.25)]"
+                  />
+                )}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-bar"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-violet-400 via-fuchsia-400 to-violet-500 rounded-r-full shadow-[0_0_12px_#c084fc]"
+                  />
+                )}
+                <item.icon className={cn("w-4 h-4 relative z-10 transition-colors duration-300", isActive ? "text-violet-300 drop-shadow-[0_0_8px_rgba(167,139,250,0.8)]" : "text-white/40 group-hover:text-white/70")} />
+                <span className={cn("relative z-10 transition-colors", isActive ? "text-white font-bold drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-white/50 group-hover:text-white")}>{item.label}</span>
               </Link>
             );
           })}
@@ -110,19 +122,28 @@ export default function AnalyticsClient({
       </aside>
 
       <div className="flex-1 flex flex-col relative z-10 min-w-0">
-        <header className="sticky top-0 z-40 h-20 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center px-6 gap-4">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10">
-            <Menu className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl font-black font-heading">Analitik & Performa Laporan</h1>
+        <header className="sticky top-0 z-40 h-16 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-3 min-w-0">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 flex-shrink-0">
+              <Menu className="w-5 h-5" />
+            </button>
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold font-heading tracking-tight truncate">Analitik Performa</h1>
+            </div>
+          </div>
         </header>
 
-        <main className="flex-1 p-6 space-y-6 overflow-y-auto">
+        <motion.main
+          initial={{ opacity: 0, scale: 0.985 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-1 p-6 space-y-6 overflow-y-auto"
+        >
           {/* High-Level Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-3xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/10 border border-violet-500/30 space-y-2 relative overflow-hidden">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-bold text-violet-300 uppercase tracking-widest">Total Gross Revenue</p>
+                <p className="text-xs font-bold text-violet-300 uppercase tracking-widest">Total Pendapatan Bersih</p>
                 <div className="w-10 h-10 rounded-2xl bg-violet-500/20 flex items-center justify-center text-violet-300 font-bold">
                   <DollarSign className="w-5 h-5" />
                 </div>
@@ -145,12 +166,14 @@ export default function AnalyticsClient({
 
           {/* Payment Method Distribution */}
           <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/5 pb-4">
-              <div>
-                <h3 className="font-bold text-base text-white">Distribusi Metode Pembayaran</h3>
-                <p className="text-xs text-white/40">Perbandingan perolehan pendapatan berdasarkan saluran pembayaran pembeli.</p>
+            <div className="flex items-start justify-between border-b border-white/5 pb-4 gap-3">
+              <div className="min-w-0 flex-1">
+                <h3 className="font-bold text-sm sm:text-base text-white">Distribusi Metode Pembayaran</h3>
+                <p className="text-xs text-white/40 mt-0.5 leading-relaxed">Perbandingan pendapatan berdasarkan metode pembayaran.</p>
               </div>
-              <CreditCard className="w-5 h-5 text-violet-400" />
+              <div className="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0 text-violet-400">
+                <CreditCard className="w-4 h-4" />
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -159,7 +182,7 @@ export default function AnalyticsClient({
                 return (
                   <div key={pm.paymentMethod} className="space-y-1">
                     <div className="flex justify-between text-xs font-bold">
-                      <span className="uppercase text-white/80">{pm.paymentMethod}</span>
+                      <span className="font-bold text-white/80">{formatPaymentMethod(pm.paymentMethod)}</span>
                       <span className="text-violet-300">{formatCurrency(pm._sum.totalAmount || 0)} ({percent}%)</span>
                     </div>
                     <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
@@ -173,7 +196,7 @@ export default function AnalyticsClient({
               })}
             </div>
           </div>
-        </main>
+        </motion.main>
       </div>
     </div>
   );

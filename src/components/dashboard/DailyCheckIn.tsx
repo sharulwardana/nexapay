@@ -1,19 +1,43 @@
 'use client';
 
-import { useState } from 'react';
-import { Gift, Coins, Check, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Gift, Check, Loader2, CalendarCheck2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
+import { showToast } from '@/lib/toast';
 import confetti from 'canvas-confetti';
 import { useSoundEffect } from '@/hooks/useSoundEffect';
 
-export default function DailyCheckIn() {
-  const [hasClaimed, setHasClaimed] = useState(false);
+export default function DailyCheckIn({ initialHasClaimed = false }: { initialHasClaimed?: boolean }) {
+  const [hasClaimed, setHasClaimed] = useState(initialHasClaimed);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
   const { playSuccess, playClick } = useSoundEffect();
 
+  useEffect(() => {
+    let isMounted = true;
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch('/api/user/checkin');
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) {
+            setHasClaimed(data.hasClaimed);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch checkin status:', err);
+      } finally {
+        if (isMounted) setIsLoadingStatus(false);
+      }
+    };
+    fetchStatus();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const handleClaim = async () => {
-    if (hasClaimed || isAnimating) return;
+    if (hasClaimed || isAnimating || isLoadingStatus) return;
     
     playClick();
     setIsAnimating(true);
@@ -29,91 +53,96 @@ export default function DailyCheckIn() {
       setHasClaimed(true);
       playSuccess();
       
-      // Fire confetti burst
       confetti({
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#F97316', '#F59E0B', '#10B981'], // Orange, Yellow, Green
+        colors: ['#F97316', '#F59E0B', '#10B981'],
         disableForReducedMotion: true
       });
 
-      toast(
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center border border-yellow-500/30">
-            <Coins className="w-4 h-4 text-yellow-500" />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-foreground">Reward Harian Berhasil Diklaim!</p>
-            <p className="text-xs text-yellow-500">{data.message}</p>
-          </div>
-        </div>,
-        {
-          duration: 4000,
-          className: 'bg-card/90 border border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.2)] backdrop-blur-md rounded-2xl',
-        }
-      );
+      showToast.success('Reward Harian Berhasil Diklaim!', `Selamat! +${data.points || 10} NexaPoints telah ditambahkan ke akun Anda.`);
     } catch (error: any) {
-      toast.error(error.message || 'Terjadi kesalahan saat check-in');
+      const msg = error.message || 'Terjadi kesalahan saat check-in';
+      if (msg.toLowerCase().includes('sudah check-in') || msg.toLowerCase().includes('already')) {
+        setHasClaimed(true);
+        showToast.warning('Sudah Check-In Hari Ini', 'Anda sudah mengambil klaim harian. Kembali lagi besok untuk klaim berikutnya!');
+      } else {
+        showToast.error('Gagal Check-In', msg);
+      }
     } finally {
       setIsAnimating(false);
     }
   };
 
   return (
-    <button
-      onClick={handleClaim}
-      disabled={hasClaimed || isAnimating}
-      className={cn(
-        "w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-500 group relative overflow-hidden",
-        hasClaimed 
-          ? "border-green-500/20 bg-green-500/5 cursor-default" 
-          : "border-primary/30 bg-primary/5 hover:bg-primary/10"
-      )}
-    >
-      {/* Shimmer effect for unclaimed state */}
-      {!hasClaimed && (
-        <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
-      )}
-      
-      <div className="flex items-center gap-3 relative z-10">
-        <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-all duration-500",
-          hasClaimed 
-            ? "bg-gradient-to-br from-green-400 to-emerald-600 scale-95" 
-            : "bg-gradient-to-br from-yellow-400 to-orange-500 group-hover:scale-105"
-        )}>
-          {hasClaimed ? <Check className="w-5 h-5 text-white" /> : <Gift className="w-5 h-5 text-white" />}
-        </div>
-        <div className="text-left">
-          <p className={cn(
-            "text-sm font-bold flex items-center gap-1.5 transition-colors duration-300",
-            hasClaimed ? "text-green-500" : "text-foreground group-hover:text-primary"
+    <div className="flex flex-col h-full justify-between gap-4 relative z-10 w-full">
+      {/* Top Header Row */}
+      <div className="flex items-center justify-between gap-2 w-full">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md transition-all duration-300",
+            hasClaimed
+              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+              : "bg-gradient-to-br from-amber-400 via-orange-500 to-primary text-white shadow-orange-500/25"
           )}>
-            Daily Check-in
-          </p>
-          <p className="text-[11px] text-muted-foreground">
-            {hasClaimed ? 'Kembali besok untuk hadiah!' : 'Klaim hadiah gratis setiap hari!'}
-          </p>
+            {hasClaimed ? (
+              <CalendarCheck2 className="w-5 h-5 text-emerald-400" />
+            ) : (
+              <Gift className="w-5 h-5 text-white animate-bounce-subtle" />
+            )}
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-sm font-bold font-heading text-foreground truncate">Daily Check-in</h3>
+            <p className="text-[11px] text-muted-foreground truncate">Klaim Poin Gratis</p>
+          </div>
         </div>
-      </div>
-      
-      <div className="relative z-10">
+
         <span className={cn(
-          "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase flex items-center gap-1.5 transition-all duration-500",
+          "px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide uppercase border shrink-0",
           hasClaimed 
-            ? "bg-green-500/20 text-green-500 border border-green-500/30" 
-            : "bg-primary text-primary-foreground shadow-neon-violet"
+            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" 
+            : "bg-amber-500/15 text-amber-400 border-amber-500/30"
         )}>
-          {isAnimating ? (
-            <><Loader2 className="w-3 h-3 animate-spin" /> Mengklaim</>
-          ) : hasClaimed ? (
-            <><Check className="w-3 h-3" /> Diklaim</>
-          ) : (
-            'Klaim'
-          )}
+          {hasClaimed ? 'Selesai' : 'Gratis'}
         </span>
       </div>
-    </button>
+
+      {/* Middle Description Box */}
+      <div className="p-3 rounded-xl bg-surface/80 border border-border/40 text-left w-full">
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          {hasClaimed ? (
+            <span className="text-emerald-400 font-medium flex items-center gap-1.5">
+              <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              Reward hari ini sudah diklaim. Kembali besok jam 00:00 WIB!
+            </span>
+          ) : (
+            <span>Check-in setiap hari & klaim poin keberuntungan kamu!</span>
+          )}
+        </p>
+      </div>
+
+      {/* Bottom Full-Width Action Button */}
+      <button
+        onClick={handleClaim}
+        disabled={hasClaimed || isAnimating || isLoadingStatus}
+        className={cn(
+          "w-full py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 flex items-center justify-center gap-2 select-none shadow-md",
+          hasClaimed 
+            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/35 cursor-not-allowed" 
+            : "bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-[0_4px_15px_rgba(249,115,22,0.4)] active:scale-95 cursor-pointer uppercase"
+        )}
+      >
+        {isAnimating ? (
+          <><Loader2 className="w-4 h-4 animate-spin" /> Membuka Hadiah...</>
+        ) : isLoadingStatus ? (
+          <><Loader2 className="w-4 h-4 animate-spin" /> Memuat Status...</>
+        ) : hasClaimed ? (
+          <><Check className="w-4 h-4 stroke-[2.5]" /> Sudah Diklaim Hari Ini</>
+        ) : (
+          <><Gift className="w-4 h-4" /> KLAIM HADIAH HARIAN</>
+        )}
+      </button>
+    </div>
   );
 }

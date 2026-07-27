@@ -73,3 +73,14 @@ export function getStatusLabel(status: string): string {
   };
   return labels[status] || status;
 }
+
+export function formatPaymentMethod(method: string): string {
+  if (!method) return '-';
+  const m = method.toUpperCase();
+  if (m === 'TRANSFER_MANUAL') return 'Transfer Bank Manual';
+  if (m === 'QRIS') return 'QRIS';
+  if (m === 'E-WALLET' || m === 'EWALLET') return 'E-Wallet';
+  if (m === 'BANK_TRANSFER' || m === 'VA') return 'Virtual Account';
+  if (m === 'MINIMARKET') return 'Minimarket';
+  return method.replace(/_/g, ' ');
+}

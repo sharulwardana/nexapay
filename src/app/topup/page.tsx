@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { digitalProducts } from '@/data/products';
 import TopUpClient from './TopUpClient';
 import Navbar from '@/components/layout/Navbar';
 
@@ -8,8 +9,11 @@ export const metadata = {
 };
 
 export default async function TopUpPage() {
-  const games = await prisma.product.findMany({
-    where: { isActive: true },
+  const gamesFromDb = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      category: 'GAME_TOPUP',
+    },
     include: {
       denominations: {
         where: { isActive: true },
@@ -21,6 +25,13 @@ export default async function TopUpPage() {
       { name: 'asc' }
     ]
   });
+
+  const validGameProducts = digitalProducts.filter((p) => p.category === 'GAME_TOPUP');
+  const validSlugs = new Set(validGameProducts.map((p) => p.slug));
+  const filteredDbGames = gamesFromDb.filter((p) => validSlugs.has(p.slug));
+  const dbSlugs = new Set(filteredDbGames.map((g) => g.slug));
+  const missingFromDb = validGameProducts.filter((p) => !dbSlugs.has(p.slug));
+  const games = [...filteredDbGames, ...missingFromDb];
 
   return (
     <>

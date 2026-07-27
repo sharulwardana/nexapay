@@ -103,7 +103,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
 
   return (
     <>
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-24 tablet:pt-32 pb-24">
         <div className="container-app max-w-5xl">
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">

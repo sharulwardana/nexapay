@@ -149,8 +149,8 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      // Calculate loyalty points earned (1 point per Rp 100)
-      const pointsEarned = Math.floor(totalAmount / 100);
+      // Calculate loyalty points earned (1 point per Rp 1.000)
+      const pointsEarned = Math.floor(totalAmount / 1000);
 
       // Wallet payments are completed immediately (balance already deducted above).
       // All other methods (QRIS, bank transfer, etc.) start as PENDING
@@ -167,6 +167,8 @@ export async function POST(req: NextRequest) {
         data: {
           userId: targetUserId,
           productId,
+          productName: denomination.product.name,
+          category: denomination.product.category,
           denominationId,
           paymentMethod,
           gameUserId,

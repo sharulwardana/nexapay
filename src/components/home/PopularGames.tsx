@@ -2,10 +2,10 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
-import { Flame, ArrowRight, Star } from 'lucide-react';
+import { Flame, ArrowRight } from 'lucide-react';
 import type { ProductWithDenominations } from '@/types';
+import CyberGameCard from '@/components/shared/CyberGameCard';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -19,7 +19,7 @@ export default function PopularGames({ games }: { games: ProductWithDenomination
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
-  const popularGames = games.filter((g) => g.isPopular).slice(0, 8);
+  const popularGames = games.filter((g) => g.category === 'GAME_TOPUP' && g.isPopular).slice(0, 8);
 
   return (
     <section ref={ref} className="section-padding">
@@ -48,7 +48,7 @@ export default function PopularGames({ games }: { games: ProductWithDenomination
         </motion.div>
 
         {/* Games Grid */}
-        <div className="grid grid-cols-3 tablet:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 tablet:gap-4">
+        <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 tablet:gap-6">
           {popularGames.map((game, index) => {
             return (
               <motion.div
@@ -57,41 +57,9 @@ export default function PopularGames({ games }: { games: ProductWithDenomination
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
                 variants={itemVariants}
+                className="h-full"
               >
-                <Link
-                  href={`/topup/${game.slug}`}
-                  className="group flex flex-col bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-200"
-                >
-                  {/* Image */}
-                  <div className="relative w-full aspect-square bg-muted/30 overflow-hidden">
-                    <Image
-                      src={game.image}
-                      alt={game.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
-                    {game.isPopular && (
-                      <div className="absolute top-2 left-2 z-10">
-                        <div className="flex items-center gap-1 bg-orange-500/90 text-white px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shadow-lg">
-                          <Star className="w-2.5 h-2.5 fill-current" />
-                          <span>Hot</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-3 tablet:p-4 text-center">
-                    <h3 className="font-bold text-sm tablet:text-base text-foreground line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
-                      {game.name}
-                    </h3>
-                    <p className="text-[10px] tablet:text-xs text-muted-foreground line-clamp-1">
-                      {game.publisher}
-                    </p>
-                  </div>
-                </Link>
+                <CyberGameCard game={game} index={index} priorityImage={index < 4} />
               </motion.div>
             );
           })}

@@ -47,7 +47,7 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
         <div className="container-app max-w-3xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
             <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
@@ -73,12 +73,20 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
               </div>
             </div>
 
-            <div className="flex flex-col xs:flex-row items-center justify-center gap-3">
-              <button onClick={copyCode} disabled={!code} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold hover:shadow-lg transition-all disabled:opacity-50">
-                <Copy className="w-4 h-4" /> Salin Kode
+            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto w-full">
+              <button
+                onClick={copyCode}
+                disabled={!code}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-primary text-white text-xs tablet:text-sm font-bold shadow-[0_4px_15px_rgba(249,115,22,0.35)] hover:shadow-[0_6px_25px_rgba(249,115,22,0.6)] active:scale-95 transition-all disabled:opacity-50 whitespace-nowrap"
+              >
+                <Copy className="w-4 h-4 shrink-0" /> Salin Kode
               </button>
-              <button onClick={shareLink} disabled={!code} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border font-semibold hover:bg-muted/50 transition-all disabled:opacity-50">
-                <Share2 className="w-4 h-4" /> Bagikan Link
+              <button
+                onClick={shareLink}
+                disabled={!code}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card/60 text-xs tablet:text-sm font-bold hover:bg-muted/70 hover:border-primary/40 hover:shadow-[0_4px_15px_rgba(255,115,0,0.15)] active:scale-95 transition-all disabled:opacity-50 whitespace-nowrap"
+              >
+                <Share2 className="w-4 h-4 shrink-0 text-primary" /> Bagikan Link
               </button>
             </div>
           </motion.div>

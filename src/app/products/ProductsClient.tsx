@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, ShoppingBag, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi } from 'lucide-react';
@@ -24,8 +25,16 @@ type ProductWithDenoms = {
 };
 
 export default function ProductsClient({ products }: { products: ProductWithDenoms[] }) {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get('category');
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('ALL');
+  const [activeCategory, setActiveCategory] = useState(categoryParam || 'ALL');
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    }
+  }, [categoryParam]);
 
   const filteredProducts = useMemo(() => {
     let result = products;
@@ -45,7 +54,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
 
   return (
     <>
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-24 tablet:pt-28 pb-24">
         <div className="container-app">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 tablet:mb-8">
             <h1 className="heading-2 mb-2">
@@ -64,7 +73,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
                 placeholder="Cari produk digital..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-muted/50 border border-border text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-muted/40 border border-border text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:bg-muted/70 shadow-sm transition-all duration-200"
               />
             </div>
 

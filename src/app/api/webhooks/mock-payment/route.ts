@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       // 2. Award loyalty points if it's a registered user
       // Guest users have ID 'guest-user', or we can check if it's not a guest
       if (transaction.userId !== 'guest-user') {
-        const pointsEarned = Math.floor(transaction.totalAmount / 100);
+        const pointsEarned = Math.floor(transaction.totalAmount / 1000);
         await tx.user.update({
           where: { id: transaction.userId },
           data: {

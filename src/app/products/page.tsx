@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import prisma from '@/lib/prisma';
 import ProductsClient from './ProductsClient';
 import Navbar from '@/components/layout/Navbar';
@@ -28,7 +29,9 @@ export default async function ProductsPage() {
   return (
     <>
       <Navbar />
-      <ProductsClient products={products} />
+      <Suspense fallback={<div className="min-h-screen pt-28 text-center text-sm text-muted-foreground">Memuat katalog...</div>}>
+        <ProductsClient products={products} />
+      </Suspense>
     </>
   );
 }

@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Gift, X, Loader2, Coins } from 'lucide-react';
+import { Gift, X, Loader2, Coins, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSession } from 'next-auth/react';
-import { formatCurrency } from '@/lib/utils';
+import confetti from 'canvas-confetti';
 
 export default function ScratchAndWin() {
   const { data: session } = useSession();
@@ -36,29 +36,38 @@ export default function ScratchAndWin() {
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // When opened, try to fetch the prize if not already played
+  // When opened, check status first
   useEffect(() => {
-    if (isOpen && !isScratched && !isFetching && pointsWon === null && session) {
+    if (isOpen && session && pointsWon === null && !hasPlayedToday) {
       setIsFetching(true);
-      fetch('/api/user/scratch', { method: 'POST' })
-        .then(async (res) => {
-          const data = await res.json();
-          if (res.ok) {
-            setPointsWon(data.pointsWon);
-          } else {
-            // Already played or error
+      fetch('/api/user/scratch')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.hasScratched) {
             setHasPlayedToday(true);
-            toast.error(data.message || 'Gagal mengambil data');
+            setIsFetching(false);
+          } else {
+            // Not scratched yet, generate reward
+            fetch('/api/user/scratch', { method: 'POST' })
+              .then(async (res) => {
+                const postData = await res.json();
+                if (res.ok) {
+                  setPointsWon(postData.pointsWon);
+                } else {
+                  setHasPlayedToday(true);
+                }
+              })
+              .catch(() => {
+                toast.error('Terjadi kesalahan jaringan');
+              })
+              .finally(() => {
+                setIsFetching(false);
+              });
           }
         })
-        .catch(() => {
-          toast.error('Terjadi kesalahan jaringan');
-        })
-        .finally(() => {
-          setIsFetching(false);
-        });
+        .catch(() => setIsFetching(false));
     }
-  }, [isOpen, session, isScratched, pointsWon, isFetching]);
+  }, [isOpen, session, pointsWon, hasPlayedToday]);
 
   useEffect(() => {
     if (!isOpen || isScratched || hasPlayedToday || isFetching || pointsWon === null) return;
@@ -87,7 +96,7 @@ export default function ScratchAndWin() {
     ctx.font = 'bold 20px Inter, sans-serif';
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.textAlign = 'center';
-    ctx.fillText('GOSOK DI SINI', canvas.width / 2, canvas.height / 2 + 7);
+    ctx.fillText('GOSOK DI SINI 🪙', canvas.width / 2, canvas.height / 2 + 7);
 
     let isDrawing = false;
     let scratchedArea = 0;
@@ -113,16 +122,20 @@ export default function ScratchAndWin() {
       ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
       ctx.fill();
 
-      // Simple calculation of scratched area based on movement
       scratchedArea += Math.PI * 25 * 25;
       
       // If scratched enough (~40%), auto-reveal
       if (scratchedArea > totalArea * 0.4 && !isScratched) {
         setIsScratched(true);
         canvas.style.opacity = '0';
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
         setTimeout(() => {
-          toast.success(`Selamat! Kamu mendapatkan ${pointsWon} Points!`);
-        }, 500);
+          toast.success(`Selamat! Kamu mendapatkan +${pointsWon} Loyalty Points!`);
+        }, 300);
       }
     };
 
@@ -165,9 +178,8 @@ export default function ScratchAndWin() {
         whileTap={{ scale: 0.9 }}
         onClick={() => {
           setIsOpen(true);
-          if (hasPlayedToday) setIsScratched(true);
         }}
-        className="flex fixed bottom-[156px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
+        className="flex fixed bottom-[144px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
       >
         <Gift className="w-5 h-5 tablet:w-6 tablet:h-6 text-white" />
       </motion.button>
@@ -212,9 +224,10 @@ export default function ScratchAndWin() {
                     <span className="text-xs text-muted-foreground">Menyiapkan kartu...</span>
                   </div>
                 ) : hasPlayedToday ? (
-                  <div className="text-center p-4">
-                    <h3 className="font-bold text-muted-foreground mb-1">Yah, Sudah Habis</h3>
-                    <p className="text-xs text-muted-foreground">Kamu sudah menggosok kartu hari ini. Kembali lagi besok!</p>
+                  <div className="text-center p-4 flex flex-col items-center justify-center">
+                    <CheckCircle2 className="w-10 h-10 text-emerald-400 mb-2" />
+                    <h3 className="font-bold text-foreground text-sm mb-1">Sudah Gosok Hari Ini!</h3>
+                    <p className="text-xs text-muted-foreground">Kamu sudah mengambil kesempatan gosok kartu harian. Kembali lagi besok jam 00:00 WIB!</p>
                   </div>
                 ) : (
                   <>

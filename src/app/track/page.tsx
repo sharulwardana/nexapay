@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { Search, Receipt, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import RealTimeTransactions from '@/components/shared/RealTimeTransactions';
 import { toast } from 'sonner';
 
 export default function TrackPage() {
@@ -80,6 +81,9 @@ export default function TrackPage() {
               </div>
             </div>
           </div>
+
+          {/* Real-Time Incoming Transactions Feed */}
+          <RealTimeTransactions />
         </div>
       </main>
       <Footer />

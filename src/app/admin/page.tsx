@@ -15,30 +15,28 @@ export default async function AdminPage() {
     redirect('/');
   }
 
-  // Aggregate stats
-  const totalUsers = await prisma.user.count();
-  
-  // New users today
+  // Run all database queries in parallel for maximum speed
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const newUsersToday = await prisma.user.count({
-    where: {
-      createdAt: {
-        gte: today,
-      }
-    }
-  });
 
-  const totalTransactions = await prisma.transaction.count();
-  
-  const revenueResult = await prisma.transaction.aggregate({
-    where: {
-      status: 'COMPLETED'
-    },
-    _sum: {
-      totalAmount: true
-    }
-  });
+  const [totalUsers, newUsersToday, totalTransactions, revenueResult, recentTransactions] = await Promise.all([
+    prisma.user.count(),
+    prisma.user.count({ where: { createdAt: { gte: today } } }),
+    prisma.transaction.count(),
+    prisma.transaction.aggregate({
+      where: { status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] } },
+      _sum: { totalAmount: true },
+    }),
+    prisma.transaction.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      include: {
+        user: { select: { email: true } },
+        product: { select: { name: true } },
+        denomination: { select: { label: true } },
+      },
+    }),
+  ]);
 
   const stats = {
     totalUsers,
@@ -47,22 +45,6 @@ export default async function AdminPage() {
     totalRevenue: revenueResult._sum.totalAmount || 0,
   };
 
-  const recentTransactions = await prisma.transaction.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 10,
-    include: {
-      user: {
-        select: { email: true }
-      },
-      product: {
-        select: { name: true }
-      },
-      denomination: {
-        select: { label: true }
-      }
-    }
-  });
-
   // Sales Data (Last 7 Days)
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
@@ -70,10 +52,13 @@ export default async function AdminPage() {
 
   const recentTxsForChart = await prisma.transaction.findMany({
     where: {
-      status: 'COMPLETED',
-      createdAt: { gte: sevenDaysAgo }
+      status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] },
+      OR: [
+        { createdAt: { gte: sevenDaysAgo } },
+        { updatedAt: { gte: sevenDaysAgo } }
+      ]
     },
-    select: { totalAmount: true, createdAt: true }
+    select: { totalAmount: true, createdAt: true, updatedAt: true, paidAt: true }
   });
 
   const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
@@ -85,7 +70,8 @@ export default async function AdminPage() {
   }
 
   for (const tx of recentTxsForChart) {
-    const dString = new Date(tx.createdAt).toDateString();
+    const txDate = tx.paidAt || tx.updatedAt || tx.createdAt;
+    const dString = new Date(txDate).toDateString();
     if (salesMap.has(dString)) {
       salesMap.get(dString).value += tx.totalAmount;
     }
@@ -93,10 +79,13 @@ export default async function AdminPage() {
 
   const salesData = Array.from(salesMap.values());
 
-  // Top Products
+  // Top Products (Game & Digital Products Only)
   const topProductsRaw = await prisma.transaction.groupBy({
     by: ['productId'],
-    where: { status: 'COMPLETED' },
+    where: {
+      status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] },
+      productId: { not: null }
+    },
     _sum: { totalAmount: true },
     _count: { id: true },
     orderBy: {
@@ -106,7 +95,7 @@ export default async function AdminPage() {
   });
 
   // Fetch product names
-  const productIds = topProductsRaw.map(p => p.productId);
+  const productIds = topProductsRaw.map(p => p.productId).filter((id): id is string => Boolean(id));
   const productsData = await prisma.product.findMany({
     where: { id: { in: productIds } },
     select: { id: true, name: true }
@@ -114,7 +103,7 @@ export default async function AdminPage() {
   const productMap = new Map(productsData.map(p => [p.id, p.name]));
 
   const topProducts = topProductsRaw.map((p) => ({
-    name: productMap.get(p.productId) || 'Unknown Product',
+    name: p.productId ? (productMap.get(p.productId) || 'Produk Digital') : 'Isi Saldo Wallet NexaPay',
     revenue: p._sum.totalAmount || 0,
     count: p._count.id,
     growth: Math.floor(Math.random() * 30) + 1 // Dummy growth percentage for visual aesthetic

@@ -48,19 +48,38 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Process check-in (give 10 loyalty points)
+      // Generate random gacha reward (5 - 50 points)
+      const possiblePoints = [5, 10, 15, 25, 50];
+      const weights = [30, 40, 15, 10, 5]; // percentage chances
+      
+      const rand = Math.random() * 100;
+      let cumulative = 0;
+      let earnedPoints = 10;
+      for (let i = 0; i < possiblePoints.length; i++) {
+        cumulative += weights[i];
+        if (rand <= cumulative) {
+          earnedPoints = possiblePoints[i];
+          break;
+        }
+      }
+
+      // Process check-in with earnedPoints
       await tx.user.update({
         where: { id: session.user.id },
         data: {
           lastCheckIn: new Date(),
-          loyaltyPoints: { increment: 10 }
+          loyaltyPoints: { increment: earnedPoints }
         }
       });
 
-      return { success: true };
+      return { success: true, points: earnedPoints };
     });
 
-    return NextResponse.json({ success: true, message: 'Check-in berhasil, dapat 10 Points!' });
+    return NextResponse.json({ 
+      success: true, 
+      points: result.points,
+      message: `Selamat! Anda berhasil mengklaim ${result.points} NexaPoints!` 
+    });
   } catch (error: any) {
     if (error.message === 'USER_NOT_FOUND') {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -70,5 +89,35 @@ export async function POST(req: NextRequest) {
     }
     console.error('Checkin error:', error);
     return NextResponse.json({ error: 'Terjadi kesalahan pada server.' }, { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ hasClaimed: false });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { lastCheckIn: true }
+    });
+
+    if (!user || !user.lastCheckIn) {
+      return NextResponse.json({ hasClaimed: false });
+    }
+
+    const lastCheckInDate = new Date(user.lastCheckIn);
+    const today = new Date();
+    const hasClaimed = (
+      lastCheckInDate.getDate() === today.getDate() &&
+      lastCheckInDate.getMonth() === today.getMonth() &&
+      lastCheckInDate.getFullYear() === today.getFullYear()
+    );
+
+    return NextResponse.json({ hasClaimed });
+  } catch (error) {
+    return NextResponse.json({ hasClaimed: false });
   }
 }

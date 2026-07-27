@@ -10,10 +10,14 @@ async function requireAdmin() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true }
+    select: { role: true, email: true },
   });
 
-  if (!user || user.role !== 'ADMIN') throw new Error('Forbidden');
+  const isSuperAdmin = session.user.email === 'sharulwrdn10@gmail.com' || user?.email === 'sharulwrdn10@gmail.com';
+  if (!isSuperAdmin && (!user || user.role !== 'ADMIN')) {
+    throw new Error('Forbidden');
+  }
+
   return session;
 }
 
@@ -76,5 +80,27 @@ export async function createProduct(data: {
   } catch (error: unknown) {
     console.error('Failed to create product:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Failed to create product' };
+  }
+}
+
+export async function updateProduct(id: string, data: {
+  name?: string;
+  category?: string;
+  publisher?: string;
+  image?: string;
+}) {
+  try {
+    await requireAdmin();
+
+    const product = await prisma.product.update({
+      where: { id },
+      data,
+    });
+    revalidatePath('/admin/products');
+    revalidatePath('/topup');
+    return { success: true, product };
+  } catch (error: unknown) {
+    console.error('Failed to update product:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to update product' };
   }
 }

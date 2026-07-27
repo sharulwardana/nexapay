@@ -32,8 +32,8 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
       <Navbar />
       <PaymentStatusClient
         txId={txId}
-        productName={transaction.product.name}
-        denomLabel={transaction.denomination.label}
+        productName={transaction.product?.name || transaction.productName || 'Produk NexaPay'}
+        denomLabel={transaction.denomination?.label || 'Paket Top Up'}
         totalAmount={transaction.totalAmount}
         paymentMethod={transaction.paymentMethod}
         gameUserId={transaction.gameUserId || '-'}

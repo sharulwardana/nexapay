@@ -23,7 +23,15 @@ const quickActions = [
   { label: 'Settings', href: '/dashboard/settings', icon: Settings, color: 'from-gray-500 to-gray-600' },
 ];
 
-export default function DashboardClient({ dbUser, recentTransactions }: { dbUser: any, recentTransactions: any[] }) {
+export default function DashboardClient({ 
+  dbUser, 
+  recentTransactions,
+  initialHasClaimed = false 
+}: { 
+  dbUser: any; 
+  recentTransactions: any[];
+  initialHasClaimed?: boolean;
+}) {
   // Calculate dynamic loyalty tier based on dbUser.loyaltyPoints
   let loyaltyLevelKey: keyof typeof LOYALTY_LEVELS = 'BRONZE';
   const points = dbUser.loyaltyPoints || 0;
@@ -45,7 +53,7 @@ export default function DashboardClient({ dbUser, recentTransactions }: { dbUser
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
         <div className="container-app max-w-5xl">
           {/* Top Section Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
@@ -119,7 +127,7 @@ export default function DashboardClient({ dbUser, recentTransactions }: { dbUser
               className="lg:col-span-1"
             >
               <SpotlightCard className="h-full p-5 tablet:p-6 bg-card border-border flex flex-col justify-center" spotlightColor="rgba(255, 255, 255, 0.05)">
-                <DailyCheckIn />
+                <DailyCheckIn initialHasClaimed={initialHasClaimed} />
               </SpotlightCard>
             </motion.div>
           </div>
@@ -175,9 +183,13 @@ export default function DashboardClient({ dbUser, recentTransactions }: { dbUser
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Kode Referral Kamu</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold font-mono gradient-text">NEXA-{dbUser.id.substring(0, 6).toUpperCase()}</span>
+                  <span className="text-lg font-bold font-mono gradient-text">{dbUser.referralCode || 'NXP-OFFICIAL'}</span>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`NEXA-${dbUser.id.substring(0, 6).toUpperCase()}`)}
+                    onClick={() => {
+                      if (dbUser.referralCode) {
+                        navigator.clipboard.writeText(dbUser.referralCode);
+                      }
+                    }}
                     className="p-1.5 rounded-lg hover:bg-muted/50 transition-all"
                   >
                     <Copy className="w-4 h-4 text-muted-foreground" />

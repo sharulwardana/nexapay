@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, ChevronDown, MessageCircle, Mail, Phone, MapPin,
   HelpCircle, ShieldCheck, Clock, CreditCard, Gamepad2, Zap,
@@ -53,7 +53,7 @@ export default function HelpPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
         <div className="container-app max-w-4xl">
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8 tablet:mb-12">
@@ -67,7 +67,7 @@ export default function HelpPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Cari pertanyaan..."
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-muted/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-muted/40 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-amber-500/70 focus:bg-muted/70 shadow-sm transition-all duration-200"
               />
             </div>
           </motion.div>
@@ -126,15 +126,21 @@ export default function HelpPage() {
                             <span className="text-sm font-medium">{faq.q}</span>
                             <ChevronDown className={cn('w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform mt-0.5', isOpen && 'rotate-180')} />
                           </div>
-                          {isOpen && (
-                            <motion.p
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              className="text-sm text-muted-foreground mt-2 leading-relaxed"
-                            >
-                              {faq.a}
-                            </motion.p>
-                          )}
+                          <AnimatePresence initial={false}>
+                            {isOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                className="overflow-hidden"
+                              >
+                                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                                  {faq.a}
+                                </p>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </button>
                       );
                     })}

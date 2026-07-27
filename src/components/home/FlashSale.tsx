@@ -81,7 +81,10 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
   );
 
   if (flashSaleItems.length === 0) return null;
-  const endDate = flashSaleItems[0]?.flashSaleEnd || '2026-06-01T23:59:59Z';
+  const rawEnd = flashSaleItems[0]?.flashSaleEnd;
+  const endDate = rawEnd && new Date(rawEnd).getTime() > Date.now()
+    ? rawEnd
+    : new Date(Date.now() + 12 * 60 * 60 * 1000);
 
   return (
     <section ref={ref} className="section-padding">
@@ -155,9 +158,11 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
                       <span className="text-[11px] text-muted-foreground line-through">
                         {formatCurrency(item.price)}
                       </span>
-                      <span className="px-1.5 py-0.5 rounded-md bg-red-500/10 text-red-500 text-[10px] font-bold">
-                        -{Math.round(((item.price - item.flashSalePrice!) / item.price) * 100)}%
-                      </span>
+                      {Math.round(((item.price - item.flashSalePrice!) / item.price) * 100) > 0 && (
+                        <span className="px-1.5 py-0.5 rounded-md bg-red-500/10 text-red-500 text-[10px] font-bold">
+                          -{Math.round(((item.price - item.flashSalePrice!) / item.price) * 100)}%
+                        </span>
+                      )}
                     </div>
                   </div>
 

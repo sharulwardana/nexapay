@@ -8,6 +8,7 @@ import { ArrowRight, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi }
 import { cn, formatCurrency } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/constants';
 import type { ProductWithDenominations } from '@/types';
+import CyberGameCard from '@/components/shared/CyberGameCard';
 
 const iconMap: Record<string, React.ElementType> = {
   Gamepad2, Ticket, Smartphone, Wifi, Zap, Gift, Tv, Wallet,
@@ -45,11 +46,11 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
             <h2 className="heading-3">Produk Trending</h2>
           </div>
           <Link
-            href="/products"
-            className="hidden tablet:flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            href={activeCategory === 'GAME_TOPUP' ? '/topup' : activeCategory === 'ALL' ? '/topup' : `/products?category=${activeCategory}`}
+            className="hidden tablet:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 hover:border-primary/50 text-xs font-bold text-primary transition-all duration-200 group shadow-sm"
           >
-            Semua Produk
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>{activeCategory === 'GAME_TOPUP' || activeCategory === 'ALL' ? 'Lihat Semua Game' : 'Lihat Produk Digital'}</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
 
@@ -92,7 +93,7 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
         </motion.div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 tablet:gap-6">
           {filteredProducts.map((product, index) => {
             return (
               <motion.div
@@ -101,38 +102,9 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
                 variants={itemVariant}
+                className="h-full"
               >
-                <Link
-                  href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
-                  className="group flex flex-col bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-200"
-                >
-                  {/* Image */}
-                  <div className="relative w-full aspect-square bg-muted/30 overflow-hidden">
-                    {product.image ? (
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 flex flex-col items-center justify-center gap-2">
-                        <Wallet className="w-10 h-10 text-primary/40" />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-3 tablet:p-4 text-center">
-                    <h3 className="font-bold text-sm tablet:text-base text-foreground line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-[10px] tablet:text-xs text-muted-foreground line-clamp-1">
-                      {product.publisher || product.category}
-                    </p>
-                  </div>
-                </Link>
+                <CyberGameCard game={product} index={index} />
               </motion.div>
             );
           })}
@@ -146,9 +118,15 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
         )}
 
         {/* Mobile CTA */}
-        <div className="flex justify-center mt-8 tablet:hidden">
-          <Link href="/products" className="btn-secondary px-6 py-2.5 text-sm">
-            Semua Produk
+        <div className="flex justify-center items-center gap-3 mt-8 tablet:hidden flex-wrap">
+          <Link href="/topup" className="btn-secondary px-4 py-2.5 text-xs font-bold flex items-center gap-1.5">
+            <Gamepad2 className="w-3.5 h-3.5 text-primary" />
+            <span>Katalog Game</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link href="/products" className="btn-secondary px-4 py-2.5 text-xs font-bold flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-orange-400" />
+            <span>Produk Digital</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

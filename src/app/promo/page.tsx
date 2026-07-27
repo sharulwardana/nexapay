@@ -18,7 +18,7 @@ export default function PromoPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
         <div className="container-app">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="heading-2 mb-2">🔥 Promo & Diskon</h1>

@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
 import { PrismaClient } from './generated/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { digitalProducts } from '../src/data/products';
@@ -8,6 +12,12 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('Start seeding database...');
 
+
+  // Set owner account as ADMIN in database
+  await prisma.user.updateMany({
+    where: { email: 'sharulwrdn10@gmail.com' },
+    data: { role: 'ADMIN' },
+  });
 
   for (const prod of digitalProducts) {
     const product = await prisma.product.upsert({
@@ -42,7 +52,18 @@ async function main() {
     for (const denom of prod.denominations) {
       await prisma.denomination.upsert({
         where: { id: denom.id },
-        update: {},
+        update: {
+          label: denom.label,
+          value: denom.value,
+          price: denom.price,
+          originalPrice: denom.originalPrice,
+          discount: denom.discount,
+          stock: denom.stock,
+          isActive: denom.isActive,
+          isPopular: denom.isPopular,
+          isFlashSale: denom.isFlashSale,
+          flashSalePrice: denom.flashSalePrice,
+        },
         create: {
           id: denom.id,
           productId: product.id,

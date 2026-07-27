@@ -8,12 +8,40 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 500,
 });
 
+export async function GET(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ hasScratched: false }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { lastScratch: true }
+    });
+
+    if (!user || !user.lastScratch) {
+      return NextResponse.json({ hasScratched: false });
+    }
+
+    const today = new Date();
+    const lastDate = new Date(user.lastScratch);
+
+    const hasScratched = 
+      today.getDate() === lastDate.getDate() &&
+      today.getMonth() === lastDate.getMonth() &&
+      today.getFullYear() === lastDate.getFullYear();
+
+    return NextResponse.json({ hasScratched });
+  } catch (error) {
+    return NextResponse.json({ hasScratched: false });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
 
-    // FIXED: Use session.user.id instead of session.user.email for consistency
-    // with all other API endpoints. email can be null for some OAuth providers.
     if (!session?.user?.id) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
@@ -25,9 +53,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Terlalu banyak permintaan' }, { status: 429 });
     }
 
-    // Use $transaction for atomic check-and-update to prevent race conditions.
-    // Without this, two concurrent requests could both pass the "already scratched"
-    // check and award double points.
+    // Use $transaction for atomic check-and-update
     const result = await prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({
         where: { id: session.user.id },
@@ -51,8 +77,23 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Generate random points between 50 and 500
-      const pointsWon = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
+      // Tiered Weighted Random Probability Algorithm (Fair Economy)
+      // 70% Common (5 - 25 points)
+      // 25% Rare (30 - 75 points)
+      // 5% Jackpot (100 - 250 points)
+      const roll = Math.random() * 100;
+      let pointsWon = 10;
+
+      if (roll < 5) {
+        // 5% Jackpot
+        pointsWon = Math.floor(Math.random() * (250 - 100 + 1)) + 100;
+      } else if (roll < 30) {
+        // 25% Rare
+        pointsWon = Math.floor(Math.random() * (75 - 30 + 1)) + 30;
+      } else {
+        // 70% Common
+        pointsWon = Math.floor(Math.random() * (25 - 5 + 1)) + 5;
+      }
 
       // Update user atomically
       const updatedUser = await tx.user.update({

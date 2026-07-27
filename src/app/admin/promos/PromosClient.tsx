@@ -13,13 +13,13 @@ import { togglePromoStatus, createPromo, deletePromo } from '@/actions/promo';
 import { toast } from 'sonner';
 
 const sidebarItems = [
-  { label: 'Overview', href: '/admin', icon: LayoutDashboard },
-  { label: 'Products', href: '/admin/products', icon: Package },
-  { label: 'Transactions', href: '/admin/transactions', icon: Receipt },
-  { label: 'Customers', href: '/admin/users', icon: Users },
-  { label: 'Campaigns', href: '/admin/promos', icon: Megaphone },
-  { label: 'Banners', href: '/admin/banners', icon: ImageIcon },
-  { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  { label: 'Ringkasan', href: '/admin', icon: LayoutDashboard },
+  { label: 'Produk', href: '/admin/products', icon: Package },
+  { label: 'Transaksi', href: '/admin/transactions', icon: Receipt },
+  { label: 'Pelanggan', href: '/admin/users', icon: Users },
+  { label: 'Promo & Voucher', href: '/admin/promos', icon: Megaphone },
+  { label: 'Banner Hero', href: '/admin/banners', icon: ImageIcon },
+  { label: 'Analitik', href: '/admin/analytics', icon: BarChart3 },
 ];
 
 export default function PromosClient({ promos, adminUser }: { promos: any[]; adminUser: any }) {
@@ -143,16 +143,28 @@ export default function PromosClient({ promos, adminUser }: { promos: any[]; adm
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={false}
+                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
                 )}
               >
-                {isActive && <motion.div layoutId="sidebar-active" className="absolute inset-0 bg-white/10 rounded-xl" />}
-                {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-violet-400 rounded-r-full shadow-[0_0_10px_#a78bfa]" />}
-                <item.icon className={cn("w-4 h-4 relative z-10", isActive ? "text-violet-400" : "text-white/40 group-hover:text-white/70")} />
-                <span className="relative z-10">{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-pill"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 bg-gradient-to-r from-violet-600/25 via-fuchsia-600/15 to-transparent border border-violet-500/30 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.25)]"
+                  />
+                )}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-bar"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-violet-400 via-fuchsia-400 to-violet-500 rounded-r-full shadow-[0_0_12px_#c084fc]"
+                  />
+                )}
+                <item.icon className={cn("w-4 h-4 relative z-10 transition-colors duration-300", isActive ? "text-violet-300 drop-shadow-[0_0_8px_rgba(167,139,250,0.8)]" : "text-white/40 group-hover:text-white/70")} />
+                <span className={cn("relative z-10 transition-colors", isActive ? "text-white font-bold drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-white/50 group-hover:text-white")}>{item.label}</span>
               </Link>
             );
           })}
@@ -160,22 +172,30 @@ export default function PromosClient({ promos, adminUser }: { promos: any[]; adm
       </aside>
 
       <div className="flex-1 flex flex-col relative z-10 min-w-0">
-        <header className="sticky top-0 z-40 h-20 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center px-6 gap-4">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10">
-            <Menu className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl font-black font-heading">Kode Promo & Kampanye</h1>
-          <div className="ml-auto">
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white font-bold text-xs shadow-lg shadow-violet-500/25 hover:scale-105 active:scale-95 transition-all"
-            >
-              <Plus className="w-4 h-4" /> Buat Kode Promo
+        <header className="sticky top-0 z-40 h-16 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center justify-between px-4 sm:px-6 gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 flex-shrink-0">
+              <Menu className="w-5 h-5" />
             </button>
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold font-heading tracking-tight truncate">Promo & Voucher</h1>
+            </div>
           </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-xs shadow-lg shadow-violet-500/25 hover:scale-105 active:scale-95 transition-all flex-shrink-0 cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Buat Promo</span>
+          </button>
         </header>
 
-        <main className="flex-1 p-6 space-y-6 overflow-y-auto">
+        <motion.main
+          initial={{ opacity: 0, scale: 0.985 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-1 p-6 space-y-6 overflow-y-auto"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {promos.map((p, i) => (
               <motion.div
@@ -226,7 +246,7 @@ export default function PromosClient({ promos, adminUser }: { promos: any[]; adm
               </motion.div>
             ))}
           </div>
-        </main>
+        </motion.main>
       </div>
 
       {/* Modal Add Promo */}

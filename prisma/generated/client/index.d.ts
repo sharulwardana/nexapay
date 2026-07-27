@@ -9740,6 +9740,8 @@ export namespace Prisma {
     invoiceId: string | null
     userId: string | null
     productId: string | null
+    productName: string | null
+    category: string | null
     denominationId: string | null
     quantity: number | null
     amount: number | null
@@ -9752,6 +9754,7 @@ export namespace Prisma {
     phoneNumber: string | null
     accountNumber: string | null
     email: string | null
+    targetAccount: string | null
     promoCode: string | null
     notes: string | null
     paymentProof: string | null
@@ -9767,6 +9770,8 @@ export namespace Prisma {
     invoiceId: string | null
     userId: string | null
     productId: string | null
+    productName: string | null
+    category: string | null
     denominationId: string | null
     quantity: number | null
     amount: number | null
@@ -9779,6 +9784,7 @@ export namespace Prisma {
     phoneNumber: string | null
     accountNumber: string | null
     email: string | null
+    targetAccount: string | null
     promoCode: string | null
     notes: string | null
     paymentProof: string | null
@@ -9794,6 +9800,8 @@ export namespace Prisma {
     invoiceId: number
     userId: number
     productId: number
+    productName: number
+    category: number
     denominationId: number
     quantity: number
     amount: number
@@ -9806,6 +9814,7 @@ export namespace Prisma {
     phoneNumber: number
     accountNumber: number
     email: number
+    targetAccount: number
     promoCode: number
     notes: number
     paymentProof: number
@@ -9837,6 +9846,8 @@ export namespace Prisma {
     invoiceId?: true
     userId?: true
     productId?: true
+    productName?: true
+    category?: true
     denominationId?: true
     quantity?: true
     amount?: true
@@ -9849,6 +9860,7 @@ export namespace Prisma {
     phoneNumber?: true
     accountNumber?: true
     email?: true
+    targetAccount?: true
     promoCode?: true
     notes?: true
     paymentProof?: true
@@ -9864,6 +9876,8 @@ export namespace Prisma {
     invoiceId?: true
     userId?: true
     productId?: true
+    productName?: true
+    category?: true
     denominationId?: true
     quantity?: true
     amount?: true
@@ -9876,6 +9890,7 @@ export namespace Prisma {
     phoneNumber?: true
     accountNumber?: true
     email?: true
+    targetAccount?: true
     promoCode?: true
     notes?: true
     paymentProof?: true
@@ -9891,6 +9906,8 @@ export namespace Prisma {
     invoiceId?: true
     userId?: true
     productId?: true
+    productName?: true
+    category?: true
     denominationId?: true
     quantity?: true
     amount?: true
@@ -9903,6 +9920,7 @@ export namespace Prisma {
     phoneNumber?: true
     accountNumber?: true
     email?: true
+    targetAccount?: true
     promoCode?: true
     notes?: true
     paymentProof?: true
@@ -10004,8 +10022,10 @@ export namespace Prisma {
     id: string
     invoiceId: string
     userId: string
-    productId: string
-    denominationId: string
+    productId: string | null
+    productName: string
+    category: string
+    denominationId: string | null
     quantity: number
     amount: number
     discount: number
@@ -10017,6 +10037,7 @@ export namespace Prisma {
     phoneNumber: string | null
     accountNumber: string | null
     email: string | null
+    targetAccount: string | null
     promoCode: string | null
     notes: string | null
     paymentProof: string | null
@@ -10051,6 +10072,8 @@ export namespace Prisma {
     invoiceId?: boolean
     userId?: boolean
     productId?: boolean
+    productName?: boolean
+    category?: boolean
     denominationId?: boolean
     quantity?: boolean
     amount?: boolean
@@ -10063,6 +10086,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     accountNumber?: boolean
     email?: boolean
+    targetAccount?: boolean
     promoCode?: boolean
     notes?: boolean
     paymentProof?: boolean
@@ -10072,8 +10096,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10081,6 +10105,8 @@ export namespace Prisma {
     invoiceId?: boolean
     userId?: boolean
     productId?: boolean
+    productName?: boolean
+    category?: boolean
     denominationId?: boolean
     quantity?: boolean
     amount?: boolean
@@ -10093,6 +10119,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     accountNumber?: boolean
     email?: boolean
+    targetAccount?: boolean
     promoCode?: boolean
     notes?: boolean
     paymentProof?: boolean
@@ -10102,8 +10129,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10111,6 +10138,8 @@ export namespace Prisma {
     invoiceId?: boolean
     userId?: boolean
     productId?: boolean
+    productName?: boolean
+    category?: boolean
     denominationId?: boolean
     quantity?: boolean
     amount?: boolean
@@ -10123,6 +10152,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     accountNumber?: boolean
     email?: boolean
+    targetAccount?: boolean
     promoCode?: boolean
     notes?: boolean
     paymentProof?: boolean
@@ -10132,8 +10162,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectScalar = {
@@ -10141,6 +10171,8 @@ export namespace Prisma {
     invoiceId?: boolean
     userId?: boolean
     productId?: boolean
+    productName?: boolean
+    category?: boolean
     denominationId?: boolean
     quantity?: boolean
     amount?: boolean
@@ -10153,6 +10185,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     accountNumber?: boolean
     email?: boolean
+    targetAccount?: boolean
     promoCode?: boolean
     notes?: boolean
     paymentProof?: boolean
@@ -10163,36 +10196,38 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "userId" | "productId" | "denominationId" | "quantity" | "amount" | "discount" | "totalAmount" | "paymentMethod" | "status" | "gameUserId" | "gameServerId" | "phoneNumber" | "accountNumber" | "email" | "promoCode" | "notes" | "paymentProof" | "paidAt" | "completedAt" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "userId" | "productId" | "productName" | "category" | "denominationId" | "quantity" | "amount" | "discount" | "totalAmount" | "paymentMethod" | "status" | "gameUserId" | "gameServerId" | "phoneNumber" | "accountNumber" | "email" | "targetAccount" | "promoCode" | "notes" | "paymentProof" | "paidAt" | "completedAt" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }
   export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    denomination?: boolean | DenominationDefaultArgs<ExtArgs>
+    product?: boolean | Transaction$productArgs<ExtArgs>
+    denomination?: boolean | Transaction$denominationArgs<ExtArgs>
   }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      product: Prisma.$ProductPayload<ExtArgs>
-      denomination: Prisma.$DenominationPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs> | null
+      denomination: Prisma.$DenominationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       invoiceId: string
       userId: string
-      productId: string
-      denominationId: string
+      productId: string | null
+      productName: string
+      category: string
+      denominationId: string | null
       quantity: number
       amount: number
       discount: number
@@ -10204,6 +10239,7 @@ export namespace Prisma {
       phoneNumber: string | null
       accountNumber: string | null
       email: string | null
+      targetAccount: string | null
       promoCode: string | null
       notes: string | null
       paymentProof: string | null
@@ -10607,8 +10643,8 @@ export namespace Prisma {
   export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    denomination<T extends DenominationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DenominationDefaultArgs<ExtArgs>>): Prisma__DenominationClient<$Result.GetResult<Prisma.$DenominationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends Transaction$productArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    denomination<T extends Transaction$denominationArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$denominationArgs<ExtArgs>>): Prisma__DenominationClient<$Result.GetResult<Prisma.$DenominationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10642,6 +10678,8 @@ export namespace Prisma {
     readonly invoiceId: FieldRef<"Transaction", 'String'>
     readonly userId: FieldRef<"Transaction", 'String'>
     readonly productId: FieldRef<"Transaction", 'String'>
+    readonly productName: FieldRef<"Transaction", 'String'>
+    readonly category: FieldRef<"Transaction", 'String'>
     readonly denominationId: FieldRef<"Transaction", 'String'>
     readonly quantity: FieldRef<"Transaction", 'Int'>
     readonly amount: FieldRef<"Transaction", 'Int'>
@@ -10654,6 +10692,7 @@ export namespace Prisma {
     readonly phoneNumber: FieldRef<"Transaction", 'String'>
     readonly accountNumber: FieldRef<"Transaction", 'String'>
     readonly email: FieldRef<"Transaction", 'String'>
+    readonly targetAccount: FieldRef<"Transaction", 'String'>
     readonly promoCode: FieldRef<"Transaction", 'String'>
     readonly notes: FieldRef<"Transaction", 'String'>
     readonly paymentProof: FieldRef<"Transaction", 'String'>
@@ -11060,6 +11099,44 @@ export namespace Prisma {
      * Limit how many Transactions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Transaction.product
+   */
+  export type Transaction$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+  }
+
+  /**
+   * Transaction.denomination
+   */
+  export type Transaction$denominationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Denomination
+     */
+    select?: DenominationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Denomination
+     */
+    omit?: DenominationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DenominationInclude<ExtArgs> | null
+    where?: DenominationWhereInput
   }
 
   /**
@@ -21050,6 +21127,8 @@ export namespace Prisma {
     invoiceId: 'invoiceId',
     userId: 'userId',
     productId: 'productId',
+    productName: 'productName',
+    category: 'category',
     denominationId: 'denominationId',
     quantity: 'quantity',
     amount: 'amount',
@@ -21062,6 +21141,7 @@ export namespace Prisma {
     phoneNumber: 'phoneNumber',
     accountNumber: 'accountNumber',
     email: 'email',
+    targetAccount: 'targetAccount',
     promoCode: 'promoCode',
     notes: 'notes',
     paymentProof: 'paymentProof',
@@ -21850,8 +21930,10 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     invoiceId?: StringFilter<"Transaction"> | string
     userId?: StringFilter<"Transaction"> | string
-    productId?: StringFilter<"Transaction"> | string
-    denominationId?: StringFilter<"Transaction"> | string
+    productId?: StringNullableFilter<"Transaction"> | string | null
+    productName?: StringFilter<"Transaction"> | string
+    category?: StringFilter<"Transaction"> | string
+    denominationId?: StringNullableFilter<"Transaction"> | string | null
     quantity?: IntFilter<"Transaction"> | number
     amount?: IntFilter<"Transaction"> | number
     discount?: IntFilter<"Transaction"> | number
@@ -21863,6 +21945,7 @@ export namespace Prisma {
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
     accountNumber?: StringNullableFilter<"Transaction"> | string | null
     email?: StringNullableFilter<"Transaction"> | string | null
+    targetAccount?: StringNullableFilter<"Transaction"> | string | null
     promoCode?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
     paymentProof?: StringNullableFilter<"Transaction"> | string | null
@@ -21872,16 +21955,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    denomination?: XOR<DenominationScalarRelationFilter, DenominationWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    denomination?: XOR<DenominationNullableScalarRelationFilter, DenominationWhereInput> | null
   }
 
   export type TransactionOrderByWithRelationInput = {
     id?: SortOrder
     invoiceId?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
-    denominationId?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    productName?: SortOrder
+    category?: SortOrder
+    denominationId?: SortOrderInput | SortOrder
     quantity?: SortOrder
     amount?: SortOrder
     discount?: SortOrder
@@ -21893,6 +21978,7 @@ export namespace Prisma {
     phoneNumber?: SortOrderInput | SortOrder
     accountNumber?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    targetAccount?: SortOrderInput | SortOrder
     promoCode?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     paymentProof?: SortOrderInput | SortOrder
@@ -21913,8 +21999,10 @@ export namespace Prisma {
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     userId?: StringFilter<"Transaction"> | string
-    productId?: StringFilter<"Transaction"> | string
-    denominationId?: StringFilter<"Transaction"> | string
+    productId?: StringNullableFilter<"Transaction"> | string | null
+    productName?: StringFilter<"Transaction"> | string
+    category?: StringFilter<"Transaction"> | string
+    denominationId?: StringNullableFilter<"Transaction"> | string | null
     quantity?: IntFilter<"Transaction"> | number
     amount?: IntFilter<"Transaction"> | number
     discount?: IntFilter<"Transaction"> | number
@@ -21926,6 +22014,7 @@ export namespace Prisma {
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
     accountNumber?: StringNullableFilter<"Transaction"> | string | null
     email?: StringNullableFilter<"Transaction"> | string | null
+    targetAccount?: StringNullableFilter<"Transaction"> | string | null
     promoCode?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
     paymentProof?: StringNullableFilter<"Transaction"> | string | null
@@ -21935,16 +22024,18 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    denomination?: XOR<DenominationScalarRelationFilter, DenominationWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    denomination?: XOR<DenominationNullableScalarRelationFilter, DenominationWhereInput> | null
   }, "id" | "invoiceId">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
     invoiceId?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
-    denominationId?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    productName?: SortOrder
+    category?: SortOrder
+    denominationId?: SortOrderInput | SortOrder
     quantity?: SortOrder
     amount?: SortOrder
     discount?: SortOrder
@@ -21956,6 +22047,7 @@ export namespace Prisma {
     phoneNumber?: SortOrderInput | SortOrder
     accountNumber?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    targetAccount?: SortOrderInput | SortOrder
     promoCode?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     paymentProof?: SortOrderInput | SortOrder
@@ -21978,8 +22070,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Transaction"> | string
     invoiceId?: StringWithAggregatesFilter<"Transaction"> | string
     userId?: StringWithAggregatesFilter<"Transaction"> | string
-    productId?: StringWithAggregatesFilter<"Transaction"> | string
-    denominationId?: StringWithAggregatesFilter<"Transaction"> | string
+    productId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    productName?: StringWithAggregatesFilter<"Transaction"> | string
+    category?: StringWithAggregatesFilter<"Transaction"> | string
+    denominationId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     quantity?: IntWithAggregatesFilter<"Transaction"> | number
     amount?: IntWithAggregatesFilter<"Transaction"> | number
     discount?: IntWithAggregatesFilter<"Transaction"> | number
@@ -21991,6 +22085,7 @@ export namespace Prisma {
     phoneNumber?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     accountNumber?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     email?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    targetAccount?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     promoCode?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     notes?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     paymentProof?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -23275,6 +23370,8 @@ export namespace Prisma {
   export type TransactionCreateInput = {
     id?: string
     invoiceId?: string
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -23286,6 +23383,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -23295,16 +23393,18 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
-    product: ProductCreateNestedOneWithoutTransactionsInput
-    denomination: DenominationCreateNestedOneWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
+    denomination?: DenominationCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateInput = {
     id?: string
     invoiceId?: string
     userId: string
-    productId: string
-    denominationId: string
+    productId?: string | null
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -23316,6 +23416,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -23329,6 +23430,8 @@ export namespace Prisma {
   export type TransactionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -23340,6 +23443,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23349,16 +23453,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
-    product?: ProductUpdateOneRequiredWithoutTransactionsNestedInput
-    denomination?: DenominationUpdateOneRequiredWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
+    denomination?: DenominationUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -23370,6 +23476,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23384,8 +23491,10 @@ export namespace Prisma {
     id?: string
     invoiceId?: string
     userId: string
-    productId: string
-    denominationId: string
+    productId?: string | null
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -23397,6 +23506,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -23410,6 +23520,8 @@ export namespace Prisma {
   export type TransactionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -23421,6 +23533,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23435,8 +23548,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -23448,6 +23563,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24751,9 +24867,14 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
-  export type DenominationScalarRelationFilter = {
-    is?: DenominationWhereInput
-    isNot?: DenominationWhereInput
+  export type ProductNullableScalarRelationFilter = {
+    is?: ProductWhereInput | null
+    isNot?: ProductWhereInput | null
+  }
+
+  export type DenominationNullableScalarRelationFilter = {
+    is?: DenominationWhereInput | null
+    isNot?: DenominationWhereInput | null
   }
 
   export type TransactionCountOrderByAggregateInput = {
@@ -24761,6 +24882,8 @@ export namespace Prisma {
     invoiceId?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
+    productName?: SortOrder
+    category?: SortOrder
     denominationId?: SortOrder
     quantity?: SortOrder
     amount?: SortOrder
@@ -24773,6 +24896,7 @@ export namespace Prisma {
     phoneNumber?: SortOrder
     accountNumber?: SortOrder
     email?: SortOrder
+    targetAccount?: SortOrder
     promoCode?: SortOrder
     notes?: SortOrder
     paymentProof?: SortOrder
@@ -24795,6 +24919,8 @@ export namespace Prisma {
     invoiceId?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
+    productName?: SortOrder
+    category?: SortOrder
     denominationId?: SortOrder
     quantity?: SortOrder
     amount?: SortOrder
@@ -24807,6 +24933,7 @@ export namespace Prisma {
     phoneNumber?: SortOrder
     accountNumber?: SortOrder
     email?: SortOrder
+    targetAccount?: SortOrder
     promoCode?: SortOrder
     notes?: SortOrder
     paymentProof?: SortOrder
@@ -24822,6 +24949,8 @@ export namespace Prisma {
     invoiceId?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
+    productName?: SortOrder
+    category?: SortOrder
     denominationId?: SortOrder
     quantity?: SortOrder
     amount?: SortOrder
@@ -24834,6 +24963,7 @@ export namespace Prisma {
     phoneNumber?: SortOrder
     accountNumber?: SortOrder
     email?: SortOrder
+    targetAccount?: SortOrder
     promoCode?: SortOrder
     notes?: SortOrder
     paymentProof?: SortOrder
@@ -25848,18 +25978,22 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type ProductUpdateOneRequiredWithoutTransactionsNestedInput = {
+  export type ProductUpdateOneWithoutTransactionsNestedInput = {
     create?: XOR<ProductCreateWithoutTransactionsInput, ProductUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: ProductCreateOrConnectWithoutTransactionsInput
     upsert?: ProductUpsertWithoutTransactionsInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTransactionsInput, ProductUpdateWithoutTransactionsInput>, ProductUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type DenominationUpdateOneRequiredWithoutTransactionsNestedInput = {
+  export type DenominationUpdateOneWithoutTransactionsNestedInput = {
     create?: XOR<DenominationCreateWithoutTransactionsInput, DenominationUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: DenominationCreateOrConnectWithoutTransactionsInput
     upsert?: DenominationUpsertWithoutTransactionsInput
+    disconnect?: DenominationWhereInput | boolean
+    delete?: DenominationWhereInput | boolean
     connect?: DenominationWhereUniqueInput
     update?: XOR<XOR<DenominationUpdateToOneWithWhereWithoutTransactionsInput, DenominationUpdateWithoutTransactionsInput>, DenominationUncheckedUpdateWithoutTransactionsInput>
   }
@@ -26484,6 +26618,8 @@ export namespace Prisma {
   export type TransactionCreateWithoutUserInput = {
     id?: string
     invoiceId?: string
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -26495,6 +26631,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -26503,15 +26640,17 @@ export namespace Prisma {
     expiresAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    product: ProductCreateNestedOneWithoutTransactionsInput
-    denomination: DenominationCreateNestedOneWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
+    denomination?: DenominationCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutUserInput = {
     id?: string
     invoiceId?: string
-    productId: string
-    denominationId: string
+    productId?: string | null
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -26523,6 +26662,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -26784,8 +26924,10 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     invoiceId?: StringFilter<"Transaction"> | string
     userId?: StringFilter<"Transaction"> | string
-    productId?: StringFilter<"Transaction"> | string
-    denominationId?: StringFilter<"Transaction"> | string
+    productId?: StringNullableFilter<"Transaction"> | string | null
+    productName?: StringFilter<"Transaction"> | string
+    category?: StringFilter<"Transaction"> | string
+    denominationId?: StringNullableFilter<"Transaction"> | string | null
     quantity?: IntFilter<"Transaction"> | number
     amount?: IntFilter<"Transaction"> | number
     discount?: IntFilter<"Transaction"> | number
@@ -26797,6 +26939,7 @@ export namespace Prisma {
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
     accountNumber?: StringNullableFilter<"Transaction"> | string | null
     email?: StringNullableFilter<"Transaction"> | string | null
+    targetAccount?: StringNullableFilter<"Transaction"> | string | null
     promoCode?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
     paymentProof?: StringNullableFilter<"Transaction"> | string | null
@@ -27011,6 +27154,8 @@ export namespace Prisma {
   export type TransactionCreateWithoutProductInput = {
     id?: string
     invoiceId?: string
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -27022,6 +27167,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -27031,14 +27177,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
-    denomination: DenominationCreateNestedOneWithoutTransactionsInput
+    denomination?: DenominationCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutProductInput = {
     id?: string
     invoiceId?: string
     userId: string
-    denominationId: string
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -27050,6 +27198,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -27208,6 +27357,8 @@ export namespace Prisma {
   export type TransactionCreateWithoutDenominationInput = {
     id?: string
     invoiceId?: string
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -27219,6 +27370,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -27228,14 +27380,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
-    product: ProductCreateNestedOneWithoutTransactionsInput
+    product?: ProductCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutDenominationInput = {
     id?: string
     invoiceId?: string
     userId: string
-    productId: string
+    productId?: string | null
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -27247,6 +27401,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -28529,8 +28684,10 @@ export namespace Prisma {
   export type TransactionCreateManyUserInput = {
     id?: string
     invoiceId?: string
-    productId: string
-    denominationId: string
+    productId?: string | null
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -28542,6 +28699,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -28664,6 +28822,8 @@ export namespace Prisma {
   export type TransactionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -28675,6 +28835,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28683,15 +28844,17 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutTransactionsNestedInput
-    denomination?: DenominationUpdateOneRequiredWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
+    denomination?: DenominationUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -28703,6 +28866,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28716,8 +28880,10 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -28729,6 +28895,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28906,7 +29073,9 @@ export namespace Prisma {
     id?: string
     invoiceId?: string
     userId: string
-    denominationId: string
+    productName: string
+    category: string
+    denominationId?: string | null
     quantity?: number
     amount: number
     discount?: number
@@ -28918,6 +29087,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -28987,6 +29157,8 @@ export namespace Prisma {
   export type TransactionUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -28998,6 +29170,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29007,14 +29180,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
-    denomination?: DenominationUpdateOneRequiredWithoutTransactionsNestedInput
+    denomination?: DenominationUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -29026,6 +29201,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29040,7 +29216,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    denominationId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    denominationId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -29052,6 +29230,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29084,7 +29263,9 @@ export namespace Prisma {
     id?: string
     invoiceId?: string
     userId: string
-    productId: string
+    productId?: string | null
+    productName: string
+    category: string
     quantity?: number
     amount: number
     discount?: number
@@ -29096,6 +29277,7 @@ export namespace Prisma {
     phoneNumber?: string | null
     accountNumber?: string | null
     email?: string | null
+    targetAccount?: string | null
     promoCode?: string | null
     notes?: string | null
     paymentProof?: string | null
@@ -29109,6 +29291,8 @@ export namespace Prisma {
   export type TransactionUpdateWithoutDenominationInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -29120,6 +29304,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29129,14 +29314,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
-    product?: ProductUpdateOneRequiredWithoutTransactionsNestedInput
+    product?: ProductUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutDenominationInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -29148,6 +29335,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29162,7 +29350,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     invoiceId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
     discount?: IntFieldUpdateOperationsInput | number
@@ -29174,6 +29364,7 @@ export namespace Prisma {
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    targetAccount?: NullableStringFieldUpdateOperationsInput | string | null
     promoCode?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null

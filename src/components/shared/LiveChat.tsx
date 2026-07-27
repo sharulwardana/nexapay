@@ -129,7 +129,7 @@ export default function LiveChat() {
             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
             exit={{ scale: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-[96px] right-4 tablet:bottom-6 tablet:right-6 z-40 w-12 h-12 tablet:w-14 tablet:h-14 rounded-full bg-primary text-white shadow-elevated hover:shadow-lg hover:scale-105 transition-shadow duration-200 flex items-center justify-center"
+            className="fixed bottom-[86px] right-4 tablet:bottom-6 tablet:right-6 z-40 w-12 h-12 tablet:w-14 tablet:h-14 rounded-full bg-primary text-white shadow-elevated hover:shadow-lg hover:scale-105 transition-shadow duration-200 flex items-center justify-center"
             aria-label="Open Chat"
           >
             <MessageCircle className="w-5 h-5" />

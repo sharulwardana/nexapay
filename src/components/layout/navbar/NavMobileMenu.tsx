@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, LogIn, LogOut, User, Wallet, Gamepad2, Gift, Smartphone, Zap, Tv, Receipt, Search, ShieldCheck } from 'lucide-react';
 import { cn, formatCurrency } from '@/lib/utils';
+import { getLiveWalletBalance } from '@/actions/wallet';
 import { NAV_LINKS } from '@/lib/constants';
 
 interface NavMobileMenuProps {
@@ -29,6 +30,13 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
   const pathname = usePathname();
   const router = useRouter();
   const [invoiceInput, setInvoiceInput] = useState('');
+  const [liveBalance, setLiveBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isOpen && isLoggedIn) {
+      getLiveWalletBalance().then((bal) => setLiveBalance(bal));
+    }
+  }, [isOpen, isLoggedIn]);
 
   const handleTrackInvoice = (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +101,9 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
                           </div>
                           <div className="flex items-center gap-1 mt-0.5 text-primary">
                             <Wallet className="w-3 h-3" />
-                            <span className="text-[11px] font-bold font-mono">{formatCurrency(session?.user?.walletBalance || 0)}</span>
+                             <span className="text-[11px] font-bold font-mono">
+                              {formatCurrency(liveBalance !== null ? liveBalance : (session?.user?.walletBalance || 0))}
+                             </span>
                           </div>
                         </div>
                       </div>

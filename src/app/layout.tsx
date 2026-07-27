@@ -127,14 +127,20 @@ export default function RootLayout({
             <PwaRegistry />
             <Toaster
               position="top-center"
+              theme="dark"
               toastOptions={{
-                className: 'bg-card border border-border text-foreground',
                 style: {
-                  borderRadius: '12px',
-                  fontSize: '13px',
+                  background: 'rgba(18, 18, 24, 0.95)',
+                  backdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: '16px',
+                  color: '#f8fafc',
+                  fontSize: '13.5px',
+                  fontWeight: '600',
+                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 115, 0, 0.15)',
+                  padding: '12px 16px',
                 },
               }}
-              richColors
             />
           </AuthProvider>
         </ThemeProvider>

@@ -2,6 +2,12 @@ import Google from "next-auth/providers/google"
 import Discord from "next-auth/providers/discord"
 import type { NextAuthConfig } from "next-auth"
 
+const ADMIN_EMAILS = [
+  'sharulwrdn10@gmail.com',
+  'admin@nexapay.com',
+  ...(process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim().toLowerCase()) : [])
+];
+
 export default {
   providers: [
     Google({
@@ -38,6 +44,9 @@ export default {
         token.sub = user.id;
         token.role = (user as any).role || 'USER';
         token.loyaltyPoints = (user as any).loyaltyPoints || 0;
+      }
+      if (token?.email && ADMIN_EMAILS.includes(token.email.toLowerCase())) {
+        token.role = 'ADMIN';
       }
       return token;
     }

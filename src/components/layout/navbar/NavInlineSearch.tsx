@@ -48,8 +48,17 @@ export default function NavInlineSearch() {
         setIsOpen(false);
       }
     };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   useEffect(() => {
@@ -177,13 +186,18 @@ export default function NavInlineSearch() {
               )}
             </motion.div>
 
-            {/* Mobile Dark Backdrop Overlay */}
+            {/* Mobile Dark Backdrop Overlay - High Z-Index & Event Shielding */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="tablet:hidden fixed inset-0 bg-black/70 backdrop-blur-md z-[55]"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
+              onTouchStart={(e) => e.stopPropagation()}
+              className="tablet:hidden fixed inset-0 bg-black/85 backdrop-blur-xl z-[90] pointer-events-auto touch-none select-none cursor-pointer"
             />
 
             {/* Mobile Full-Width Glass Header Drawer */}
@@ -192,8 +206,11 @@ export default function NavInlineSearch() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.25, ease: [0.33, 1, 0.68, 1] }}
-              className="tablet:hidden fixed top-0 left-0 right-0 z-[60] bg-background/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.9)] p-4 space-y-4 rounded-b-3xl"
+              className="tablet:hidden fixed top-0 left-0 right-0 z-[100] bg-background/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.9)] p-4 pt-3 space-y-3 rounded-b-3xl"
             >
+              {/* Mobile Visual Drag Handle */}
+              <div className="w-10 h-1 bg-white/20 rounded-full mx-auto mb-1 flex-shrink-0" />
+
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-muted/40 border border-primary/50 shadow-[0_0_15px_rgba(255,115,0,0.15)] ring-1 ring-primary/20">
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 text-primary animate-spin flex-shrink-0" />

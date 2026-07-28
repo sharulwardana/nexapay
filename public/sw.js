@@ -42,8 +42,15 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Skip cross-origin requests & non-GET requests
-  if (url.origin !== location.origin || event.request.method !== 'GET') return;
+  // Skip cross-origin requests, non-GET requests, and dev HMR requests
+  if (
+    url.origin !== location.origin ||
+    event.request.method !== 'GET' ||
+    url.pathname.includes('/_next/webpack-hmr') ||
+    url.pathname.includes('/_next/static/webpack/')
+  ) {
+    return;
+  }
 
   // API & RSC Requests: Network First, fallback to cache
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/_next/data/') || event.request.headers.get('RSC')) {
@@ -56,7 +63,13 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(async () => {
+          const cached = await caches.match(event.request);
+          return cached || new Response(JSON.stringify({ error: 'Offline' }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        })
     );
     return;
   }
@@ -64,17 +77,19 @@ self.addEventListener('fetch', (event) => {
   // Static Assets (Images, JS, CSS): Stale-While-Revalidate
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          }).catch(() => {});
-        }
-        return networkResponse;
-      }).catch(() => {
-        return cachedResponse;
-      });
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            }).catch(() => {});
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return cachedResponse || new Response('Offline', { status: 503, statusText: 'Offline' });
+        });
 
       return cachedResponse || fetchPromise;
     })

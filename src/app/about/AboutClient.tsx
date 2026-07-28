@@ -42,7 +42,7 @@ export default function AboutClient({ stats }: { stats: any[] }) {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+    <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
       {/* Hero */}
       <section className="relative py-16 tablet:py-24 overflow-hidden">
         <div className="absolute inset-0 gradient-hero" />

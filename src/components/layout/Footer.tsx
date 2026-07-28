@@ -21,9 +21,9 @@ const footerLinks = {
     { label: 'Kontak', href: '/contact' },
   ],
   support: [
-    { label: 'Help Center', href: '/help' },
-    { label: 'FAQ', href: '/help#faq' },
-    { label: 'Live Chat', href: '#chat' },
+    { label: 'Pusat Bantuan', href: '/help' },
+    { label: 'Lacak Pesanan', href: '/track' },
+    { label: 'Hubungi Kami', href: '/contact' },
     { label: 'Syarat & Ketentuan', href: '/terms' },
     { label: 'Kebijakan Privasi', href: '/privacy' },
   ],
@@ -82,7 +82,7 @@ export default function Footer() {
               <h4 className="text-xs font-semibold uppercase tracking-widest text-foreground mb-4">{col.title}</h4>
               <ul className="space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                       {link.label}
                     </Link>

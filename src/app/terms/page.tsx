@@ -7,7 +7,7 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 tablet:pt-24 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
         <div className="container-app max-w-3xl">
           <h1 className="heading-2 mb-2">Syarat & Ketentuan</h1>
           <p className="text-sm text-muted-foreground mb-8">Terakhir diperbarui: 25 Mei 2026</p>

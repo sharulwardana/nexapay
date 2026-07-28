@@ -143,7 +143,6 @@ export default function PromosClient({ promos, adminUser }: { promos: any[]; adm
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -194,9 +193,9 @@ export default function PromosClient({ promos, adminUser }: { promos: any[]; adm
           initial={{ opacity: 0, scale: 0.985 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 p-6 space-y-6 overflow-y-auto"
+          className="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 mobile-l:grid-cols-2 laptop-l:grid-cols-3 gap-3 sm:gap-4">
             {promos.map((p, i) => (
               <motion.div
                 key={p.id}

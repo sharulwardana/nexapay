@@ -118,7 +118,6 @@ export default function AdminClient({
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -195,18 +194,18 @@ export default function AdminClient({
           <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-6">
             
             {/* Top Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 mobile-l:grid-cols-2 laptop-l:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {statsCards.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04, duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative group p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden"
+                  className="relative group p-4 sm:p-5 laptop-l:p-6 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden"
                 >
                   <div className={cn("absolute -right-6 -top-6 w-24 h-24 rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-br", stat.color)} />
                   
-                  <div className="flex items-start justify-between mb-4 relative z-10">
-                    <div className={cn('w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center shadow-lg', stat.color, stat.shadow)}>
-                      <stat.icon className="w-5 h-5 text-white" />
+                  <div className="flex items-start justify-between mb-3 sm:mb-4 relative z-10">
+                    <div className={cn('w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center shadow-lg', stat.color, stat.shadow)}>
+                      <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <div className={cn(
                       'flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold backdrop-blur-md border',
@@ -217,9 +216,9 @@ export default function AdminClient({
                     </div>
                   </div>
                   
-                  <div className="relative z-10">
-                    <p className="text-white/40 text-xs font-medium mb-1">{stat.label}</p>
-                    <h3 className="text-2xl lg:text-3xl font-bold font-heading tracking-tight">
+                  <div className="relative z-10 min-w-0">
+                    <p className="text-white/40 text-xs font-medium mb-1 truncate">{stat.label}</p>
+                    <h3 className="text-lg mobile-m:text-xl tablet:text-2xl laptop-l:text-3xl font-bold font-heading tracking-tight truncate">
                       {stat.label.includes('Pendapatan') ? formatCurrency(stat.value) : formatNumber(stat.value)}
                     </h3>
                   </div>

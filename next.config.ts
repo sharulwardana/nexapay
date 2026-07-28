@@ -43,6 +43,7 @@ const nextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https: http:",
               "connect-src 'self' https://generativelanguage.googleapis.com https://*.google.com",
+              "worker-src 'self' blob:",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

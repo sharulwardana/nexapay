@@ -281,10 +281,11 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
           <div className="relative min-h-[170px] tablet:min-h-[210px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-4 sm:p-6 tablet:p-8">
             {game.bannerImage && (
               <Image
-                src={game.bannerImage}
+                src={game.bannerImage || game.image}
                 alt={game.name}
                 fill
                 priority
+                sizes="100vw"
                 className="object-cover opacity-20 filter blur-[3px] scale-105"
               />
             )}
@@ -298,6 +299,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                   alt={game.name}
                   fill
                   priority
+                  sizes="(max-width: 768px) 96px, 112px"
                   className="object-cover"
                 />
               </div>

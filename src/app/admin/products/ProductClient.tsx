@@ -271,7 +271,6 @@ export default function ProductClient({ products, adminUser }: { products: Produ
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -362,7 +361,7 @@ export default function ProductClient({ products, adminUser }: { products: Produ
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden relative flex-shrink-0">
                               {product.image ? (
-                                <Image src={product.image} alt={product.name} fill className="object-cover" />
+                                <Image src={product.image} alt={product.name} fill sizes="48px" className="object-cover" />
                               ) : (
                                 <Package className="w-5 h-5 text-white/20" />
                               )}

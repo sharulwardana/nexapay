@@ -11,6 +11,7 @@ import { formatCurrency, cn, getStatusColor, getStatusLabel } from '@/lib/utils'
 
 export interface TransactionItem {
   id: string;
+  invoiceId?: string;
   product: string;
   status: string;
   amount: number;
@@ -82,7 +83,7 @@ export default function TransactionsClient({ initialTransactions }: { initialTra
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 + i * 0.03 }}
               >
-                <Link href={`/payment-status/${tx.id}`} className="flex items-center gap-3 p-4 glass-card hover:border-primary/20 transition-all">
+                <Link href={`/payment-status/${tx.invoiceId || tx.id}`} className="flex items-center gap-3 p-4 glass-card hover:border-primary/20 transition-all">
                   <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', getStatusColor(tx.status))}>
                     {tx.status === 'COMPLETED' && <CheckCircle className="w-5 h-5" />}
                     {tx.status === 'PROCESSING' && <Clock className="w-5 h-5 animate-pulse" />}

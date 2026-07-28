@@ -130,7 +130,6 @@ export default function UsersClient({ users, adminUser }: { users: any[]; adminU
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -173,7 +172,7 @@ export default function UsersClient({ users, adminUser }: { users: any[]; adminU
           initial={{ opacity: 0, scale: 0.985 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 p-6 space-y-6 overflow-y-auto"
+          className="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto"
         >
           {/* Controls */}
           <div className="flex flex-col tablet:flex-row gap-3">
@@ -187,13 +186,13 @@ export default function UsersClient({ users, adminUser }: { users: any[]; adminU
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-violet-500/50 transition-all"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-1">
               {['ALL', 'ADMIN', 'USER'].map(r => (
                 <button
                   key={r}
                   onClick={() => setRoleFilter(r)}
                   className={cn(
-                    'px-4 py-2.5 rounded-xl text-xs font-medium transition-all',
+                    'px-4 py-2.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap',
                     roleFilter === r
                       ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                       : 'bg-white/5 text-white/40 border border-white/10 hover:text-white/60'
@@ -207,8 +206,8 @@ export default function UsersClient({ users, adminUser }: { users: any[]; adminU
 
           {/* Table */}
           <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full min-w-[800px] text-sm">
                 <thead>
                   <tr className="border-b border-white/5">
                     <th className="text-left px-5 py-4 text-xs font-bold text-white/30 uppercase tracking-wider">Pengguna</th>

@@ -49,8 +49,8 @@ export default function MobileNav() {
       {/* 1:1 Instagram Floating Navbar Capsule */}
       <div
         className={cn(
-          "pointer-events-auto max-w-[340px] w-[90%] mx-auto rounded-full bg-card/90 backdrop-blur-2xl border border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.45),0_0_20px_rgba(255,115,0,0.15)] p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
-          isShrunk ? "h-[42px] scale-[0.97]" : "h-[52px] scale-100"
+          "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full bg-card/90 backdrop-blur-2xl border border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.45),0_0_20px_rgba(255,115,0,0.15)] p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97]" : "h-[52px] tablet:h-[60px] scale-100"
         )}
       >
         <div className="grid grid-cols-5 items-center justify-center h-full w-full">
@@ -76,17 +76,17 @@ export default function MobileNav() {
                 {/* 100% Vertically & Horizontally Centered Icon */}
                 <div className="flex items-center justify-center relative z-10 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
                   <item.icon className={cn(
-                    'w-5 h-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                    'w-5 h-5 tablet:w-[22px] tablet:h-[22px] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                     isActive ? 'stroke-[2.5] text-primary scale-110' : 'stroke-[1.75] text-muted-foreground opacity-75'
                   )} />
                 </div>
                 
                 {/* Smooth Animated Text Label */}
                 <span className={cn(
-                  'text-[9.5px] relative z-10 tracking-tight leading-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center pointer-events-none text-center',
+                  'text-[9.5px] tablet:text-xs relative z-10 tracking-tight leading-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center pointer-events-none text-center',
                   isShrunk
                     ? 'opacity-0 scale-50 max-h-0 overflow-hidden mt-0 pointer-events-none hidden'
-                    : 'opacity-100 scale-100 max-h-4 mt-0.5',
+                    : 'opacity-100 scale-100 max-h-4 mt-0.5 tablet:mt-1',
                   isActive ? 'font-black text-primary' : 'font-medium text-muted-foreground'
                 )}>
                   {item.label}

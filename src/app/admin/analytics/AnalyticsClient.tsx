@@ -93,7 +93,6 @@ export default function AnalyticsClient({
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -137,29 +136,29 @@ export default function AnalyticsClient({
           initial={{ opacity: 0, scale: 0.985 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 p-6 space-y-6 overflow-y-auto"
+          className="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto"
         >
           {/* High-Level Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-3xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/10 border border-violet-500/30 space-y-2 relative overflow-hidden">
+          <div className="grid grid-cols-1 mobile-l:grid-cols-2 gap-4 sm:gap-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/10 border border-violet-500/30 space-y-2 relative overflow-hidden min-w-0">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-bold text-violet-300 uppercase tracking-widest">Total Pendapatan Bersih</p>
-                <div className="w-10 h-10 rounded-2xl bg-violet-500/20 flex items-center justify-center text-violet-300 font-bold">
+                <p className="text-xs font-bold text-violet-300 uppercase tracking-widest truncate">Total Pendapatan Bersih</p>
+                <div className="w-10 h-10 rounded-2xl bg-violet-500/20 flex items-center justify-center text-violet-300 font-bold flex-shrink-0">
                   <DollarSign className="w-5 h-5" />
                 </div>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black font-heading tracking-tight text-white">{formatCurrency(totalRevenue)}</h2>
+              <h2 className="text-xl mobile-m:text-2xl tablet:text-3xl laptop-l:text-4xl font-black font-heading tracking-tight text-white truncate">{formatCurrency(totalRevenue)}</h2>
               <p className="text-xs text-white/50">Akumulasi total pendapatan berhasil diterima.</p>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-6 rounded-3xl bg-gradient-to-br from-cyan-600/20 to-blue-600/10 border border-cyan-500/30 space-y-2 relative overflow-hidden">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-cyan-600/20 to-blue-600/10 border border-cyan-500/30 space-y-2 relative overflow-hidden min-w-0">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-bold text-cyan-300 uppercase tracking-widest">Sukses Selesai</p>
-                <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-300 font-bold">
+                <p className="text-xs font-bold text-cyan-300 uppercase tracking-widest truncate">Sukses Selesai</p>
+                <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-300 font-bold flex-shrink-0">
                   <ShoppingCart className="w-5 h-5" />
                 </div>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black font-heading tracking-tight text-white">{formatNumber(totalCompleted)} <span className="text-sm font-normal text-cyan-300/80">transaksi</span></h2>
+              <h2 className="text-xl mobile-m:text-2xl tablet:text-3xl laptop-l:text-4xl font-black font-heading tracking-tight text-white truncate">{formatNumber(totalCompleted)} <span className="text-sm font-normal text-cyan-300/80">transaksi</span></h2>
               <p className="text-xs text-white/50">Pesanan telah berhasil terkirim ke akun pembeli.</p>
             </motion.div>
           </div>

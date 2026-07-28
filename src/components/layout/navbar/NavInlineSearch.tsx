@@ -76,8 +76,8 @@ export default function NavInlineSearch() {
     <div ref={containerRef} className="relative z-40">
       {/* Desktop / Tablet Inline Search Bar */}
       <div className={cn(
-        "hidden tablet:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-muted/40 border border-border/50 transition-all duration-300 backdrop-blur-sm",
-        "tablet:w-52 lg:w-64",
+        "hidden tablet:flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-muted/40 border border-border/50 transition-all duration-300 backdrop-blur-sm overflow-hidden",
+        "tablet:w-44 laptop:w-52 laptop-l:w-64",
         isOpen ? "border-primary/60 bg-background/90 ring-2 ring-primary/20 shadow-lg" : "hover:border-primary/40 hover:bg-muted/60"
       )}>
         {isLoading ? (
@@ -90,18 +90,18 @@ export default function NavInlineSearch() {
           value={query}
           onFocus={() => { playClick(); setIsOpen(true); }}
           onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
-          placeholder="Cari game/produk..."
-          className="flex-1 bg-transparent text-xs outline-none placeholder:text-muted-foreground/60 text-foreground"
+          placeholder="Cari game..."
+          className="flex-1 min-w-0 bg-transparent text-xs outline-none placeholder:text-muted-foreground/60 text-foreground"
         />
         {query ? (
           <button
             onClick={() => { setQuery(''); setResults([]); }}
-            className="p-0.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            className="p-0.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
           >
             <X className="w-3 h-3" />
           </button>
         ) : (
-          <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 rounded bg-muted/80 text-[9px] text-muted-foreground font-mono border border-border/50">
+          <kbd className="hidden tablet:inline-flex items-center px-1.5 py-0.5 rounded bg-muted/80 text-[9px] text-muted-foreground font-mono border border-border/50 flex-shrink-0">
             ⌘K
           </kbd>
         )}

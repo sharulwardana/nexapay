@@ -130,7 +130,6 @@ export default function TransactionsClient({ transactions, stats, adminUser }: {
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={true}
                 className={cn(
                   'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
                   isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
@@ -179,7 +178,7 @@ export default function TransactionsClient({ transactions, stats, adminUser }: {
           className="flex-1 p-6 space-y-6 overflow-y-auto"
         >
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 mobile-l:grid-cols-2 laptop-l:grid-cols-4 gap-3 sm:gap-4">
             {[
               { label: 'Total Omset', value: formatCurrency(stats.totalRevenue), icon: DollarSign, color: 'from-violet-500 to-fuchsia-600' },
               { label: 'Total Transaksi', value: stats.totalAll.toString(), icon: Receipt, color: 'from-blue-500 to-cyan-500' },
@@ -191,12 +190,12 @@ export default function TransactionsClient({ transactions, stats, adminUser }: {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="relative rounded-2xl border border-white/5 bg-white/[0.02] p-5 overflow-hidden group hover:border-white/10 transition-all"
+                className="relative rounded-2xl border border-white/5 bg-white/[0.02] p-4 sm:p-5 overflow-hidden group hover:border-white/10 transition-all min-w-0"
               >
                 <div className={cn('absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-20 bg-gradient-to-br', stat.color)} />
                 <stat.icon className="w-5 h-5 text-white/30 mb-3" />
-                <p className="text-2xl font-black">{stat.value}</p>
-                <p className="text-xs text-white/40 mt-1">{stat.label}</p>
+                <p className="text-lg mobile-m:text-xl tablet:text-2xl laptop-l:text-3xl font-black truncate">{stat.value}</p>
+                <p className="text-xs text-white/40 mt-1 truncate">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -213,7 +212,7 @@ export default function TransactionsClient({ transactions, stats, adminUser }: {
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-violet-500/50 transition-all"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-1">
               {['ALL', 'COMPLETED', 'PENDING', 'FAILED'].map(s => (
                 <button
                   key={s}
@@ -233,8 +232,8 @@ export default function TransactionsClient({ transactions, stats, adminUser }: {
 
           {/* Table */}
           <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full min-w-[850px] text-sm">
                 <thead>
                   <tr className="border-b border-white/5">
                     <th className="text-left px-5 py-4 text-xs font-bold text-white/30 uppercase tracking-wider">No. Invoice</th>

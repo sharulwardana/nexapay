@@ -218,7 +218,7 @@ export default function DashboardClient({
                 recentTransactions.map((tx) => (
                   <Link
                     key={tx.id}
-                    href={`/payment-status/${tx.id}`}
+                    href={`/payment-status/${tx.invoiceId || tx.id}`}
                     className="flex items-center gap-3 p-4 hover:bg-muted/30 transition-colors"
                   >
                     <div className={cn(

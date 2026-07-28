@@ -15,8 +15,13 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
   const resolvedParams = await params;
   const txId = resolvedParams.id;
 
-  const transaction = await prisma.transaction.findUnique({
-    where: { invoiceId: txId },
+  const transaction = await prisma.transaction.findFirst({
+    where: {
+      OR: [
+        { invoiceId: txId },
+        { id: txId },
+      ],
+    },
     include: {
       product: true,
       denomination: true,

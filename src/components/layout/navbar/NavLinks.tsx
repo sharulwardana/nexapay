@@ -22,7 +22,7 @@ export default function NavLinks() {
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
 
   return (
-    <nav className="hidden lg:flex items-center gap-0.5">
+    <nav className="hidden lg:flex items-center gap-0.5 laptop-l:gap-1 flex-shrink-0">
       {NAV_LINKS.map((link) => {
         const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
         if (link.label === 'Produk Digital') {
@@ -36,7 +36,7 @@ export default function NavLinks() {
               <Link
                 href={link.href}
                 className={cn(
-                  'flex items-center gap-1 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-colors',
+                  'flex items-center gap-1 px-2 laptop-l:px-3 py-1.5 rounded-lg text-xs laptop-l:text-[13px] font-medium transition-colors whitespace-nowrap',
                   isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -74,7 +74,7 @@ export default function NavLinks() {
             key={link.href}
             href={link.href}
             className={cn(
-              'px-3 py-1.5 rounded-lg text-[13px] font-medium transition-colors',
+              'px-2 laptop-l:px-3 py-1.5 rounded-lg text-xs laptop-l:text-[13px] font-medium transition-colors whitespace-nowrap',
               isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
             )}
           >

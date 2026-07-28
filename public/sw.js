@@ -10,7 +10,18 @@ const PRECACHE_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_ASSETS))
+      .then(async (cache) => {
+        await Promise.allSettled(
+          PRECACHE_ASSETS.map(async (asset) => {
+            try {
+              const res = await fetch(asset);
+              if (res.ok) await cache.put(asset, res);
+            } catch (err) {
+              console.warn(`[SW] Precache failed for ${asset}:`, err);
+            }
+          })
+        );
+      })
       .then(() => self.skipWaiting())
   );
 });
@@ -27,33 +38,22 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Fetch event handler
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Skip cross-origin requests
-  if (url.origin !== location.origin) return;
+  // Skip cross-origin requests & non-GET requests
+  if (url.origin !== location.origin || event.request.method !== 'GET') return;
 
-  // API Requests: Network First, fallback to cache
-  if (url.pathname.startsWith('/api/')) {
+  // API & RSC Requests: Network First, fallback to cache
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/_next/data/') || event.request.headers.get('RSC')) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          const resClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  // Next.js Data/Page requests (JSON/RSC): Network First
-  if (url.pathname.startsWith('/_next/data/') || event.request.headers.get('RSC')) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const resClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+          if (response && response.status === 200 && (response.type === 'basic' || response.type === 'cors')) {
+            const resClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone)).catch(() => {});
+          }
           return response;
         })
         .catch(() => caches.match(event.request))
@@ -65,15 +65,15 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request).then((networkResponse) => {
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, networkResponse.clone());
-        });
+        if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          }).catch(() => {});
+        }
         return networkResponse;
       }).catch(() => {
-        // Fallback for images if offline
-        if (event.request.destination === 'image') {
-          // You could return a default fallback image here
-        }
+        return cachedResponse;
       });
 
       return cachedResponse || fetchPromise;

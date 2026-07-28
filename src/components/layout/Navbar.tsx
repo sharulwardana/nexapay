@@ -89,7 +89,7 @@ export default function Navbar() {
             <NavLinks />
 
             {/* Actions (Search, Notif, Cart, Profile, Mobile Menu) */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               <NavInlineSearch />
 
               {mounted && (

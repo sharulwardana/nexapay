@@ -27,7 +27,8 @@ export default async function TransactionsPage() {
   });
 
   const transactions = rawTransactions.map((tx) => ({
-    id: tx.invoiceId || tx.id,
+    id: tx.id,
+    invoiceId: tx.invoiceId || tx.id,
     product: tx.product?.name ? `${tx.product.name} — ${tx.denomination?.label || ''}` : `Transaksi ${tx.invoiceId}`,
     status: tx.status,
     amount: tx.totalAmount,

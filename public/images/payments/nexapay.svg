@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none">
+  <rect width="120" height="40" rx="8" fill="url(#nexapay-bg)"/>
+  <rect x="10" y="8" width="24" height="24" rx="6" fill="url(#nexapay-brand)"/>
+  <text x="22" y="25" font-family="system-ui, sans-serif" font-weight="900" font-size="14" fill="#ffffff" text-anchor="middle">N</text>
+  <text x="40" y="25" font-family="system-ui, sans-serif" font-weight="800" font-size="13" fill="#ffffff">Nexa</text>
+  <text x="75" y="25" font-family="system-ui, sans-serif" font-weight="800" font-size="13" fill="#ff7300">Pay</text>
+  <defs>
+    <linearGradient id="nexapay-bg" x1="0" y1="0" x2="120" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#141419"/>
+      <stop offset="1" stop-color="#1f1f26"/>
+    </linearGradient>
+    <linearGradient id="nexapay-brand" x1="10" y1="8" x2="34" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff7300"/>
+      <stop offset="1" stop-color="#fe8c00"/>
+    </linearGradient>
+  </defs>
+</svg>

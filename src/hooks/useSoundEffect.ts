@@ -15,7 +15,7 @@ export function useSoundEffect() {
     }
     // Resume context if suspended
     if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume();
+      audioCtxRef.current.resume().catch(() => {});
     }
   }, []);
 

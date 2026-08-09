@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Mail, MapPin, Phone, Heart, ArrowUpRight, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, Heart, ArrowUpRight, MapPin } from 'lucide-react';
 
 const footerLinks = {
   products: [
@@ -37,8 +38,17 @@ const socialLinks = [
 ];
 
 const paymentLogos = [
-  'QRIS', 'GoPay', 'OVO', 'DANA', 'ShopeePay',
-  'BCA', 'BNI', 'BRI', 'Mandiri', 'Alfamart', 'Indomaret',
+  { name: 'QRIS', icon: '/images/payments/qris.svg' },
+  { name: 'GoPay', icon: '/images/payments/gopay.svg' },
+  { name: 'OVO', icon: '/images/payments/ovo.svg' },
+  { name: 'DANA', icon: '/images/payments/dana.svg' },
+  { name: 'ShopeePay', icon: '/images/payments/shopeepay.svg' },
+  { name: 'BCA', icon: '/images/payments/bca.svg' },
+  { name: 'BNI', icon: '/images/payments/bni.svg' },
+  { name: 'BRI', icon: '/images/payments/bri.svg' },
+  { name: 'Mandiri', icon: '/images/payments/mandiri.svg' },
+  { name: 'Alfamart', icon: '/images/payments/alfamart.svg' },
+  { name: 'Indomaret', icon: '/images/payments/indomaret.svg' },
 ];
 
 export default function Footer() {
@@ -134,11 +144,23 @@ export default function Footer() {
         {/* Payment Partners */}
         <div className="border-t border-border/40 pt-6 mb-8">
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-3">Partner Pembayaran Resmi</p>
-          <div className="flex flex-wrap gap-2">
-            {paymentLogos.map((name) => (
-              <span key={name} className="px-3 py-1.5 rounded-lg bg-muted/30 border border-border/40 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200">
-                {name}
-              </span>
+          <div className="flex flex-wrap gap-2.5 items-center">
+            {paymentLogos.map((item) => (
+              <div 
+                key={item.name} 
+                className="h-9 px-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-primary/40 hover:bg-white/[0.08] transition-all duration-200 flex items-center justify-center relative min-w-[64px]"
+                title={item.name}
+              >
+                <div className="relative w-12 h-5">
+                  <Image 
+                    src={item.icon} 
+                    alt={item.name} 
+                    fill 
+                    sizes="48px" 
+                    className="object-contain" 
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>

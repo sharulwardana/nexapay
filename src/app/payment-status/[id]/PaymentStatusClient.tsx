@@ -181,6 +181,24 @@ export default function PaymentStatusClient({
           </p>
         </div>
 
+        {/* 2026 Interactive Order Progress Timeline Bar */}
+        <div className="flex items-center justify-between p-4 mb-6 rounded-2xl bg-card/60 backdrop-blur-md border border-border shadow-sm">
+          <div className="flex flex-col items-center gap-1">
+            <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all", isPending || isProcessing || isCompleted ? "gradient-primary text-white" : "bg-muted text-muted-foreground")}>1</div>
+            <span className="text-[10px] font-bold text-foreground">Order</span>
+          </div>
+          <div className={cn("h-1 flex-1 mx-2 rounded-full transition-all duration-500", isProcessing || isCompleted ? "gradient-primary" : "bg-muted")} />
+          <div className="flex flex-col items-center gap-1">
+            <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all", isProcessing || isCompleted ? "gradient-primary text-white" : "bg-muted text-muted-foreground")}>2</div>
+            <span className="text-[10px] font-bold text-foreground">Bayar</span>
+          </div>
+          <div className={cn("h-1 flex-1 mx-2 rounded-full transition-all duration-500", isCompleted ? "bg-emerald-500" : "bg-muted")} />
+          <div className="flex flex-col items-center gap-1">
+            <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all", isCompleted ? "bg-emerald-500 text-white shadow-emerald-500/30 animate-pulse" : "bg-muted text-muted-foreground")}>3</div>
+            <span className="text-[10px] font-bold text-foreground">Selesai</span>
+          </div>
+        </div>
+
         {/* Expiry Countdown for Pending */}
         {isPending && expiresAt && (
           <motion.div

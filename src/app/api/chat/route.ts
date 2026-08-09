@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/../auth";
 import rateLimit from "@/lib/rateLimit";
 import { z } from "zod";
+import { sanitizeInput } from "@/lib/sanitize";
 
 // Lazy initialization — only create when API key is available
 let _genAI: GoogleGenerativeAI | null = null;
@@ -27,17 +28,6 @@ const chatMessageSchema = z.object({
 const chatRequestSchema = z.object({
   messages: z.array(chatMessageSchema).min(1, "Minimal 1 pesan").max(50, "Terlalu banyak pesan"),
 });
-
-/**
- * Sanitize user input to prevent prompt injection and strip HTML/script tags.
- */
-function sanitizeMessage(text: string): string {
-  return text
-    .replace(/<[^>]*>/g, '')            // Strip HTML tags
-    .replace(/javascript:/gi, '')       // Remove javascript: protocol
-    .replace(/on\w+\s*=/gi, '')         // Remove inline event handlers
-    .trim();
-}
 
 export async function POST(req: Request) {
   try {
@@ -89,10 +79,10 @@ export async function POST(req: Request) {
       { role: "model" as const, parts: [{ text: "Mengerti! Saya Nexa siap membantu para gamer top-up dengan cepat dan murah. Ada yang bisa dibantu?" }] },
       ...recentMessages.slice(0, -1).map((m) => ({
         role: (m.role === "user" ? "user" : "model") as "user" | "model",
-        parts: [{ text: sanitizeMessage(m.content) }]
+        parts: [{ text: sanitizeInput(m.content) }]
       }))
     ];
-    const latestMessage = sanitizeMessage(recentMessages[recentMessages.length - 1].content);
+    const latestMessage = sanitizeInput(recentMessages[recentMessages.length - 1].content);
 
     const chat = model.startChat({
       history,

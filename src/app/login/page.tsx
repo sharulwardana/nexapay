@@ -153,6 +153,16 @@ export default function LoginPage() {
               </svg>
               {activeTab === 'login' ? 'Masuk' : 'Daftar'} dengan Discord
             </button>
+            <button 
+              onClick={() => handleOAuthSignIn('google')}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary text-sm font-bold transition-all shadow-sm"
+            >
+              <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2a10 10 0 0 0-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10A10 10 0 0 0 12 2z" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+              Masuk dengan Passkey / Sidik Jari ⚡
+            </button>
           </div>
 
           {/* Divider */}

@@ -67,16 +67,26 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="min-h-screen pb-24">
-        <PromoCarousel />
-        <PopularGames games={games} />
-        <FlashSale games={games} />
-        <TrendingProducts games={games} />
-        <StatsCounter />
-        <Suspense fallback={<SectionSkeleton />}>
-          <Testimonials />
-        </Suspense>
-        <PaymentPartners />
+      <main id="main-content" className="min-h-screen pb-24 aurora-bg">
+        {/* Aurora decorative orbs */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="floating-orb w-[600px] h-[600px] -top-[200px] -left-[200px] bg-violet-500/[0.06]" />
+          <div className="floating-orb w-[500px] h-[500px] top-[40%] -right-[150px] bg-cyan-500/[0.04]" style={{ animationDelay: '3s' }} />
+          <div className="floating-orb w-[400px] h-[400px] bottom-[10%] left-[20%] bg-orange-500/[0.04]" style={{ animationDelay: '6s' }} />
+        </div>
+
+        {/* Content (relative to be above orbs) */}
+        <div className="relative z-10">
+          <PromoCarousel />
+          <PopularGames games={games} />
+          <FlashSale games={games} />
+          <TrendingProducts games={games} />
+          <StatsCounter />
+          <Suspense fallback={<SectionSkeleton />}>
+            <Testimonials />
+          </Suspense>
+          <PaymentPartners />
+        </div>
       </main>
       <Footer />
       <MobileNav />

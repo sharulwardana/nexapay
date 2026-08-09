@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -32,16 +32,28 @@ export default function AdminClient({
   topProducts,
   adminUser 
 }: { 
-  stats: any, 
-  recentTransactions: any[], 
-  salesData: any[],
-  topProducts: any[],
-  adminUser: any 
+  stats: { totalRevenue: number; totalTransactions: number; totalUsers: number; newUsersToday: number }, 
+  recentTransactions: {
+    id: string;
+    invoiceId: string;
+    productName: string;
+    totalAmount: number;
+    status: string;
+    createdAt: string | Date;
+    user?: { email: string | null } | null;
+    product?: { name: string } | null;
+    denomination?: { label: string } | null;
+    [key: string]: unknown;
+  }[], 
+  salesData: { day: string; value: number }[],
+  topProducts: { name: string; revenue: number; count: number; growth: number }[],
+  adminUser: { name?: string | null; email?: string | null; image?: string | null } 
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [chartMenuOpen, setChartMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const statsCards = [
     { label: 'Total Pendapatan', value: stats.totalRevenue, change: 12.5, icon: DollarSign, color: 'from-violet-500 to-fuchsia-600', shadow: 'shadow-violet-500/20' },
@@ -113,7 +125,9 @@ export default function AdminClient({
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto min-h-0 pb-16 lg:pb-4">
           <p className="px-3 text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2 mt-2">Menu</p>
           {sidebarItems.map((item) => {
-            const isActive = item.href === '/admin';
+            const isActive = item.href === '/admin'
+              ? pathname === '/admin'
+              : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}

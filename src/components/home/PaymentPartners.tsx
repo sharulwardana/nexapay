@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
+import { CreditCard, Shield } from 'lucide-react';
 
 const partners = [
   { name: 'QRIS', icon: '/images/payments/qris.svg', badge: 'INSTANT' },
@@ -25,38 +26,64 @@ export default function PaymentPartners() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section ref={ref} className="py-12 relative overflow-hidden">
-      <div className="container-app">
+    <section ref={ref} className="py-12 tablet:py-16 relative overflow-hidden">
+      {/* Background accent */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-cyan-500/[0.03] rounded-full blur-[100px]" />
+      </div>
+
+      <div className="container-app relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-8"
         >
-          <p className="label mb-2 text-primary font-bold">Partner Resmi</p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
+            <CreditCard className="w-3 h-3 text-cyan-500" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-500">Partner Resmi</span>
+          </div>
           <h2 className="heading-3">Metode Pembayaran Lengkap</h2>
-          <p className="body-default mt-1.5 max-w-lg mx-auto text-xs tablet:text-sm text-muted-foreground">
+          <p className="body-default mt-2 max-w-lg mx-auto text-xs tablet:text-sm">
             Dukungan pembayaran instan tanpa ribet 24/7 otomatis
           </p>
         </motion.div>
       </div>
 
+      {/* Trust badges */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="flex items-center justify-center gap-3 mb-8"
+      >
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+          <Shield className="w-3 h-3 text-emerald-500" />
+          <span className="text-[10px] font-bold text-emerald-500">SSL Encrypted</span>
+        </div>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+          <Shield className="w-3 h-3 text-blue-500" />
+          <span className="text-[10px] font-bold text-blue-500">PCI DSS Compliant</span>
+        </div>
+      </motion.div>
+
       {/* Infinite Running Marquee Slider with Fade Mask */}
       <div className="relative w-full overflow-hidden py-2">
         {/* Left & Right Edge Gradient Fade Overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 tablet:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 tablet:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 tablet:w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 tablet:w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
         <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-3">
           {duplicatedPartners.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border/50 bg-card/60 backdrop-blur-md shadow-sm hover:border-primary/40 hover:bg-card transition-all flex-shrink-0"
+              className="group flex items-center gap-3 px-4 py-3 rounded-xl border border-border/50 bg-card/60 backdrop-blur-md shadow-sm hover:border-primary/30 hover:bg-card hover:shadow-md transition-all duration-300 flex-shrink-0"
             >
-              <div className="w-10 h-6 relative flex-shrink-0">
+              <div className="w-10 h-7 relative flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Image src={item.icon} alt={item.name} fill sizes="40px" className="object-contain" />
               </div>
               <span className="text-xs font-bold text-foreground tracking-wide">{item.name}</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold border border-primary/20">
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-primary/8 text-primary font-bold border border-primary/15">
                 {item.badge}
               </span>
             </div>

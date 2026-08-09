@@ -163,28 +163,75 @@ export default function WalletClient({
             <h1 className="text-lg tablet:text-xl font-bold">Wallet NexaPay</h1>
           </motion.div>
 
-          {/* Balance Card */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-            className="glass-card p-6 tablet:p-8 gradient-primary text-white rounded-2xl mb-6 relative overflow-hidden shadow-xl"
+          {/* 3D Holographic Metallic NexaPay Card (2026 Edition) */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15, rotateX: 5 }} 
+            animate={{ opacity: 1, y: 0, rotateX: 0 }} 
+            transition={{ delay: 0.05, duration: 0.5 }}
+            className="group relative p-6 tablet:p-8 rounded-3xl mb-6 overflow-hidden transition-all duration-500 shadow-2xl hover:shadow-[0_20px_50px_rgba(255,115,0,0.25)] border border-white/20"
+            style={{
+              background: 'linear-gradient(135deg, #141414 0%, #1f1f23 40%, #0a0a0d 100%)',
+            }}
           >
-            <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
-            <div className="absolute -right-4 bottom-4 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none" />
+            {/* Holographic Refraction Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+            <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-gradient-to-br from-primary/30 to-amber-500/20 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+            <div className="absolute -left-12 -bottom-12 w-40 h-40 rounded-full bg-violet-600/15 blur-2xl pointer-events-none" />
+
             <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-2">
-                <Wallet className="w-5 h-5 text-white/80" />
-                <span className="text-sm font-medium text-white/80">Saldo NexaPay</span>
+              {/* Card Header: Brand & Contactless */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg gradient-primary flex items-center justify-center shadow-md">
+                    <span className="text-white font-heading font-bold text-xs">N</span>
+                  </div>
+                  <span className="font-heading font-black text-sm tracking-wider uppercase text-white/90">
+                    NexaPay <span className="text-xs font-mono text-primary font-normal">BLACK</span>
+                  </span>
+                </div>
+                
+                {/* Contactless Wave Icon & EMV Chip */}
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M8.5 14.5A5 5 0 0 0 8.5 9.5" />
+                    <path d="M11.5 17.5A9 9 0 0 0 11.5 6.5" />
+                    <path d="M14.5 20.5A13 13 0 0 0 14.5 3.5" />
+                  </svg>
+                  <div className="w-9 h-7 rounded-md bg-gradient-to-br from-amber-200 via-yellow-400 to-amber-600 p-[1px] shadow-sm">
+                    <div className="w-full h-full rounded-[5px] bg-amber-400/90 grid grid-cols-2 grid-rows-2 gap-[1px]">
+                      <div className="border-r border-b border-amber-600/40" />
+                      <div className="border-b border-amber-600/40" />
+                      <div className="border-r border-amber-600/40" />
+                      <div />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p className="text-3xl tablet:text-4xl font-bold font-heading mb-6">{formatCurrency(balance)}</p>
-              <div className="flex gap-3">
+
+              {/* Balance */}
+              <div className="my-4">
+                <span className="text-xs font-medium text-white/50 uppercase tracking-widest block mb-1">Total Saldo Wallet</span>
+                <p className="text-3xl tablet:text-4xl font-bold font-heading tracking-tight text-white drop-shadow-md">
+                  {formatCurrency(balance)}
+                </p>
+              </div>
+
+              {/* Masked Card Number */}
+              <div className="my-4 font-mono text-xs tablet:text-sm text-white/40 tracking-[0.25em] select-none">
+                •••• •••• •••• <span className="text-white/70">2026</span>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2">
                 <button 
                   onClick={() => setShowTopUpModal(true)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gray-900 text-sm font-bold shadow-lg hover:bg-white/90 active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl gradient-primary text-white text-xs tablet:text-sm font-bold shadow-lg shadow-primary/25 hover:shadow-neon-orange active:scale-95 transition-all cursor-pointer"
                 >
-                  <Plus className="w-4 h-4" /> Top Up Saldo
+                  <Plus className="w-4 h-4" /> Isi Saldo
                 </button>
                 <button 
                   onClick={() => setShowTransferModal(true)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/20 border border-white/20 text-white text-sm font-bold hover:bg-white/30 active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs tablet:text-sm font-bold active:scale-95 transition-all cursor-pointer backdrop-blur-md"
                 >
                   <ArrowUpRight className="w-4 h-4" /> Transfer
                 </button>

@@ -3,19 +3,7 @@ import prisma from '@/lib/prisma';
 import { auth } from '@/../auth';
 import { PAYMENT_METHODS, getLoyaltyDiscount } from '@/lib/constants';
 import { z } from 'zod';
-
-/**
- * Strip HTML tags and dangerous patterns from user input.
- * Prevents stored XSS when these values are rendered in admin dashboards.
- */
-function sanitizeInput(text: string): string {
-  return text
-    .replace(/<[^>]*>/g, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '')
-    .trim();
-}
-
+import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';
 
 const limiter = rateLimit({
@@ -178,7 +166,7 @@ export async function POST(req: NextRequest) {
           totalAmount,
           status: transactionStatus,
           expiresAt,
-          invoiceId: `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          invoiceId: `INV-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
         }
       });
 

@@ -23,6 +23,14 @@ export const MOBILE_NAV_LINKS = [
 
 export const PAYMENT_METHODS = [
   {
+    id: 'NEXA_WALLET',
+    name: 'NexaPay Wallet',
+    category: 'NexaPay',
+    icon: '/images/payments/nexapay.svg',
+    description: 'Bayar dengan saldo NexaPay Wallet',
+    fee: 0,
+  },
+  {
     id: 'qris',
     name: 'QRIS',
     category: 'QRIS',

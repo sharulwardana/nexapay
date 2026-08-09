@@ -12,7 +12,7 @@ import { getLoyaltyRank } from '@/store/userStore';
 import MarqueePromo from '@/components/shared/MarqueePromo';
 import { useSoundEffect } from '@/hooks/useSoundEffect';
 
-// New Refactored Components
+// Refactored Components
 import NavLinks from './navbar/NavLinks';
 import NavInlineSearch from './navbar/NavInlineSearch';
 import NavNotifications from './navbar/NavNotifications';
@@ -21,7 +21,6 @@ import NavUserMenu from './navbar/NavUserMenu';
 import NavMobileMenu from './navbar/NavMobileMenu';
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -41,9 +40,6 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -64,9 +60,15 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b bg-background/95 backdrop-blur-xl border-border/50 shadow-md'
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
+          'border-b bg-background/90 backdrop-blur-2xl border-border/40',
+          'shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_rgba(0,0,0,0.03)]',
+          'dark:shadow-[0_1px_3px_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.15)]'
         )}
       >
+        {/* Gradient accent line at the very top */}
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
         <MarqueePromo />
         <div className="container-app">
           <div className="flex items-center justify-between h-14 tablet:h-16">
@@ -74,7 +76,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="relative w-7 h-7 tablet:w-8 tablet:h-8">
-                <div className="absolute inset-0 rounded-lg gradient-primary" />
+                <div className="absolute inset-0 rounded-lg gradient-primary shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-white font-heading font-bold text-sm tablet:text-base">N</span>
                 </div>
@@ -125,7 +127,7 @@ export default function Navbar() {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors lg:hidden ml-1"
+                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all lg:hidden ml-1"
                 aria-label="Menu"
               >
                 <Menu className="w-5 h-5" />

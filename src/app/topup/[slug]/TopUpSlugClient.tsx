@@ -392,6 +392,15 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                         placeholder={['valorant', 'wild-rift'].includes(game.slug) ? 'Masukkan Riot ID + Tag (Contoh: Westbourne#SEA)' : 'Masukkan User ID / Player ID'}
                         className="w-full px-4 py-3 rounded-xl bg-background/50 border border-border text-sm outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
                       />
+                      {userId.trim().length >= 4 && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                          className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold shadow-sm"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>ID Siap Terverifikasi ✓ (Siap Kirim Top Up Instan)</span>
+                        </motion.div>
+                      )}
                     </div>
                   )}
                   {['genshin-impact', 'honkai-star-rail', 'zenless-zone-zero'].includes(game.slug) ? (

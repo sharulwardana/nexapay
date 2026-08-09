@@ -52,9 +52,7 @@ export default function LiveChat() {
     }
   });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -230,7 +228,7 @@ export default function LiveChat() {
                 {quickActions.map((action) => (
                   <button
                     key={action}
-                    onClick={() => { setInput(action); }}
+                    onClick={() => { setInput(action); setTimeout(() => { const form = document.querySelector('[data-chat-form]') as HTMLFormElement; form?.requestSubmit(); }, 50); }}
                     className="flex-shrink-0 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-medium hover:bg-primary/20 transition-colors"
                   >
                     {action}
@@ -242,6 +240,7 @@ export default function LiveChat() {
             {/* Input */}
             <div className="p-3 border-t border-border flex-shrink-0">
               <form
+                data-chat-form
                 onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
                 className="flex items-center gap-2"
               >

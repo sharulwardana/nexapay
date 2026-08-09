@@ -33,7 +33,8 @@ export async function topUpWallet(amount: number) {
       return { success: false, error: 'Maksimal top up adalah Rp 10.000.000' };
     }
 
-    const invoiceId = `NEXA-TOPUP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    // Use crypto-safe invoice ID
+    const invoiceId = `NEXA-TOPUP-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
 
     const [updatedUser] = await prisma.$transaction([
       prisma.user.update({
@@ -103,32 +104,37 @@ export async function transferWallet(recipientEmailOrPhone: string, amount: numb
       return { success: false, error: 'Tidak dapat mentransfer saldo ke akun Anda sendiri.' };
     }
 
-    // Check sender balance
-    const sender = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { id: true, walletBalance: true, name: true, email: true },
-    });
+    // Use crypto-safe invoice IDs
+    const invoiceIdSender = `NEXA-TRF-OUT-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+    const invoiceIdRecipient = `NEXA-TRF-IN-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
 
-    if (!sender || sender.walletBalance < amount) {
-      return { success: false, error: 'Saldo NexaPay Anda tidak mencukupi untuk melakukan transfer.' };
-    }
+    // FIXED: All balance checks and mutations are inside one atomic $transaction
+    // to prevent race conditions and double-spend attacks.
+    const result = await prisma.$transaction(async (tx) => {
+      // Fetch sender balance INSIDE the transaction for consistency
+      const sender = await tx.user.findUnique({
+        where: { id: session.user.id },
+        select: { id: true, walletBalance: true, name: true, email: true },
+      });
 
-    const invoiceIdSender = `NEXA-TRF-OUT-${Date.now()}`;
-    const invoiceIdRecipient = `NEXA-TRF-IN-${Date.now()}`;
+      if (!sender || sender.walletBalance < amount) {
+        throw new Error('Saldo NexaPay Anda tidak mencukupi untuk melakukan transfer.');
+      }
 
-    await prisma.$transaction([
       // Decrement sender balance
-      prisma.user.update({
+      await tx.user.update({
         where: { id: session.user.id },
         data: { walletBalance: { decrement: amount } },
-      }),
+      });
+
       // Increment recipient balance
-      prisma.user.update({
+      await tx.user.update({
         where: { id: recipient.id },
         data: { walletBalance: { increment: amount } },
-      }),
+      });
+
       // Log for sender
-      prisma.transaction.create({
+      await tx.transaction.create({
         data: {
           invoiceId: invoiceIdSender,
           userId: session.user.id,
@@ -141,9 +147,10 @@ export async function transferWallet(recipientEmailOrPhone: string, amount: numb
           status: 'COMPLETED',
           notes: notes || `Transfer saldo ke ${recipient.name || recipient.email}`,
         },
-      }),
+      });
+
       // Log for recipient
-      prisma.transaction.create({
+      await tx.transaction.create({
         data: {
           invoiceId: invoiceIdRecipient,
           userId: recipient.id,
@@ -156,8 +163,10 @@ export async function transferWallet(recipientEmailOrPhone: string, amount: numb
           status: 'COMPLETED',
           notes: notes || `Terima transfer saldo dari ${sender.name || sender.email}`,
         },
-      }),
-    ]);
+      });
+
+      return { senderName: sender.name, recipientName: recipient.name || recipient.email };
+    });
 
     revalidatePath('/dashboard/wallet');
     revalidatePath('/dashboard');
@@ -165,7 +174,7 @@ export async function transferWallet(recipientEmailOrPhone: string, amount: numb
 
     return {
       success: true,
-      recipientName: recipient.name || recipient.email,
+      recipientName: result.recipientName,
     };
   } catch (error: any) {
     console.error('Failed to transfer wallet:', error);

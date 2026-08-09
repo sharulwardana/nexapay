@@ -4,12 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import authConfig from "./auth.config"
-
-const ADMIN_EMAILS = [
-  'sharulwrdn10@gmail.com',
-  'admin@nexapay.com',
-  ...(process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim().toLowerCase()) : [])
-];
+import { isAdminEmail } from "@/lib/auth-helpers"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -17,15 +12,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   callbacks: {
     ...authConfig.callbacks,
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
         token.role = (user as any).role || 'USER';
         token.loyaltyPoints = (user as any).loyaltyPoints || 0;
       }
-      if (token?.email && ADMIN_EMAILS.includes(token.email.toLowerCase())) {
+
+      // Check admin status from centralized config
+      if (token?.email && isAdminEmail(token.email)) {
         token.role = 'ADMIN';
       } else if (token?.sub) {
+        // Refresh role & loyalty from DB for non-admin users
         try {
           const dbUser = await prisma.user.findUnique({
             where: { id: token.sub },
@@ -77,4 +75,3 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     })
   ]
 })
-

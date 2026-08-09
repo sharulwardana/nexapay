@@ -46,11 +46,15 @@ export default function MobileNav() {
       className="fixed bottom-2.5 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      {/* 1:1 Instagram Floating Navbar Capsule */}
       <div
         className={cn(
-          "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full bg-card/90 backdrop-blur-2xl border border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.45),0_0_20px_rgba(255,115,0,0.15)] p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
-          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97]" : "h-[52px] tablet:h-[60px] scale-100"
+          "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full",
+          "bg-card/85 backdrop-blur-2xl",
+          "border border-white/10 dark:border-white/[0.06]",
+          "shadow-[0_8px_32px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.04)]",
+          "dark:shadow-[0_12px_40px_rgba(0,0,0,0.5),0_0_24px_rgba(255,115,0,0.08)]",
+          "p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97] opacity-90" : "h-[52px] tablet:h-[60px] scale-100 opacity-100"
         )}
       >
         <div className="grid grid-cols-5 items-center justify-center h-full w-full">
@@ -64,24 +68,31 @@ export default function MobileNav() {
                 href={item.href}
                 className="relative flex flex-col items-center justify-center w-full h-full rounded-full select-none"
               >
-                {/* Active Pill (Filling full height like Instagram) */}
+                {/* Active Pill with gradient */}
                 {isActive && (
                   <motion.div
                     layoutId="mobile-nav-active-pill"
-                    className="absolute inset-0 bg-gradient-to-r from-primary/25 via-primary/35 to-accent/25 rounded-full border border-primary/50 shadow-[0_0_15px_rgba(255,115,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                    className={cn(
+                      "absolute inset-0 rounded-full",
+                      "bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20",
+                      "border border-primary/40",
+                      "shadow-[0_0_12px_rgba(255,115,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                    )}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
                 
-                {/* 100% Vertically & Horizontally Centered Icon */}
+                {/* Icon */}
                 <div className="flex items-center justify-center relative z-10 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
                   <item.icon className={cn(
                     'w-5 h-5 tablet:w-[22px] tablet:h-[22px] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-                    isActive ? 'stroke-[2.5] text-primary scale-110' : 'stroke-[1.75] text-muted-foreground opacity-75'
+                    isActive 
+                      ? 'stroke-[2.5] text-primary scale-110 drop-shadow-[0_0_6px_rgba(255,115,0,0.3)]' 
+                      : 'stroke-[1.75] text-muted-foreground opacity-60'
                   )} />
                 </div>
                 
-                {/* Smooth Animated Text Label */}
+                {/* Label */}
                 <span className={cn(
                   'text-[9.5px] tablet:text-xs relative z-10 tracking-tight leading-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center pointer-events-none text-center',
                   isShrunk

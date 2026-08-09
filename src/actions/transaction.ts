@@ -2,24 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/../auth';
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error('Unauthorized');
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true, email: true },
-  });
-
-  const isSuperAdmin = session.user.email === 'sharulwrdn10@gmail.com' || user?.email === 'sharulwrdn10@gmail.com';
-  if (!isSuperAdmin && (!user || user.role !== 'ADMIN')) {
-    throw new Error('Forbidden');
-  }
-
-  return session;
-}
+import { requireAdmin } from '@/lib/auth-helpers';
 
 export async function updateTransactionStatus(invoiceId: string, newStatus: string) {
   try {

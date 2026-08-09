@@ -1,18 +1,8 @@
 import prisma from '@/lib/prisma';
 import { auth } from '@/../auth';
+import { isAdminEmail } from '@/lib/admin-check';
 
-/**
- * Centralized list of super-admin emails.
- * Reads from the ADMIN_EMAILS env var (comma-separated).
- * Falls back to a default list when the env var is not set.
- */
-const ADMIN_EMAILS: string[] = process.env.ADMIN_EMAILS
-  ? process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase())
-  : ['admin@nexapay.com'];
-
-export function isAdminEmail(email: string): boolean {
-  return ADMIN_EMAILS.includes(email.toLowerCase());
-}
+export { isAdminEmail };
 
 /**
  * Guard for server actions that require admin privileges.

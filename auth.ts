@@ -4,7 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import authConfig from "./auth.config"
-import { isAdminEmail } from "@/lib/auth-helpers"
+import { isAdminEmail } from "@/lib/admin-check"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),

@@ -5,7 +5,7 @@
  */
 const ADMIN_EMAILS: string[] = process.env.ADMIN_EMAILS
   ? process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase())
-  : ['admin@nexapay.com'];
+  : ['sharulwrdn10@gmail.com', 'admin@nexapay.com'];
 
 export function isAdminEmail(email: string): boolean {
   return ADMIN_EMAILS.includes(email.toLowerCase());

@@ -1,36 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Package, Users, Receipt, Megaphone, Image as ImageIcon, BarChart3,
-  TrendingUp, TrendingDown, DollarSign, ShoppingCart, UserPlus,
-  ChevronRight, ArrowUpRight, ArrowDownRight, LogOut,
-  Menu, X, Search, MoreHorizontal, Activity, Zap
+  DollarSign, ShoppingCart, Users, UserPlus,
+  ArrowUpRight, ArrowDownRight,
+  Search, MoreHorizontal, Activity, Zap, Package, Receipt, BarChart3, RefreshCw
 } from 'lucide-react';
-import { cn, formatCurrency, formatNumber } from '@/lib/utils';
-import { useTheme } from 'next-themes';
-import { signOut } from 'next-auth/react';
-
-const sidebarItems = [
-  { label: 'Ringkasan', href: '/admin', icon: LayoutDashboard },
-  { label: 'Produk', href: '/admin/products', icon: Package },
-  { label: 'Transaksi', href: '/admin/transactions', icon: Receipt },
-  { label: 'Pelanggan', href: '/admin/users', icon: Users },
-  { label: 'Promo & Voucher', href: '/admin/promos', icon: Megaphone },
-  { label: 'Banner Hero', href: '/admin/banners', icon: ImageIcon },
-  { label: 'Analitik', href: '/admin/analytics', icon: BarChart3 },
-];
+import { cn, formatCurrency, formatNumber, triggerHaptic } from '@/lib/utils';
 
 export default function AdminClient({ 
   stats, 
   recentTransactions, 
   salesData,
   topProducts,
-  adminUser 
 }: { 
   stats: { totalRevenue: number; totalTransactions: number; totalUsers: number; newUsersToday: number }, 
   recentTransactions: {
@@ -47,13 +33,30 @@ export default function AdminClient({
   }[], 
   salesData: { day: string; value: number }[],
   topProducts: { name: string; revenue: number; count: number; growth: number }[],
-  adminUser: { name?: string | null; email?: string | null; image?: string | null } 
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [chartMenuOpen, setChartMenuOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
+
+  // Feature 2: Real-time Auto-Refresh Stats (every 15 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsRefreshing(true);
+      router.refresh();
+      setTimeout(() => setIsRefreshing(false), 800);
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [router]);
+
+  const handleManualRefresh = () => {
+    triggerHaptic('medium');
+    setIsRefreshing(true);
+    router.refresh();
+    toast.success('Memperbarui statistik real-time...');
+    setTimeout(() => setIsRefreshing(false), 800);
+  };
 
   const statsCards = [
     { label: 'Total Pendapatan', value: stats.totalRevenue, change: 12.5, icon: DollarSign, color: 'from-violet-500 to-fuchsia-600', shadow: 'shadow-violet-500/20' },
@@ -62,142 +65,38 @@ export default function AdminClient({
     { label: 'Pengguna Baru Hari Ini', value: stats.newUsersToday, change: -2.1, icon: UserPlus, color: 'from-orange-400 to-pink-500', shadow: 'shadow-orange-500/20' },
   ];
   
-  const maxSale = Math.max(...salesData.map(d => d.value), 10000); // dynamic minimum scale
+  const maxSale = Math.max(...salesData.map(d => d.value), 10000);
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a] text-white overflow-hidden selection:bg-violet-500/30">
-      
-      {/* Background Ambient Glow */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/10 blur-[150px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[150px]" />
-      </div>
-
-      {/* Sidebar */}
-      <aside className={cn(
-        'fixed inset-y-0 left-0 z-50 w-72 bg-[#0d0d0d] border-r border-white/10 transform transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) lg:translate-x-0 lg:static flex flex-col',
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      )}>
-        {/* Header */}
-        <div className="flex items-center justify-between h-16 px-5 border-b border-white/10 flex-shrink-0">
-          <Link href="/admin" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-              <Zap className="w-4 h-4 text-white fill-white" />
+    <>
+      {/* Top Header */}
+      <header className="sticky top-0 z-30 h-20 bg-black/20 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-6 lg:px-10">
+        <div className="flex items-center gap-4">
+          {/* Spacer for mobile hamburger from layout */}
+          <div className="lg:hidden w-10" />
+          <div className="hidden lg:block">
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold font-heading tracking-tight">Ringkasan</h1>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-bold text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                LIVE
+              </span>
             </div>
-            <span className="font-heading font-black tracking-tight text-base">
-              Nexa<span className="text-violet-400">Admin</span>
-            </span>
-          </Link>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-            <X className="w-5 h-5" />
+            <p className="text-xs text-white/40 mt-0.5">Selamat datang kembali, berikut statistik performa platform hari ini.</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleManualRefresh}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-bold text-white/80 hover:text-white transition-all cursor-pointer shadow-sm active:scale-95"
+            title="Refresh Data Live"
+          >
+            <RefreshCw className={cn("w-3.5 h-3.5 text-violet-400", isRefreshing && "animate-spin")} />
+            <span className="hidden sm:inline">Refresh Live</span>
           </button>
         </div>
-
-        {/* Admin Profile Card AT TOP - Instant access, 0% cut off on mobile/iOS */}
-        <div className="p-3 border-b border-white/10 bg-white/[0.02] flex-shrink-0">
-          <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-xs font-bold text-white shadow-lg flex-shrink-0">
-              {adminUser?.name ? adminUser.name.charAt(0) : 'A'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white truncate">{adminUser?.name || 'Administrator'}</p>
-              <p className="text-[10px] text-white/40 truncate font-mono">{adminUser?.email || 'admin@nexapay.id'}</p>
-            </div>
-            <Link
-              href="/"
-              onClick={() => setSidebarOpen(false)}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-violet-400 hover:text-violet-300 transition-colors flex-shrink-0"
-              title="Kembali ke Website Utama"
-            >
-              <Zap className="w-4 h-4" />
-            </Link>
-            <button 
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="p-1.5 rounded-lg hover:bg-white/10 text-red-400 hover:text-red-300 transition-colors flex-shrink-0"
-              title="Keluar Akun"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Menu Navigation Items */}
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto min-h-0 pb-16 lg:pb-4">
-          <p className="px-3 text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2 mt-2">Menu</p>
-          {sidebarItems.map((item) => {
-            const isActive = item.href === '/admin'
-              ? pathname === '/admin'
-              : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 relative group overflow-hidden',
-                  isActive ? 'text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
-                )}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="sidebar-active-pill"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    className="absolute inset-0 bg-gradient-to-r from-violet-600/25 via-fuchsia-600/15 to-transparent border border-violet-500/30 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.25)]"
-                  />
-                )}
-                {isActive && (
-                  <motion.div
-                    layoutId="sidebar-active-bar"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-violet-400 via-fuchsia-400 to-violet-500 rounded-r-full shadow-[0_0_12px_#c084fc]"
-                  />
-                )}
-                <item.icon className={cn("w-4 h-4 relative z-10 transition-colors duration-300", isActive ? "text-violet-300 drop-shadow-[0_0_8px_rgba(167,139,250,0.8)]" : "text-white/40 group-hover:text-white/70")} />
-                <span className={cn("relative z-10 transition-colors", isActive ? "text-white font-bold drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-white/50 group-hover:text-white")}>{item.label}</span>
-              </Link>
-            )
-          })}
-        </nav>
-      </aside>
-
-      {/* Mobile overlay */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" 
-            onClick={() => setSidebarOpen(false)} 
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 relative z-10">
-        
-        {/* Top Header */}
-        <header className="sticky top-0 z-30 h-20 bg-black/20 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-6 lg:px-10">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 -ml-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-              <Menu className="w-5 h-5" />
-            </button>
-            <div className="hidden lg:block">
-              <h1 className="text-xl font-bold font-heading tracking-tight">Ringkasan</h1>
-              <p className="text-xs text-white/40 mt-0.5">Selamat datang kembali, berikut statistik performa platform hari ini.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-3 min-w-0 flex-1 sm:flex-none justify-end">
-            <div className="relative group w-full sm:w-64 max-w-xs min-w-0">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 group-focus-within:text-violet-400 transition-colors pointer-events-none" />
-              <input 
-                type="text"
-                placeholder="Cari transaksi, email..." 
-                className="w-full pl-10 pr-12 py-2 sm:py-2.5 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm text-white focus:outline-none focus:bg-white/10 focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all placeholder:text-white/30 truncate" 
-              />
-              <div className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded bg-white/10 text-[9px] text-white/50 font-mono pointer-events-none">⌘K</div>
-            </div>
-          </div>
-        </header>
+      </header>
 
         {/* Dashboard Grid (Bento Box) */}
         <motion.div
@@ -516,7 +415,6 @@ export default function AdminClient({
             
           </div>
         </motion.div>
-      </div>
-    </div>
+    </>
   );
 }

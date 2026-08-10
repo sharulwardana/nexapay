@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function AdminProductsPage() {
-  const session = await auth();
-  
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   // Fetch all products with their denominations count
   const products = await prisma.product.findMany({
@@ -26,6 +21,6 @@ export default async function AdminProductsPage() {
   });
 
   return (
-    <ProductClient products={products} adminUser={session.user} />
+    <ProductClient products={products} />
   );
 }

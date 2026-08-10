@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function AdminAnalyticsPage() {
-  const session = await auth();
-
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   // Aggregate Total Revenue
   const totalRevenueResult = await prisma.transaction.aggregate({
@@ -36,7 +31,6 @@ export default async function AdminAnalyticsPage() {
       totalRevenue={totalRevenueResult._sum.totalAmount || 0}
       totalCompleted={totalRevenueResult._count.id || 0}
       paymentBreakdown={paymentBreakdown}
-      adminUser={session.user}
     />
   );
 }

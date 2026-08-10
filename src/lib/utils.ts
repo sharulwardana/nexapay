@@ -84,3 +84,21 @@ export function formatPaymentMethod(method: string): string {
   if (m === 'MINIMARKET') return 'Minimarket';
   return method.replace(/_/g, ' ');
 }
+
+export function triggerHaptic(pattern: 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error' = 'light') {
+  if (typeof window !== 'undefined' && 'navigator' in window && 'vibrate' in navigator) {
+    try {
+      const patterns: Record<string, number | number[]> = {
+        light: 10,
+        medium: 25,
+        heavy: 50,
+        success: [15, 30, 20],
+        warning: [30, 50, 30],
+        error: [50, 100, 50],
+      };
+      navigator.vibrate(patterns[pattern] || 15);
+    } catch {
+      // Fail silently if vibration is not supported or rejected
+    }
+  }
+}

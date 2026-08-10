@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function AdminPage() {
-  const session = await auth();
-  
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   // Run all database queries in parallel for maximum speed
   const today = new Date();
@@ -106,7 +101,7 @@ export default async function AdminPage() {
     name: p.productId ? (productMap.get(p.productId) || 'Produk Digital') : 'Isi Saldo Wallet NexaPay',
     revenue: p._sum.totalAmount || 0,
     count: p._count.id,
-    growth: Math.floor(Math.random() * 30) + 1 // Dummy growth percentage for visual aesthetic
+    growth: 0
   }));
 
   return (
@@ -115,7 +110,6 @@ export default async function AdminPage() {
       recentTransactions={recentTransactions} 
       salesData={salesData}
       topProducts={topProducts}
-      adminUser={session.user} 
     />
   );
 }

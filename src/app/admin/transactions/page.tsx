@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function AdminTransactionsPage() {
-  const session = await auth();
-  
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   const transactions = await prisma.transaction.findMany({
     orderBy: { createdAt: 'desc' },
@@ -43,7 +38,6 @@ export default async function AdminTransactionsPage() {
     <TransactionsClient
       transactions={transactions}
       stats={{ totalRevenue, totalCompleted, totalPending, totalAll: transactions.length }}
-      adminUser={session.user}
     />
   );
 }

@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function AdminUsersPage() {
-  const session = await auth();
-
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   const users = await prisma.user.findMany({
     orderBy: { createdAt: 'desc' },
@@ -32,5 +27,5 @@ export default async function AdminUsersPage() {
     },
   });
 
-  return <UsersClient users={users} adminUser={session.user} />;
+  return <UsersClient users={users} />;
 }

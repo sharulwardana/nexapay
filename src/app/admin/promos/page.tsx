@@ -9,15 +9,10 @@ export const metadata = {
 };
 
 export default async function AdminPromosPage() {
-  const session = await auth();
-
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   const promos = await prisma.promo.findMany({
     orderBy: { createdAt: 'desc' },
   });
 
-  return <PromosClient promos={promos} adminUser={session.user} />;
+  return <PromosClient promos={promos} />;
 }

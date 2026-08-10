@@ -9,15 +9,10 @@ export const metadata = {
 };
 
 export default async function AdminBannersPage() {
-  const session = await auth();
-
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
 
   const banners = await prisma.banner.findMany({
     orderBy: { sortOrder: 'asc' },
   });
 
-  return <BannersClient banners={banners} adminUser={session.user} />;
+  return <BannersClient banners={banners} />;
 }

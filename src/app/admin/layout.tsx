@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/../auth';
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminMobileDock from '@/components/admin/AdminMobileDock';
 
 export default async function AdminLayout({
   children,
@@ -25,9 +26,12 @@ export default async function AdminLayout({
       <AdminSidebar adminUser={session.user} />
 
       {/* Main Content Area — only this part changes per page */}
-      <div className="flex-1 flex flex-col min-w-0 relative z-10">
+      <div className="flex-1 flex flex-col min-w-0 relative z-10 pb-20 lg:pb-0">
         {children}
       </div>
+
+      {/* Futuristic Mobile Dock (Melayang di Bawah HP) */}
+      <AdminMobileDock adminUser={session.user} />
     </div>
   );
 }

@@ -72,9 +72,7 @@ export default function AdminClient({
       {/* Top Header */}
       <header className="sticky top-0 z-30 h-20 bg-black/20 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-6 lg:px-10">
         <div className="flex items-center gap-4">
-          {/* Spacer for mobile hamburger from layout */}
-          <div className="lg:hidden w-10" />
-          <div className="hidden lg:block">
+          <div className="block">
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold font-heading tracking-tight">Ringkasan</h1>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-bold text-emerald-400">
@@ -108,12 +106,12 @@ export default function AdminClient({
           <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-6">
             
             {/* Top Stats Cards */}
-            <div className="grid grid-cols-1 mobile-l:grid-cols-2 laptop-l:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 laptop-l:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
               {statsCards.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04, duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative group p-4 sm:p-5 laptop-l:p-6 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden"
+                  className="relative group p-3.5 sm:p-5 laptop-l:p-6 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500 overflow-hidden"
                 >
                   <div className={cn("absolute -right-6 -top-6 w-24 h-24 rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-br", stat.color)} />
                   

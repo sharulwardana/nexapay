@@ -94,7 +94,6 @@ export default function BannersClient({ banners }: { banners: BannerItem[] }) {
     <>
         <header className="sticky top-0 z-40 h-16 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center justify-between px-4 sm:px-6 gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="lg:hidden w-10" />
             <div className="min-w-0">
               <h1 className="text-lg sm:text-xl font-bold font-heading tracking-tight truncate">Banner Hero</h1>
             </div>

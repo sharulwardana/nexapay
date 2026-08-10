@@ -29,15 +29,6 @@ export default function AdminSidebar({ adminUser }: {
 
   return (
     <>
-      {/* Mobile Hamburger Button — rendered as a fixed trigger */}
-      <button 
-        onClick={() => setSidebarOpen(true)} 
-        className="fixed top-4 left-4 z-50 lg:hidden p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-xl transition-all active:scale-95"
-        aria-label="Buka menu admin"
-      >
-        <Menu className="w-5 h-5 text-white" />
-      </button>
-
       {/* Sidebar */}
       <aside className={cn(
         'fixed inset-y-0 left-0 z-50 w-72 bg-[#0d0d0d] border-r border-white/10 transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:translate-x-0 lg:static flex flex-col',

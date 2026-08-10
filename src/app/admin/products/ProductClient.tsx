@@ -204,7 +204,6 @@ export default function ProductClient({ products }: { products: ProductItem[] })
     <>
       <header className="sticky top-0 z-30 h-16 bg-black/20 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <div className="lg:hidden w-10" />
           <div className="min-w-0">
             <h1 className="text-lg sm:text-xl font-bold font-heading tracking-tight truncate">Kelola Produk</h1>
           </div>

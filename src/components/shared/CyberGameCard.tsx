@@ -38,18 +38,21 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
         href={game.category === 'GAME_TOPUP' ? `/topup/${game.slug}` : `/products/${game.slug}`}
         className="relative flex flex-col h-full rounded-2xl bg-card border border-border/80 group-hover:border-primary/60 overflow-hidden shadow-lg group-hover:shadow-[0_12px_30px_rgba(255,115,0,0.2)] transition-all duration-300"
       >
-        {/* Top Image Container */}
-        <div className="relative w-full aspect-[4/5] overflow-hidden bg-background">
+        {/* Top Image Container — 1:1 Square HD (Codashop & UniPin Pro Style) */}
+        <div className="relative w-full aspect-square overflow-hidden bg-slate-950/80">
           {/* Image OR Styled Gradient Fallback */}
           {game.image && !imageError ? (
             <Image
               src={game.image}
               alt={game.name}
               fill
+              unoptimized
+              quality={95}
               priority={priorityImage}
+              loading={priorityImage ? 'eager' : undefined}
               onError={() => setImageError(true)}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-108"
+              sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             />
           ) : (
             <div className={`absolute inset-0 bg-gradient-to-br ${gameColors.from} ${gameColors.to} flex flex-col items-center justify-center p-4 text-white`}>
@@ -60,8 +63,8 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
             </div>
           )}
 
-          {/* Soft Dark Vignette Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-black/20 opacity-80 group-hover:opacity-60 transition-opacity" />
+          {/* Soft Dark Vignette & Glass Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-black/10 opacity-70 group-hover:opacity-40 transition-opacity z-10 pointer-events-none" />
 
           {/* Badges Overlay */}
           <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">

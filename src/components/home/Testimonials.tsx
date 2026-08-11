@@ -82,12 +82,12 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 mb-4">
-            <MessageSquare className="w-3 h-3 text-violet-500" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-violet-500">Testimonials</span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/30 backdrop-blur-md mb-4 shadow-sm">
+            <MessageSquare className="w-3.5 h-3.5 text-violet-400" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 font-heading">GAMER REVIEWS & FEEDBACK</span>
           </div>
-          <h2 className="heading-3">Kata mereka tentang NexaPay</h2>
-          <p className="body-default mt-2 max-w-md mx-auto">Lebih dari 100.000 gamer sudah mempercayai NexaPay</p>
+          <h2 className="heading-3">Apa Kata Komunitas Gamer NexaPay</h2>
+          <p className="body-default mt-2 max-w-md mx-auto text-muted-foreground font-medium">Ribuan pro player dan casual gamer telah membuktikan kecepatan transaksi NexaPay.</p>
         </motion.div>
 
         {/* Desktop: Grid */}

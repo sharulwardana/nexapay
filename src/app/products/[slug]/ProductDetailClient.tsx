@@ -144,6 +144,9 @@ export default function ProductDetailClient({ product }: { product: any }) {
                       )}
                       <p className="text-xs tablet:text-sm font-semibold">{d.label}</p>
                       <p className="text-sm tablet:text-base font-bold text-primary mt-1">{formatCurrency(d.price)}</p>
+                      <div className="mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[9px] font-bold">
+                        <span>🪙 +{Math.floor(d.price / 200).toLocaleString('id-ID')} Nexa Points</span>
+                      </div>
                       {selectedDenom === d.id && (
                         <div className="absolute top-2 left-2 w-5 h-5 rounded-full gradient-primary flex items-center justify-center">
                           <Check className="w-3 h-3 text-white" />

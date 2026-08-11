@@ -27,11 +27,22 @@ export default async function TopUpPage() {
   });
 
   const validGameProducts = digitalProducts.filter((p) => p.category === 'GAME_TOPUP');
+  const staticMap = new Map(validGameProducts.map((p) => [p.slug, p]));
   const validSlugs = new Set(validGameProducts.map((p) => p.slug));
   const filteredDbGames = gamesFromDb.filter((p) => validSlugs.has(p.slug));
   const dbSlugs = new Set(filteredDbGames.map((g) => g.slug));
   const missingFromDb = validGameProducts.filter((p) => !dbSlugs.has(p.slug));
-  const games = [...filteredDbGames, ...missingFromDb];
+  const combined = [...filteredDbGames, ...missingFromDb];
+
+  const games = combined.map((g) => {
+    const staticInfo = staticMap.get(g.slug);
+    return {
+      ...g,
+      image: staticInfo?.image || g.image,
+      bannerImage: staticInfo?.bannerImage || g.bannerImage || g.image,
+      denominations: staticInfo?.denominations || g.denominations,
+    };
+  });
 
   return (
     <>

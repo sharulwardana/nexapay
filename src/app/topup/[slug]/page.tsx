@@ -36,12 +36,14 @@ export default async function TopUpDetailPage({ params }: { params: Promise<{ sl
     console.error('Error fetching game from DB:', e);
   }
 
-  // Fallback to static products if DB product is missing or has fewer denominations
+  // Always sync with static products for accurate denominations, images, and pricing
   const staticGame = digitalProducts.find(p => p.slug === resolvedParams.slug);
   if (staticGame) {
-    if (!game || !game.denominations || game.denominations.length < staticGame.denominations.length) {
-      game = staticGame;
-    }
+    game = {
+      ...game,
+      ...staticGame,
+      denominations: staticGame.denominations,
+    };
   }
 
   if (!game || (game.isActive === false)) {

@@ -126,10 +126,10 @@ export default function PromoCarousel() {
                       >
                         <Link
                           href="/promo"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gray-900 text-xs tablet:text-sm font-semibold hover:bg-white/90 hover:shadow-lg hover:shadow-white/20 transition-all duration-200 hover:-translate-y-0.5"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gray-950 text-xs tablet:text-sm font-bold font-heading hover:bg-white/90 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:scale-95 shadow-md"
                         >
-                          <Sparkles className="w-3.5 h-3.5" />
-                          Klaim Sekarang
+                          <Sparkles className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse" />
+                          <span>Klaim Cyber Boost ⚡</span>
                         </Link>
                       </motion.div>
                     </div>

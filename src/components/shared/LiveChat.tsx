@@ -127,7 +127,7 @@ export default function LiveChat() {
             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
             exit={{ scale: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-[86px] right-4 tablet:bottom-6 tablet:right-6 z-40 w-12 h-12 tablet:w-14 tablet:h-14 rounded-full bg-primary text-white shadow-elevated hover:shadow-lg hover:scale-105 transition-shadow duration-200 flex items-center justify-center"
+            className="fixed bottom-[76px] right-4 tablet:bottom-6 tablet:right-6 z-40 w-12 h-12 tablet:w-14 tablet:h-14 rounded-full bg-primary text-white shadow-elevated hover:shadow-lg hover:scale-105 transition-shadow duration-200 flex items-center justify-center"
             aria-label="Open Chat"
           >
             <MessageCircle className="w-5 h-5" />
@@ -143,7 +143,7 @@ export default function LiveChat() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed z-50 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col bottom-[84px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-120px)]"
+            className="fixed z-50 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col bottom-[72px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-110px)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">

@@ -54,46 +54,61 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
           </Link>
         </motion.div>
 
-        {/* Category Tabs */}
+        {/* Category Tabs — Framer Motion Sliding Pill */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.1 }}
-          className="flex gap-1.5 overflow-x-auto no-scrollbar pb-4 mb-8"
+          className="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-8"
         >
           <button
             onClick={() => setActiveCategory('ALL')}
             className={cn(
-              'flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all border',
+              'relative flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap border border-transparent',
               activeCategory === 'ALL'
-                ? 'bg-foreground text-background border-foreground'
-                : 'bg-transparent text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground'
+                ? 'text-white'
+                : 'text-muted-foreground border-border/60 bg-card/40 hover:text-foreground hover:border-border'
             )}
           >
-            Semua
+            {activeCategory === 'ALL' && (
+              <motion.div
+                layoutId="activeCategoryPill"
+                className="absolute inset-0 gradient-primary rounded-full z-0 shadow-md shadow-primary/25"
+                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">Semua</span>
           </button>
           {CATEGORIES.map((cat) => {
             const Icon = iconMap[cat.icon] || Gamepad2;
+            const isActive = activeCategory === cat.id;
             return (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={cn(
-                  'flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all border whitespace-nowrap',
-                  activeCategory === cat.id
-                    ? 'bg-foreground text-background border-foreground'
-                    : 'bg-transparent text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground'
+                  'relative flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap border border-transparent',
+                  isActive
+                    ? 'text-white'
+                    : 'text-muted-foreground border-border/60 bg-card/40 hover:text-foreground hover:border-border'
                 )}
               >
-                <Icon className="w-3 h-3" />
-                {cat.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeCategoryPill"
+                    className="absolute inset-0 gradient-primary rounded-full z-0 shadow-md shadow-primary/25"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <Icon className="w-3.5 h-3.5 relative z-10" />
+                <span className="relative z-10">{cat.label}</span>
               </button>
             );
           })}
         </motion.div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 tablet:gap-6">
+        {/* Product Grid — Codashop & UniPin Density (6 Cols) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 tablet:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 tablet:gap-4">
           {filteredProducts.map((product, index) => {
             return (
               <motion.div

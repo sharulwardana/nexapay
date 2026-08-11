@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'News & Blog',
-  description: 'Baca berita terbaru, tips gaming, update promo, dan informasi seputar NexaPay dan dunia gaming Indonesia.',
+  title: 'Patch Notes & Cyber Feed — NexaPay',
+  description: 'Update sistem terbaru, patch notes game, promo eksklusif, dan pengumuman resmi NexaPay.',
   openGraph: {
-    title: 'News & Blog — NexaPay',
+    title: 'Patch Notes & Cyber Feed — NexaPay',
     description: 'Update terbaru, tips, dan berita gaming.',
     url: '/news',
   },

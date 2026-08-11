@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    qualities: [30, 75, 90, 95],
     remotePatterns: [
       { protocol: 'https', hostname: '**.nexapay.id' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },

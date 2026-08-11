@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, ChevronDown, MessageCircle, Mail, Phone, MapPin,
-  HelpCircle, ShieldCheck, Clock, CreditCard, Gamepad2, Zap,
+  HelpCircle, ShieldCheck, Clock, CreditCard, Gamepad2, Zap, Sparkles, Cpu,
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import MobileNav from '@/components/layout/MobileNav';
@@ -13,36 +13,35 @@ import { cn } from '@/lib/utils';
 
 const faqs = [
   {
-    category: 'Umum',
+    category: 'Umum & Sistem',
     icon: HelpCircle,
     questions: [
-      { q: 'Apa itu NexaPay?', a: 'NexaPay adalah platform top-up game dan pembelian produk digital terpercaya #1 di Indonesia. Kami menyediakan layanan top-up untuk 500+ game dan berbagai produk digital dengan harga termurah dan proses instan.' },
-      { q: 'Apakah NexaPay aman?', a: 'Ya, 100% aman. NexaPay menggunakan enkripsi SSL, payment gateway tersertifikasi, dan sistem keamanan berlapis untuk melindungi setiap transaksi kamu.' },
-      { q: 'Berapa lama proses top up?', a: 'Mayoritas top-up diproses secara instan dalam waktu kurang dari 30 detik. Untuk beberapa produk tertentu, proses bisa memakan waktu 1-15 menit.' },
+      { q: 'Apa keunggulan sistem otomatisasi NexaPay?', a: 'NexaPay terhubung langsung dengan API server resmi publisher game. Transaksi langsung diproses oleh robot pemroses otomatis dalam hitungan milidetik 24/7 tanpa antrean manual.' },
+      { q: 'Apakah garansi saldo masuk 100%?', a: 'Ya. Jika sistem memverifikasi bahwa pembayaran telah diterima, diamond atau item akan otomatis terinjeksi ke ID Akun target.' },
+      { q: 'Berapa lama rata-rata durasi transaksi?', a: '99.2% transaksi diproses instan dalam waktu kurang dari 5 detik. Untuk pemeliharaan server game tertentu, maksimal pemrosesan 1-15 menit.' },
     ],
   },
   {
-    category: 'Pembayaran',
+    category: 'Pembayaran & Deposit',
     icon: CreditCard,
     questions: [
-      { q: 'Metode pembayaran apa saja yang tersedia?', a: 'Kami mendukung QRIS, GoPay, OVO, DANA, ShopeePay, Transfer Bank (BCA, BNI, BRI, Mandiri), Alfamart, Indomaret, dan bahkan Cryptocurrency (USDT).' },
-      { q: 'Apakah ada biaya admin?', a: 'Untuk pembayaran via QRIS dan E-Wallet tidak ada biaya admin. Untuk transfer bank dikenakan biaya Rp 4.000 dan convenience store Rp 5.000.' },
+      { q: 'Metode pembayaran instant apa saja yang didukung?', a: 'Kami mendukung QRIS Bebas Admin, GoPay, OVO, DANA, ShopeePay, Virtual Account BCA/Mandiri/BRI/BNI, Minimarket, serta Crypto USDT.' },
+      { q: 'Bagaimana jika pembayaran sudah terdebit tapi status masih pending?', a: 'Beberapa bank memerlukan sinkronisasi mutation log (biasanya 1-3 menit). Jika lebih dari 15 menit belum terupdate, klik tombol "Kirim Struk WA" di halaman status transaksi untuk bantuan instant.' },
     ],
   },
   {
-    category: 'Top Up Game',
+    category: 'Top Up Game & Akun',
     icon: Gamepad2,
     questions: [
-      { q: 'Bagaimana cara top up game?', a: '1. Pilih game yang ingin di top up, 2. Pilih nominal, 3. Masukkan User ID dan Server ID, 4. Pilih metode pembayaran, 5. Selesaikan pembayaran. Diamond/item akan masuk otomatis!' },
-      { q: 'Bagaimana cara mengetahui User ID?', a: 'Buka game kamu, masuk ke menu Profile/Settings, dan User ID biasanya ditampilkan di sana. Untuk Mobile Legends, bisa dilihat di kiri atas layar utama.' },
-      { q: 'Top up gagal, apa yang harus dilakukan?', a: 'Jangan panik! Jika pembayaran sudah terdebit tapi top up gagal, dana akan dikembalikan dalam 1x24 jam. Kamu juga bisa menghubungi customer service kami 24/7.' },
+      { q: 'Di mana saya bisa menemukan User ID & Zone/Server ID?', a: 'Buka profil game Anda di dalam aplikasi. User ID terletak di bawah nama avatar. Untuk Mobile Legends, contoh: 12345678 (2104).' },
+      { q: 'Salah memasukkan User ID, apakah bisa ditarik kembali?', a: 'Item yang sudah terkirim ke User ID tujuan yang valid dari sistem publisher tidak dapat ditarik kembali. Mohon periksa kembali nama akun di konfirmasi pesanan sebelum bayar.' },
     ],
   },
 ];
 
 export default function HelpPage() {
   const [search, setSearch] = useState('');
-  const [openItems, setOpenItems] = useState<string[]>([]);
+  const [openItems, setOpenItems] = useState<string[]>(['0-0']);
 
   const toggle = (key: string) => {
     setOpenItems((prev) =>
@@ -53,95 +52,107 @@ export default function HelpPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
-        <div className="container-app max-w-4xl">
-          {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8 tablet:mb-12">
-            <h1 className="heading-2 mb-2">Pusat Bantuan</h1>
-            <p className="body-default mb-6">Ada pertanyaan? Kami siap membantu 24/7</p>
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden">
+        {/* Glow ambient */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
 
+        <div className="container-app max-w-4xl relative z-10">
+          {/* Header */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10 tablet:mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-md mb-4 shadow-sm">
+              <Cpu className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-[11px] font-bold tracking-widest text-amber-400 uppercase font-heading">Nexa Knowledge Engine</span>
+            </div>
+            <h1 className="heading-1 mb-3">
+              Pusat Bantuan & <span className="gradient-text">FAQ Gamer</span>
+            </h1>
+            <p className="body-default max-w-lg mx-auto text-muted-foreground mb-6">
+              Temukan jawaban cepat terkait kendala top-up, cara cek User ID, hingga panduan metode pembayaran instan.
+            </p>
+
+            {/* Smart Search */}
             <div className="relative max-w-lg mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Cari pertanyaan..."
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-muted/40 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-amber-500/70 focus:bg-muted/70 shadow-sm transition-all duration-200"
+                placeholder="Cari kata kunci kendala (contoh: MLBB, pending, refund)..."
+                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-card/60 border border-border/80 text-xs tablet:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 backdrop-blur-xl shadow-lg transition-all"
               />
             </div>
           </motion.div>
 
-          {/* Quick Contact */}
-          <div className="grid grid-cols-1 tablet:grid-cols-3 gap-3 tablet:gap-4 mb-8 tablet:mb-12">
+          {/* Quick Direct Help Cards */}
+          <div className="grid grid-cols-1 tablet:grid-cols-3 gap-3.5 mb-10">
             {[
-              { icon: MessageCircle, title: 'Live Chat', desc: 'Chat dengan CS kami', action: 'Chat Sekarang', color: 'from-violet-500 to-purple-600' },
-              { icon: Mail, title: 'Email', desc: 'support@nexapay.id', action: 'Kirim Email', color: 'from-cyan-500 to-blue-600' },
-              { icon: Phone, title: 'Telepon', desc: '0800-123-4567', action: 'Hubungi', color: 'from-green-500 to-emerald-600' },
+              { icon: MessageCircle, title: 'Live Priority CS', desc: 'Sesi chat langsung dengan tim teknisi', action: 'Mulai Chat CS', color: 'from-emerald-500 to-teal-600', link: '/contact' },
+              { icon: Mail, title: 'Dispatch Email', desc: 'Respon cepat untuk kendala invoice', action: 'Kirim Email', color: 'from-cyan-500 to-blue-600', link: 'mailto:support@nexapay.id' },
+              { icon: Phone, title: 'Hotline 24/7', desc: 'Bebas pulsa bantuan telepon', action: '0800-123-4567', color: 'from-amber-500 to-orange-600', link: 'tel:08001234567' },
             ].map((contact, i) => (
-              <motion.div
+              <motion.a
                 key={contact.title}
+                href={contact.link}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-card p-4 tablet:p-5 text-center group cursor-pointer hover:border-primary/30"
+                className="p-5 rounded-2xl bg-card/40 border border-border/80 hover:border-primary/40 backdrop-blur-md text-center group transition-all duration-300 shadow-md"
               >
-                <div className={cn('w-12 h-12 rounded-xl bg-gradient-to-br mx-auto mb-3 flex items-center justify-center', contact.color)}>
-                  <contact.icon className="w-6 h-6 text-white" />
+                <div className={cn('w-11 h-11 rounded-xl bg-gradient-to-br mx-auto mb-3 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform', contact.color)}>
+                  <contact.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-sm font-semibold mb-0.5">{contact.title}</h3>
+                <h3 className="text-sm font-bold font-heading mb-0.5">{contact.title}</h3>
                 <p className="text-xs text-muted-foreground mb-2">{contact.desc}</p>
-                <span className="text-xs font-medium text-primary">{contact.action}</span>
-              </motion.div>
+                <span className="text-xs font-bold text-primary font-heading group-hover:underline">{contact.action} &rarr;</span>
+              </motion.a>
             ))}
           </div>
 
           {/* FAQ Sections */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {faqs.map((section, sectionIdx) => (
               <motion.div
                 key={section.category}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + sectionIdx * 0.1 }}
-                className="glass-card overflow-hidden"
+                transition={{ delay: 0.15 + sectionIdx * 0.1 }}
+                className="rounded-2xl bg-card/50 border border-border/80 backdrop-blur-xl overflow-hidden shadow-lg"
               >
-                <div className="flex items-center gap-3 p-4 border-b border-border">
-                  <section.icon className="w-5 h-5 text-primary" />
-                  <h2 className="text-sm font-semibold">{section.category}</h2>
+                <div className="flex items-center gap-2.5 p-4 bg-white/[0.02] border-b border-border/60">
+                  <section.icon className="w-4 h-4 text-amber-400" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-foreground font-heading">{section.category}</h2>
                 </div>
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-border/60">
                   {section.questions
                     .filter((q) => !search || q.q.toLowerCase().includes(search.toLowerCase()) || q.a.toLowerCase().includes(search.toLowerCase()))
                     .map((faq, i) => {
                       const key = `${sectionIdx}-${i}`;
                       const isOpen = openItems.includes(key);
                       return (
-                        <button
-                          key={key}
-                          onClick={() => toggle(key)}
-                          className="w-full text-left p-4 hover:bg-muted/30 transition-colors"
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <span className="text-sm font-medium">{faq.q}</span>
-                            <ChevronDown className={cn('w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform mt-0.5', isOpen && 'rotate-180')} />
-                          </div>
+                        <div key={key} className="p-4 hover:bg-white/[0.02] transition-colors">
+                          <button
+                            onClick={() => toggle(key)}
+                            className="w-full text-left flex items-start justify-between gap-3 focus:outline-none"
+                          >
+                            <span className="text-xs tablet:text-sm font-bold text-foreground font-heading">{faq.q}</span>
+                            <ChevronDown className={cn('w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform mt-0.5', isOpen && 'rotate-180 text-amber-400')} />
+                          </button>
                           <AnimatePresence initial={false}>
                             {isOpen && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                transition={{ duration: 0.2, ease: 'easeInOut' }}
                                 className="overflow-hidden"
                               >
-                                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                                <p className="text-xs text-muted-foreground mt-2.5 leading-relaxed pl-1 border-l-2 border-amber-500/40">
                                   {faq.a}
                                 </p>
                               </motion.div>
                             )}
                           </AnimatePresence>
-                        </button>
+                        </div>
                       );
                     })}
                 </div>

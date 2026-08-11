@@ -68,8 +68,8 @@ export default function PopularGames({ games }: { games: ProductWithDenomination
           </Link>
         </motion.div>
 
-        {/* Games Grid */}
-        <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 tablet:gap-6">
+        {/* Games Grid — Codashop & UniPin Density (6 Cols) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 tablet:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 tablet:gap-4">
           {popularGames.map((game, index) => {
             return (
               <motion.div

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, ShoppingBag, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi } from 'lucide-react';
+import { Search, ShoppingBag, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi, Cpu } from 'lucide-react';
 import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { CATEGORIES } from '@/lib/constants';
@@ -51,71 +51,89 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
   }, [products, search, activeCategory]);
 
   const nonGameCategories = CATEGORIES.filter(c => c.id !== 'GAME_TOPUP');
+  
+  // Prepare categories list including ALL
+  const allCategories = [{ id: 'ALL', label: 'Semua Produk', icon: 'ShoppingBag' }, ...nonGameCategories];
 
   return (
     <>
-      <main className="min-h-screen pt-24 tablet:pt-28 pb-24">
-        <div className="container-app">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 tablet:mb-8">
-            <h1 className="heading-2 mb-2">
-              <ShoppingBag className="inline w-7 h-7 tablet:w-9 tablet:h-9 mr-2 text-primary" />
-              Produk Digital
+      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden">
+        {/* Ambient Glow */}
+        <div className="absolute top-0 right-1/3 w-96 h-96 bg-accent/10 rounded-full blur-[130px] pointer-events-none" />
+
+        <div className="container-app relative z-10">
+          {/* Cyber Page Header */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8 tablet:mb-10 text-center tablet:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 backdrop-blur-md mb-4 shadow-sm mx-auto tablet:mx-0">
+              <Cpu className="w-3.5 h-3.5 text-accent" />
+              <span className="text-[11px] font-bold tracking-widest text-accent uppercase font-heading">Nexa Digital Market</span>
+            </div>
+            <h1 className="heading-1 mb-2">
+              Katalog <span className="gradient-accent text-transparent bg-clip-text">Produk Digital</span>
             </h1>
-            <p className="body-default">Pulsa, paket data, token PLN, voucher, gift card, dan lainnya</p>
+            <p className="body-default max-w-xl text-muted-foreground mx-auto tablet:mx-0">
+              Akses instan ke ribuan voucher, pulsa, token listrik, dan paket langganan streaming dengan harga distributor terbaik.
+            </p>
           </motion.div>
 
           {/* Search & Category Filter */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-6">
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8">
+            <div className="relative mb-6 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
               <input
                 type="text"
-                placeholder="Cari produk digital..."
+                placeholder="Search digital products... (e.g. Netflix, Telkomsel, Token PLN)"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-muted/40 border border-border text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:bg-muted/70 shadow-sm transition-all duration-200"
+                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-card/60 border border-border/80 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 backdrop-blur-xl shadow-lg transition-all"
               />
             </div>
 
-            {/* Category pills */}
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-              <button
-                onClick={() => setActiveCategory('ALL')}
-                className={cn(
-                  'flex-shrink-0 px-4 py-2.5 rounded-xl text-xs tablet:text-sm font-medium transition-all whitespace-nowrap',
-                  activeCategory === 'ALL' ? 'gradient-primary text-white' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-                )}
-              >
-                Semua
-              </button>
-              {nonGameCategories.map((cat) => {
+            {/* Category pills - Framer Motion Sliding Pill (Apple Style) */}
+            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-2">
+              {allCategories.map((cat) => {
+                const isActive = activeCategory === cat.id;
                 const Icon = iconMap[cat.icon] || ShoppingBag;
                 return (
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
                     className={cn(
-                      'flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs tablet:text-sm font-medium transition-all whitespace-nowrap',
-                      activeCategory === cat.id ? 'gradient-primary text-white' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                      'relative flex-shrink-0 flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold transition-colors whitespace-nowrap border border-transparent',
+                      isActive
+                        ? 'text-white'
+                        : 'text-muted-foreground border-border/60 bg-card/40 hover:text-foreground hover:border-border'
                     )}
                   >
-                    <Icon className="w-3.5 h-3.5" />
-                    {cat.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeProductCatPill"
+                        className="absolute inset-0 bg-gradient-to-r from-accent to-fuchsia-600 rounded-xl z-0 shadow-md shadow-accent/25"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      <Icon className="w-3.5 h-3.5" />
+                      {cat.label}
+                    </span>
                   </button>
                 );
               })}
             </div>
           </motion.div>
 
-          <p className="text-xs text-muted-foreground mb-4">Menampilkan {filteredProducts.length} produk</p>
+          <p className="text-xs font-semibold text-muted-foreground font-heading uppercase tracking-wider mb-4">
+            Terdeteksi {filteredProducts.length} Produk Digital
+          </p>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 tablet:gap-4">
+          <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredProducts.map((product, index) => {
               const minPrice = product.denominations.length > 0
                 ? Math.min(...product.denominations.map(d => d.price))
                 : 0;
               const catInfo = CATEGORIES.find(c => c.id === product.category);
+              
               return (
                 <motion.div
                   key={product.id}
@@ -123,30 +141,41 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
                 >
-                  <Link href={`/products/${product.slug}`} className="group block glass-card overflow-hidden">
+                  <Link href={`/products/${product.slug}`} className="group block h-full rounded-2xl bg-card/40 border border-border/80 hover:border-accent/50 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:hover:shadow-accent/10">
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <div className={cn('absolute inset-0 bg-gradient-to-br', catInfo?.color || 'from-primary/30 to-accent/30')} style={{ opacity: 0.3 }} />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-3">
-                        <span className="text-base tablet:text-lg font-heading font-bold text-foreground/80 text-center leading-tight">
-                          {product.name.length > 25 ? product.name.split(' ').slice(0, 3).join(' ') : product.name}
+                      {/* Gradient Backdrop */}
+                      <div className={cn('absolute inset-0 bg-gradient-to-br transition-opacity duration-500 group-hover:opacity-60', catInfo?.color || 'from-primary/30 to-accent/30')} style={{ opacity: 0.2 }} />
+                      
+                      {/* Floating Particles/Shapes Effect */}
+                      <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/5 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                      <div className="absolute -left-2 -top-2 w-16 h-16 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
+                      
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <span className="text-base tablet:text-lg font-heading font-bold text-foreground text-center leading-tight drop-shadow-md group-hover:scale-105 transition-transform duration-300">
+                          {product.name}
                         </span>
                         {product.publisher && (
-                          <span className="text-[10px] text-muted-foreground mt-1">{product.publisher}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80 mt-2">{product.publisher}</span>
                         )}
                       </div>
-                      <div className="absolute top-2 left-2">
-                        <span className="px-2 py-0.5 rounded-md bg-black/40 dark:bg-white/10 backdrop-blur text-white dark:text-white text-[9px] font-medium">
+                      <div className="absolute top-2.5 left-2.5">
+                        <span className="px-2 py-1 rounded-md bg-black/40 dark:bg-white/10 border border-white/5 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-wider">
                           {catInfo?.label}
                         </span>
                       </div>
                     </div>
-                    <div className="p-3 tablet:p-4">
-                      <h3 className="text-xs tablet:text-sm font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                    <div className="p-4 border-t border-white/5">
+                      <h3 className="text-xs tablet:text-sm font-bold text-foreground line-clamp-1 group-hover:text-accent transition-colors font-heading">
                         {product.name}
                       </h3>
-                      <p className="text-[10px] text-muted-foreground mt-0.5">{product.denominations.length} pilihan</p>
-                      <p className="text-xs tablet:text-sm font-bold text-primary mt-2">
-                        Mulai {formatCurrency(minPrice)}
+                      <p className="text-[10px] font-medium text-muted-foreground mt-1">
+                        Tersedia {product.denominations.length} Variasi Denom
+                      </p>
+                      <p className="text-xs tablet:text-sm font-bold text-accent mt-3 flex items-center justify-between">
+                        <span>Mulai {formatCurrency(minPrice)}</span>
+                        <span className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                          <Zap className="w-3 h-3" />
+                        </span>
                       </p>
                     </div>
                   </Link>
@@ -156,10 +185,12 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
           </div>
 
           {filteredProducts.length === 0 && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-              <ShoppingBag className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Produk tidak ditemukan</h3>
-              <p className="text-sm text-muted-foreground">Coba kata kunci atau kategori lain</p>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+              <div className="w-20 h-20 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-accent/5">
+                <ShoppingBag className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-lg font-bold font-heading mb-2">Produk tidak ditemukan</h3>
+              <p className="text-sm text-muted-foreground">Sistem tidak dapat menemukan produk yang cocok dengan pencarian Anda.</p>
             </motion.div>
           )}
         </div>

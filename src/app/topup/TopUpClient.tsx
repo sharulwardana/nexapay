@@ -37,22 +37,27 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
 
   return (
     <>
-      <main className="min-h-screen pt-24 tablet:pt-28 pb-24">
-        <div className="container-app">
+      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden">
+        {/* Glow ambient background */}
+        <div className="absolute top-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="container-app relative z-10">
           {/* Page Header */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ease: [0.33, 1, 0.68, 1] }}
-            className="mb-6 tablet:mb-8"
+            className="mb-8 tablet:mb-10 text-center tablet:text-left"
           >
-            <p className="label mb-2 flex items-center gap-1.5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md mb-4 shadow-sm mx-auto tablet:mx-0">
               <Gamepad2 className="w-3.5 h-3.5 text-primary" />
-              Game Top Up
-            </p>
-            <h1 className="heading-3 mb-1">Top Up Game</h1>
-            <p className="body-default">
-              Pilih game favorit kamu dan top up dengan harga termurah
+              <span className="text-[11px] font-bold tracking-widest text-primary uppercase font-heading">Nexa Game Center</span>
+            </div>
+            <h1 className="heading-1 mb-2">
+              Top-Up <span className="gradient-text">Gaming Ecosystem</span>
+            </h1>
+            <p className="body-default max-w-xl text-muted-foreground mx-auto tablet:mx-0">
+              Injeksi diamond dan game items instan dalam hitungan detik. Harga termurah dengan garansi masuk 100%.
             </p>
           </motion.div>
 
@@ -61,36 +66,46 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="flex flex-col tablet:flex-row gap-3 mb-6"
+            className="flex flex-col tablet:flex-row gap-4 mb-8"
           >
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            {/* Cyber Search */}
+            <div className="relative flex-1 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <input
                 type="text"
-                placeholder="Cari game... (Mobile Legends, Free Fire, Genshin...)"
+                placeholder="Search game title... (e.g. Mobile Legends, Genshin)"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-muted/40 border border-border text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:bg-muted/70 shadow-sm transition-all duration-200"
+                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-card/60 border border-border/80 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 backdrop-blur-xl shadow-lg transition-all"
               />
             </div>
 
-            {/* Category filter */}
+            {/* Category filter — Framer Motion Sliding Pill */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar">
-              {subcategories.map((subcat) => (
-                <button
-                  key={subcat}
-                  onClick={() => setActiveSubcat(subcat)}
-                  className={cn(
-                    'flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all border whitespace-nowrap',
-                    activeSubcat === subcat
-                      ? 'bg-foreground text-background border-foreground'
-                      : 'bg-transparent text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground'
-                  )}
-                >
-                  {subcat}
-                </button>
-              ))}
+              {subcategories.map((subcat) => {
+                const isActive = activeSubcat === subcat;
+                return (
+                  <button
+                    key={subcat}
+                    onClick={() => setActiveSubcat(subcat)}
+                    className={cn(
+                      'relative flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap border border-transparent',
+                      isActive
+                        ? 'text-white'
+                        : 'text-muted-foreground border-border/60 bg-card/40 hover:text-foreground hover:border-border'
+                    )}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeSubcatPill"
+                        className="absolute inset-0 gradient-primary rounded-full z-0 shadow-md shadow-primary/25"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{subcat}</span>
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -99,8 +114,8 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
             Menampilkan {filteredGames.length} game
           </p>
 
-          {/* Games Grid */}
-          <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4 tablet:gap-6 pb-8">
+          {/* Games Grid — Codashop & UniPin Density (6 Cols) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 tablet:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 tablet:gap-4 pb-8">
             {filteredGames.map((game, index) => {
               return (
                 <motion.div
@@ -110,7 +125,7 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
                   transition={{ delay: index * 0.03 }}
                   className="h-full"
                 >
-                  <CyberGameCard game={game as unknown as import('@/types').ProductWithDenominations} index={index} />
+                  <CyberGameCard game={game as unknown as import('@/types').ProductWithDenominations} index={index} priorityImage={index < 6} />
                 </motion.div>
               );
             })}

@@ -56,11 +56,22 @@ export default async function HomePage() {
     return a.sortOrder - b.sortOrder;
   });
 
+  const staticMap = new Map(digitalProducts.map((p) => [p.slug, p]));
   const validSlugs = new Set(digitalProducts.map((p) => p.slug));
   const filteredDbProducts = products.filter((p) => validSlugs.has(p.slug));
   const dbSlugs = new Set(filteredDbProducts.map((p) => p.slug));
   const missingFromDb = digitalProducts.filter((p) => !dbSlugs.has(p.slug));
-  const allProducts = [...filteredDbProducts, ...missingFromDb];
+  const combined = [...filteredDbProducts, ...missingFromDb];
+
+  const allProducts = combined.map((p) => {
+    const staticInfo = staticMap.get(p.slug);
+    return {
+      ...p,
+      image: staticInfo?.image || p.image,
+      bannerImage: staticInfo?.bannerImage || p.bannerImage || p.image,
+      denominations: staticInfo?.denominations || p.denominations,
+    };
+  });
 
   const games = allProducts as unknown as import('@/types').ProductWithDenominations[];
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Clock, Copy, Home, Receipt, CheckCircle2, Loader2, AlertCircle, XCircle, Zap } from 'lucide-react';
+import { Clock, Copy, Home, Receipt, CheckCircle2, Loader2, AlertCircle, XCircle, Zap, MessageCircle, Printer } from 'lucide-react';
 import { cn, formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
@@ -337,9 +337,40 @@ export default function PaymentStatusClient({
           </div>
         )}
 
+        {/* Smart Receipt Sharing & Print Buttons */}
+        <div className="flex flex-col sm:flex-row gap-2 mb-6 print:hidden">
+          <button
+            onClick={() => {
+              const text = `*STRUK BUKTI TRANSAKSI NEXAPAY*%0A` +
+                `---------------------------------------%0A` +
+                `📄 *No Invoice:* ${txId}%0A` +
+                `🎮 *Produk:* ${productName} - ${denomLabel}%0A` +
+                `🎯 *ID Akun:* ${gameUserId}${gameServerId ? ` (${gameServerId})` : ''}%0A` +
+                `💳 *Metode:* ${paymentMethod.toUpperCase()}%0A` +
+                `💰 *Total Bayar:* ${formatCurrency(totalAmount)}%0A` +
+                `⚡ *Status:* ${isCompleted ? 'BERHASIL ✅' : currentStatus}%0A` +
+                `---------------------------------------%0A` +
+                `Terima kasih telah bertransaksi di NexaPay! 🚀`;
+              window.open(`https://wa.me/?text=${text}`, '_blank');
+            }}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold transition-all active:scale-95 shadow-sm"
+          >
+            <MessageCircle className="w-4 h-4 text-emerald-500" />
+            <span>Kirim Struk ke WA</span>
+          </button>
+
+          <button
+            onClick={() => window.print()}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-muted/40 hover:bg-muted border border-border text-foreground text-xs font-bold transition-all active:scale-95 shadow-sm"
+          >
+            <Printer className="w-4 h-4 text-muted-foreground" />
+            <span>Cetak / Simpan PDF</span>
+          </button>
+        </div>
+
         {/* Dev Simulation Button */}
         {isPending && process.env.NODE_ENV === 'development' && (
-          <div className="mb-6 p-4 rounded-xl border border-dashed border-primary/50 bg-primary/5 flex flex-col items-center gap-3">
+          <div className="mb-6 p-4 rounded-xl border border-dashed border-primary/50 bg-primary/5 flex flex-col items-center gap-3 print:hidden">
             <p className="text-xs text-muted-foreground text-center">
               *Hanya muncul di Development Mode. Gunakan tombol ini untuk menyelesaikan pesanan layaknya callback dari Payment Gateway.
             </p>
@@ -354,7 +385,7 @@ export default function PaymentStatusClient({
         )}
 
         {/* Actions */}
-        <div className="flex flex-col tablet:flex-row gap-3">
+        <div className="flex flex-col tablet:flex-row gap-3 print:hidden">
           <Link
             href="/"
             className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border text-sm font-medium hover:bg-muted/50 transition-all"

@@ -179,7 +179,7 @@ export default function ScratchAndWin() {
         onClick={() => {
           setIsOpen(true);
         }}
-        className="flex fixed bottom-[144px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
+        className="flex fixed bottom-[136px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
       >
         <Gift className="w-5 h-5 tablet:w-6 tablet:h-6 text-white" />
       </motion.button>

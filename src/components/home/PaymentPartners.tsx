@@ -39,13 +39,13 @@ export default function PaymentPartners() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
-            <CreditCard className="w-3 h-3 text-cyan-500" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-500">Partner Resmi</span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 backdrop-blur-md mb-4 shadow-sm">
+            <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-400 font-heading">HIGH-SPEED PAYMENT GATEWAY</span>
           </div>
-          <h2 className="heading-3">Metode Pembayaran Lengkap</h2>
-          <p className="body-default mt-2 max-w-lg mx-auto text-xs tablet:text-sm">
-            Dukungan pembayaran instan tanpa ribet 24/7 otomatis
+          <h2 className="heading-3">Metode Pembayaran Lintas Platform</h2>
+          <p className="body-default mt-2 max-w-lg mx-auto text-xs tablet:text-sm text-muted-foreground font-medium">
+            Dukungan transaksi otomatis dengan verifikasi instan 24 jam nonstop.
           </p>
         </motion.div>
       </div>
@@ -57,13 +57,13 @@ export default function PaymentPartners() {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="flex items-center justify-center gap-3 mb-8"
       >
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-          <Shield className="w-3 h-3 text-emerald-500" />
-          <span className="text-[10px] font-bold text-emerald-500">SSL Encrypted</span>
+        <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-md shadow-sm">
+          <Shield className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-[10px] font-bold text-emerald-400 tracking-wide font-heading">SSL 256-BIT ENCRYPTED</span>
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
-          <Shield className="w-3 h-3 text-blue-500" />
-          <span className="text-[10px] font-bold text-blue-500">PCI DSS Compliant</span>
+        <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 backdrop-blur-md shadow-sm">
+          <Shield className="w-3.5 h-3.5 text-blue-400" />
+          <span className="text-[10px] font-bold text-blue-400 tracking-wide font-heading">PCI DSS LEVEL 1 COMPLIANT</span>
         </div>
       </motion.div>
 
@@ -77,13 +77,13 @@ export default function PaymentPartners() {
           {duplicatedPartners.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className="group flex items-center gap-3 px-4 py-3 rounded-xl border border-border/50 bg-card/60 backdrop-blur-md shadow-sm hover:border-primary/30 hover:bg-card hover:shadow-md transition-all duration-300 flex-shrink-0"
+              className="group flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-card/60 backdrop-blur-md shadow-sm hover:border-primary/40 hover:bg-card/90 hover:shadow-neon-violet transition-all duration-300 flex-shrink-0"
             >
               <div className="w-10 h-7 relative flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Image src={item.icon} alt={item.name} fill sizes="40px" className="object-contain" />
               </div>
-              <span className="text-xs font-bold text-foreground tracking-wide">{item.name}</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-primary/8 text-primary font-bold border border-primary/15">
+              <span className="text-xs font-bold text-foreground tracking-wide font-heading">{item.name}</span>
+              <span className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-primary/10 text-primary font-bold border border-primary/20">
                 {item.badge}
               </span>
             </div>

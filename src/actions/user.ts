@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth-helpers';
 import { z } from 'zod';
+import type { Role } from '@/types';
 
 const updateUserBalanceSchema = z.object({
   userId: z.string().min(1, 'User ID required'),
@@ -18,11 +19,11 @@ export async function toggleUserRole(userId: string, currentRole: string) {
       return { success: false, error: 'User ID tidak valid' };
     }
 
-    const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
+    const newRole: Role = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
 
     await prisma.user.update({
       where: { id: userId },
-      data: { role: newRole as any },
+      data: { role: newRole },
     });
 
     revalidatePath('/admin/users');

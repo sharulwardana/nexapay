@@ -63,8 +63,8 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
             </div>
           )}
 
-          {/* Soft Dark Vignette & Glass Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-black/10 opacity-70 group-hover:opacity-40 transition-opacity z-10 pointer-events-none" />
+          {/* Soft Dark Vignette Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 group-hover:opacity-30 transition-opacity z-10 pointer-events-none" />
 
           {/* Badges Overlay */}
           <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">

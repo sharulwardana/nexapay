@@ -44,7 +44,7 @@ export default function MobileNav() {
       <div
         className={cn(
           "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full",
-          "bg-[#0f111a] border border-white/10 shadow-2xl shadow-black/80",
+          "bg-[#0e1017] border border-white/15 shadow-none",
           "p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
           isShrunk ? "h-[44px] tablet:h-[48px] scale-[0.97]" : "h-[54px] tablet:h-[60px] scale-100"
         )}
@@ -64,12 +64,7 @@ export default function MobileNav() {
                 {isActive && (
                   <motion.div
                     layoutId="mobile-nav-active-pill"
-                    className={cn(
-                      "absolute inset-0 rounded-full",
-                      "bg-primary/20",
-                      "border border-primary/40",
-                      "shadow-[0_0_10px_rgba(255,115,0,0.25)]"
-                    )}
+                    className="absolute inset-0 rounded-full bg-primary/20 border border-primary/50"
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}

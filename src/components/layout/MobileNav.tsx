@@ -36,6 +36,14 @@ export default function MobileNav() {
     return null;
   }
 
+  // Determine active tab index
+  const activeIndex = navItems.findIndex((item) => {
+    if (item.href === '/') {
+      return pathname === '/';
+    }
+    return pathname === item.href || pathname.startsWith(item.href + '/');
+  });
+
   return (
     <nav
       className="fixed bottom-3 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
@@ -49,26 +57,32 @@ export default function MobileNav() {
           isShrunk ? "h-[44px] tablet:h-[48px] scale-[0.97]" : "h-[54px] tablet:h-[60px] scale-100"
         )}
       >
-        <div className="grid grid-cols-5 items-center justify-center h-full w-full">
-          {navItems.map((item) => {
-            const isActive = item.href === '/'
-              ? pathname === '/'
-              : pathname.startsWith(item.href);
+        <div className="relative grid grid-cols-5 items-center justify-center h-full w-full">
+          {/* Persistent Gliding Active Pill (Single DOM Element - 100% Smooth Horizontal Glide) */}
+          {activeIndex !== -1 && (
+            <motion.div
+              className="absolute top-0 bottom-0 rounded-full bg-primary/20 border border-primary/50 pointer-events-none z-0"
+              initial={false}
+              animate={{
+                left: `${activeIndex * 20}%`,
+                width: '20%',
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 450,
+                damping: 32,
+              }}
+            />
+          )}
+
+          {navItems.map((item, idx) => {
+            const isActive = idx === activeIndex;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative flex flex-col items-center justify-center w-full h-full rounded-full select-none"
+                className="relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full select-none"
               >
-                {/* Active Pill with gradient */}
-                {isActive && (
-                  <motion.div
-                    layoutId="mobile-nav-active-pill"
-                    className="absolute inset-0 rounded-full bg-primary/20 border border-primary/50"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                  />
-                )}
-                
                 {/* Icon */}
                 <div className="flex items-center justify-center relative z-10 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
                   <item.icon className={cn(

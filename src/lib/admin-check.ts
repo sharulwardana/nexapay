@@ -5,8 +5,16 @@
  */
 const ADMIN_EMAILS: string[] = process.env.ADMIN_EMAILS
   ? process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase())
-  : ['sharulwrdn10@gmail.com', 'admin@nexapay.com'];
+  : [];
+
+if (ADMIN_EMAILS.length === 0 && typeof process !== 'undefined') {
+  console.warn(
+    '[NexaPay] WARNING: ADMIN_EMAILS environment variable is not set. ' +
+    'No users will have admin access. Set ADMIN_EMAILS in .env.local (comma-separated).'
+  );
+}
 
 export function isAdminEmail(email: string): boolean {
+  if (ADMIN_EMAILS.length === 0) return false;
   return ADMIN_EMAILS.includes(email.toLowerCase());
 }

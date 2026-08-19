@@ -199,6 +199,9 @@ export async function POST(req: NextRequest) {
     if (message === 'Saldo NexaPay Wallet tidak mencukupi.') {
       return NextResponse.json({ error: message }, { status: 400 });
     }
+    if (message.includes('Untuk membayar menggunakan Saldo Wallet')) {
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
 
     return NextResponse.json({ error: 'Terjadi kesalahan pada server.' }, { status: 500 });
   }

@@ -8,36 +8,51 @@ export async function updateTransactionStatus(invoiceId: string, newStatus: stri
   try {
     await requireAdmin();
 
-    const tx = await prisma.transaction.findUnique({
-      where: { invoiceId },
-    });
-
-    if (!tx) {
-      return { success: false, error: 'Transaction not found' };
+    if (!invoiceId || typeof invoiceId !== 'string') {
+      return { success: false, error: 'Invalid invoice ID' };
     }
 
-    const updated = await prisma.transaction.update({
-      where: { invoiceId },
-      data: {
-        status: newStatus,
-        completedAt: newStatus === 'COMPLETED' ? new Date() : tx.completedAt,
-        paidAt: newStatus === 'COMPLETED' || newStatus === 'PAID' ? new Date() : tx.paidAt,
-      },
-    });
+    // Validate status value
+    const validStatuses = ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED', 'REFUNDED', 'PAID'];
+    if (!validStatuses.includes(newStatus)) {
+      return { success: false, error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` };
+    }
 
-    // Credit loyalty points to registered user if status changed to COMPLETED
-    if (newStatus === 'COMPLETED' && tx.status !== 'COMPLETED' && tx.userId !== 'guest-user') {
-      const pointsEarned = Math.floor(tx.totalAmount / 1000);
-      await prisma.user.update({
-        where: { id: tx.userId },
-        data: { loyaltyPoints: { increment: pointsEarned } },
+    // Use $transaction for atomic status update + loyalty points award
+    const result = await prisma.$transaction(async (tx) => {
+      const existingTx = await tx.transaction.findUnique({
+        where: { invoiceId },
       });
-    }
+
+      if (!existingTx) {
+        throw new Error('Transaction not found');
+      }
+
+      const updated = await tx.transaction.update({
+        where: { invoiceId },
+        data: {
+          status: newStatus,
+          completedAt: newStatus === 'COMPLETED' ? new Date() : existingTx.completedAt,
+          paidAt: newStatus === 'COMPLETED' || newStatus === 'PAID' ? new Date() : existingTx.paidAt,
+        },
+      });
+
+      // Credit loyalty points to registered user if status changed to COMPLETED
+      if (newStatus === 'COMPLETED' && existingTx.status !== 'COMPLETED' && existingTx.userId !== 'guest-user') {
+        const pointsEarned = Math.floor(existingTx.totalAmount / 1000);
+        await tx.user.update({
+          where: { id: existingTx.userId },
+          data: { loyaltyPoints: { increment: pointsEarned } },
+        });
+      }
+
+      return updated;
+    });
 
     revalidatePath('/admin');
     revalidatePath('/admin/transactions');
     revalidatePath(`/payment-status/${invoiceId}`);
-    return { success: true, status: updated.status };
+    return { success: true, status: result.status };
   } catch (error: unknown) {
     console.error('Failed to update transaction status:', error);
     return {

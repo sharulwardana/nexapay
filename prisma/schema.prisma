@@ -38,6 +38,45 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ──────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum LoyaltyLevel {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+  DIAMOND
+}
+
+enum PromoType {
+  PERCENTAGE
+  FIXED
+}
+
+enum NotificationType {
+  info
+  success
+  warning
+  error
+  promo
+}
+
+// ─── Models ─────────────────────────────────────────────────────────
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -84,9 +123,9 @@ model User {
   image           String?
   password        String?
   phone           String?
-  role            String       @default("USER")
+  role            Role         @default(USER)
   walletBalance   Int          @default(0)
-  loyaltyLevel    String       @default("BRONZE")
+  loyaltyLevel    LoyaltyLevel @default(BRONZE)
   loyaltyPoints   Int          @default(0)
   referralCode    String?      @unique
   referredBy      String?
@@ -170,7 +209,7 @@ model Transaction {
   discount        Int               @default(0)
   totalAmount     Int
   paymentMethod   String
-  status          String            @default("PENDING")
+  status          TransactionStatus @default(PENDING)
   gameUserId      String?
   gameServerId    String?
   phoneNumber     String?
@@ -194,6 +233,7 @@ model Transaction {
   @@index([invoiceId])
   @@index([status])
   @@index([createdAt])
+  @@index([denominationId])
 }
 
 model Promo {
@@ -201,7 +241,7 @@ model Promo {
   code            String    @unique
   name            String
   description     String?   
-  type            String
+  type            PromoType
   value           Int
   minPurchase     Int       @default(0)
   maxDiscount     Int?
@@ -212,6 +252,7 @@ model Promo {
   endDate         DateTime
   isActive        Boolean   @default(true)
   createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@index([code])
   @@index([isActive])
@@ -235,16 +276,16 @@ model Banner {
 }
 
 model Notification {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   userId    String
   title     String
   message   String   
-  type      String   @default("info")
+  type      NotificationType @default(info)
   link      String?
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, isRead])
 }
@@ -273,6 +314,7 @@ model Referral {
   referee    User     @relation("Referee", fields: [refereeId], references: [id])
 
   @@index([referrerId])
+  @@index([refereeId])
 }
 
 model UserCoupon {

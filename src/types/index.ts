@@ -1,3 +1,39 @@
+// ─── Core Enums (synced with Prisma schema) ──────────────────────────
+
+export type Role = 'USER' | 'ADMIN';
+
+export type TransactionStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'COMPLETED'
+  | 'PAID'
+  | 'FAILED'
+  | 'REFUNDED';
+
+export type LoyaltyLevel =
+  | 'BRONZE'
+  | 'SILVER'
+  | 'GOLD'
+  | 'PLATINUM'
+  | 'DIAMOND';
+
+export type PromoType = 'PERCENTAGE' | 'FIXED';
+
+export type NotificationType = 'info' | 'success' | 'warning' | 'error' | 'promo';
+
+export type ProductCategory =
+  | 'GAMES'
+  | 'GAME_TOPUP'
+  | 'VOUCHER'
+  | 'PULSA'
+  | 'PAKET_DATA'
+  | 'PLN'
+  | 'GIFT_CARD'
+  | 'STREAMING'
+  | 'EWALLET_TOPUP';
+
+// ─── Models ──────────────────────────────────────────────────────────
+
 export interface Product {
   id: string;
   name: string;
@@ -37,59 +73,69 @@ export interface Transaction {
   id: string;
   invoiceId: string;
   userId: string;
-  productId: string;
-  denominationId: string;
+  productId?: string | null;
+  productName: string;
+  category: string;
+  denominationId?: string | null;
   quantity: number;
   amount: number;
   discount: number;
   totalAmount: number;
   paymentMethod: string;
   status: TransactionStatus;
-  gameUserId?: string;
-  gameServerId?: string;
-  phoneNumber?: string;
-  promoCode?: string;
-  product?: Product;
-  denomination?: Denomination;
-  createdAt: string;
-  completedAt?: string;
+  gameUserId?: string | null;
+  gameServerId?: string | null;
+  phoneNumber?: string | null;
+  accountNumber?: string | null;
+  email?: string | null;
+  targetAccount?: string | null;
+  promoCode?: string | null;
+  notes?: string | null;
+  paymentProof?: string | null;
+  paidAt?: string | Date | null;
+  completedAt?: string | Date | null;
+  expiresAt?: string | Date | null;
+  product?: Product | null;
+  denomination?: Denomination | null;
+  createdAt: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface User {
   id: string;
-  name?: string;
-  email?: string;
-  image?: string;
-  role: 'USER' | 'ADMIN';
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role: Role;
   walletBalance: number;
   loyaltyLevel: LoyaltyLevel;
   loyaltyPoints: number;
-  referralCode?: string;
+  referralCode?: string | null;
 }
 
 export interface Promo {
   id: string;
   code: string;
   name: string;
-  description?: string;
-  type: 'PERCENTAGE' | 'FIXED';
+  description?: string | null;
+  type: PromoType;
   value: number;
   minPurchase: number;
-  maxDiscount?: number;
+  maxDiscount?: number | null;
   usageLimit: number;
   usageCount: number;
-  startDate: string;
-  endDate: string;
+  startDate: string | Date;
+  endDate: string | Date;
   isActive: boolean;
 }
 
 export interface Banner {
   id: string;
   title: string;
-  subtitle?: string;
+  subtitle?: string | null;
   image: string;
-  mobileImage?: string;
-  link?: string;
+  mobileImage?: string | null;
+  link?: string | null;
   position: string;
   isActive: boolean;
 }
@@ -98,24 +144,24 @@ export interface Notification {
   id: string;
   title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error' | 'promo';
-  link?: string;
+  type: NotificationType;
+  link?: string | null;
   isRead: boolean;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 export interface NewsArticle {
   id: string;
   title: string;
   slug: string;
-  excerpt?: string;
+  excerpt?: string | null;
   content: string;
-  image?: string;
+  image?: string | null;
   author: string;
   category: string;
   tags: string[];
   isPublished: boolean;
-  publishedAt?: string;
+  publishedAt?: string | Date | null;
 }
 
 export interface PaymentMethod {
@@ -146,30 +192,7 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
-export type ProductCategory =
-  | 'GAMES'
-  | 'GAME_TOPUP'
-  | 'VOUCHER'
-  | 'PULSA'
-  | 'PAKET_DATA'
-  | 'PLN'
-  | 'GIFT_CARD'
-  | 'STREAMING'
-  | 'EWALLET_TOPUP';
-
-export type TransactionStatus =
-  | 'PENDING'
-  | 'PROCESSING'
-  | 'COMPLETED'
-  | 'FAILED'
-  | 'REFUNDED';
-
-export type LoyaltyLevel =
-  | 'BRONZE'
-  | 'SILVER'
-  | 'GOLD'
-  | 'PLATINUM'
-  | 'DIAMOND';
+// ─── Form / View types ───────────────────────────────────────────────
 
 export interface TopUpFormData {
   productId: string;
@@ -220,3 +243,11 @@ export interface ProductWithActiveDenominations extends Omit<Product, 'denominat
   }[];
 }
 
+/**
+ * Transaction with joined relations — used in admin dashboard.
+ */
+export interface TransactionWithRelations extends Omit<Transaction, 'product' | 'denomination'> {
+  user?: { email: string | null } | null;
+  product?: { name: string } | null;
+  denomination?: { label: string } | null;
+}

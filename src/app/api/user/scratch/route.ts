@@ -115,12 +115,14 @@ export async function POST(req: NextRequest) {
       pointsWon: result.pointsWon,
       totalPoints: result.totalPoints,
     });
-  } catch (error: any) {
-    if (error.message === 'USER_NOT_FOUND') {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
-    }
-    if (error.message === 'ALREADY_SCRATCHED') {
-      return NextResponse.json({ message: 'Sudah gosok kartu hari ini' }, { status: 400 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.message === 'USER_NOT_FOUND') {
+        return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      }
+      if (error.message === 'ALREADY_SCRATCHED') {
+        return NextResponse.json({ message: 'Sudah gosok kartu hari ini' }, { status: 400 });
+      }
     }
     console.error('Scratch error:', error);
     return NextResponse.json({ message: 'Terjadi kesalahan pada server.' }, { status: 500 });

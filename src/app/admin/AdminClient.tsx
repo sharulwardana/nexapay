@@ -369,11 +369,11 @@ export default function AdminClient({
                           {tx.invoiceId || tx.id}
                         </td>
                         <td className="p-4 text-sm font-medium text-white/90">
-                          {tx.user?.email || (tx as any).userEmail || 'Anonymous'}
+                          {tx.user?.email || 'Anonymous'}
                         </td>
                         <td className="p-4 min-w-[160px]">
                           <p className="text-xs sm:text-sm font-bold text-white/90 whitespace-nowrap">
-                            {tx.product?.name || ((tx as any).productName?.includes('Wallet') ? 'Isi Saldo Wallet' : (tx as any).productName) || 'Isi Saldo Wallet'}
+                            {tx.product?.name || (tx.productName?.includes('Wallet') ? 'Isi Saldo Wallet' : tx.productName) || 'Isi Saldo Wallet'}
                           </p>
                           <p className="text-[10px] text-white/40 whitespace-nowrap">
                             {tx.denomination?.label || 'Direct Wallet'}

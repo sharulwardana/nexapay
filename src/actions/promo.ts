@@ -3,10 +3,31 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth-helpers';
+import { z } from 'zod';
+import { sanitizeInput } from '@/lib/sanitize';
+
+// --- Zod Schemas ---
+const createPromoSchema = z.object({
+  code: z.string().min(1, 'Kode promo wajib diisi').max(30).transform((v) => v.toUpperCase().trim()),
+  name: z.string().min(1, 'Nama promo wajib diisi').max(100).transform(sanitizeInput),
+  type: z.enum(['PERCENTAGE', 'FIXED'], { errorMap: () => ({ message: 'Tipe promo harus PERCENTAGE atau FIXED' }) }),
+  value: z.number().int().min(1, 'Nilai promo harus lebih dari 0'),
+  minPurchase: z.number().int().min(0).default(0),
+  startDate: z.string().min(1, 'Tanggal mulai wajib diisi'),
+  endDate: z.string().min(1, 'Tanggal akhir wajib diisi'),
+}).refine((data) => {
+  const start = new Date(data.startDate);
+  const end = new Date(data.endDate);
+  return end > start;
+}, { message: 'Tanggal akhir harus setelah tanggal mulai', path: ['endDate'] });
 
 export async function togglePromoStatus(id: string, currentStatus: boolean) {
   try {
     await requireAdmin();
+
+    if (!id || typeof id !== 'string') {
+      return { success: false, error: 'Invalid promo ID' };
+    }
 
     await prisma.promo.update({
       where: { id },
@@ -34,15 +55,21 @@ export async function createPromo(data: {
   try {
     await requireAdmin();
 
+    // Validate with Zod
+    const parsed = createPromoSchema.safeParse(data);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
+    }
+
     const promo = await prisma.promo.create({
       data: {
-        code: data.code.toUpperCase().trim(),
-        name: data.name,
-        type: data.type,
-        value: data.value,
-        minPurchase: data.minPurchase,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
+        code: parsed.data.code,
+        name: parsed.data.name,
+        type: parsed.data.type,
+        value: parsed.data.value,
+        minPurchase: parsed.data.minPurchase,
+        startDate: new Date(parsed.data.startDate),
+        endDate: new Date(parsed.data.endDate),
         isActive: true,
       },
     });
@@ -59,6 +86,10 @@ export async function createPromo(data: {
 export async function deletePromo(id: string) {
   try {
     await requireAdmin();
+
+    if (!id || typeof id !== 'string') {
+      return { success: false, error: 'Invalid promo ID' };
+    }
 
     await prisma.promo.delete({
       where: { id },

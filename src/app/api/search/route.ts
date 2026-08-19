@@ -9,6 +9,22 @@ const limiter = rateLimit({
 
 import { digitalProducts } from '@/data/products';
 
+interface SearchProduct {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  subcategory?: string | null;
+  description?: string | null;
+  image: string;
+  bannerImage?: string | null;
+  publisher?: string | null;
+  isActive: boolean;
+  isFeatured?: boolean;
+  isPopular?: boolean;
+  sortOrder?: number;
+}
+
 export async function GET(req: NextRequest) {
   try {
     const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
@@ -30,7 +46,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ results: [] });
     }
 
-    let results: any[] = [];
+    let results: SearchProduct[] = [];
     try {
       results = await prisma.product.findMany({
         where: {

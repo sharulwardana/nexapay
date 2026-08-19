@@ -3,6 +3,10 @@ import authConfig from "./auth.config"
 
 const { auth } = NextAuth(authConfig)
 
+interface AuthUser {
+  role?: string;
+}
+
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isAuthPage = req.nextUrl.pathname.startsWith('/login');
@@ -27,7 +31,8 @@ export default auth((req) => {
     if (!isLoggedIn) {
       return Response.redirect(new URL('/login', req.url));
     }
-    const userRole = (req.auth?.user as any)?.role;
+    const user = req.auth?.user as AuthUser | undefined;
+    const userRole = user?.role;
     if (userRole !== 'ADMIN') {
       return Response.redirect(new URL('/', req.url));
     }
@@ -37,4 +42,3 @@ export default auth((req) => {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
-

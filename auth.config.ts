@@ -1,7 +1,6 @@
 import Google from "next-auth/providers/google"
 import Discord from "next-auth/providers/discord"
 import type { NextAuthConfig } from "next-auth"
-import { isAdminEmail } from "@/lib/admin-check"
 
 export default {
   providers: [
@@ -19,30 +18,23 @@ export default {
   callbacks: {
     async session({ session, token }) {
       if (!token || !token.sub) {
-        return null as any;
+        return null as unknown as typeof session;
       }
-      if (token?.sub && session.user) {
+      if (token.sub && session.user) {
         session.user.id = token.sub;
       }
-      if (token?.role && session.user) {
+      if (token.role && session.user) {
         session.user.role = token.role as string;
       }
-      if (token?.loyaltyPoints !== undefined && session.user) {
+      if (token.loyaltyPoints !== undefined && session.user) {
         session.user.loyaltyPoints = token.loyaltyPoints as number;
       }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.sub = user.id;
-        token.role = (user as any).role || 'USER';
-        token.loyaltyPoints = (user as any).loyaltyPoints || 0;
-      }
-      if (token?.email && isAdminEmail(token.email)) {
-        token.role = 'ADMIN';
-      }
-      return token;
-    }
+    // NOTE: JWT callback is intentionally NOT defined here.
+    // The full JWT callback (with DB lookups) lives in auth.ts only,
+    // which overrides this config. Keeping JWT logic in one place
+    // prevents dead code and confusion about which callback runs.
   },
   pages: {
     signIn: "/login",

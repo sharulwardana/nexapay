@@ -62,16 +62,11 @@ export default async function DashboardPage() {
   const hasCheckInToday = dbUser.lastCheckIn ? new Date(dbUser.lastCheckIn) >= today : false;
 
   // Fetch real transaction history
-  let recentTransactions: any[] = [];
-  try {
-    recentTransactions = await prisma.transaction.findMany({
-      where: { userId: session.user.id },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-    });
-  } catch (error) {
-    console.error('Failed to fetch recent transactions:', error);
-  }
+  const recentTransactions = await prisma.transaction.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: 'desc' },
+    take: 5,
+  });
 
   return (
     <DashboardClient 

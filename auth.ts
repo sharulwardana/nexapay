@@ -6,6 +6,14 @@ import prisma from "@/lib/prisma"
 import authConfig from "./auth.config"
 import { isAdminEmail } from "@/lib/admin-check"
 
+// Extend the JWT type to include our custom fields
+declare module "next-auth" {
+  interface JWT {
+    role?: string;
+    loyaltyPoints?: number;
+  }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
@@ -15,8 +23,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
-        token.role = (user as any).role || 'USER';
-        token.loyaltyPoints = (user as any).loyaltyPoints || 0;
+        token.role = user.role || 'USER';
+        token.loyaltyPoints = user.loyaltyPoints || 0;
       }
 
       // Check admin status from centralized config

@@ -62,8 +62,8 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, favorite });
-  } catch (error: any) {
-    if (error.code === 'P2002') {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'code' in error && (error as { code: string }).code === 'P2002') {
       return NextResponse.json({ error: 'Sudah ada di favorit' }, { status: 400 });
     }
     console.error('Favorite POST error:', error);
@@ -102,7 +102,7 @@ export async function DELETE(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Favorite DELETE error:', error);
     return NextResponse.json({ error: 'Terjadi kesalahan pada server.' }, { status: 500 });
   }

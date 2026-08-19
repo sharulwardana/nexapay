@@ -80,12 +80,14 @@ export async function POST(req: NextRequest) {
       points: result.points,
       message: `Selamat! Anda berhasil mengklaim ${result.points} NexaPoints!` 
     });
-  } catch (error: any) {
-    if (error.message === 'USER_NOT_FOUND') {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-    if (error.message === 'ALREADY_CHECKED_IN') {
-      return NextResponse.json({ error: 'Sudah check-in hari ini' }, { status: 400 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.message === 'USER_NOT_FOUND') {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
+      if (error.message === 'ALREADY_CHECKED_IN') {
+        return NextResponse.json({ error: 'Sudah check-in hari ini' }, { status: 400 });
+      }
     }
     console.error('Checkin error:', error);
     return NextResponse.json({ error: 'Terjadi kesalahan pada server.' }, { status: 500 });

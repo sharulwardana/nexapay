@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       newBalance: updatedUser.walletBalance 
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Wallet topup error:', error);
     return NextResponse.json({ error: 'Terjadi kesalahan pada server.' }, { status: 500 });
   }

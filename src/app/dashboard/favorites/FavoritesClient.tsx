@@ -112,7 +112,6 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

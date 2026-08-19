@@ -191,7 +191,6 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

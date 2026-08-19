@@ -86,7 +86,6 @@ export default function CareersPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

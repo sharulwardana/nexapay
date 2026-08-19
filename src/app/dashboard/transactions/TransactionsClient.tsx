@@ -116,7 +116,6 @@ export default function TransactionsClient({
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

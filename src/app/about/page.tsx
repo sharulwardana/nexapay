@@ -34,7 +34,6 @@ export default async function AboutPage() {
       <Navbar />
       <AboutClient stats={realStats} />
       <Footer />
-      <MobileNav />
     </>
   );
 }

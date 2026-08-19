@@ -190,7 +190,6 @@ export default function ContactPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

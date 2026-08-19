@@ -142,7 +142,6 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

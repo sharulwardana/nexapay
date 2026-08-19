@@ -33,7 +33,6 @@ export default function PartnerPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

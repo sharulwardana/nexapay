@@ -94,6 +94,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+import MobileNav from '@/components/layout/MobileNav';
+
 export default function RootLayout({
   children,
 }: {
@@ -124,6 +126,7 @@ export default function RootLayout({
             {/* Navbar is imported on individual pages to avoid double rendering */}
             {children}
             <ClientOverlays />
+            <MobileNav />
             <ScrollToTop />
             <PwaRegistry />
             <Toaster

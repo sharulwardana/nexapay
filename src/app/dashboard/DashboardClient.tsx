@@ -240,7 +240,6 @@ export default function DashboardClient({
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

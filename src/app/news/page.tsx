@@ -141,7 +141,6 @@ export default function NewsPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

@@ -159,7 +159,6 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

@@ -298,7 +298,6 @@ export default function ProductDetailClient({ product }: { product: any }) {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

@@ -87,7 +87,6 @@ export default function TrackPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

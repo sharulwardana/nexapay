@@ -213,7 +213,6 @@ export default function SettingsPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

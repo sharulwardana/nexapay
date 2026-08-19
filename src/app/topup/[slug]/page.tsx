@@ -54,7 +54,6 @@ export default async function TopUpDetailPage({ params }: { params: Promise<{ sl
     <>
       <Navbar />
       <TopUpSlugClient game={game} />
-      <MobileNav />
     </>
   );
 }

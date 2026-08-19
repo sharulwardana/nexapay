@@ -46,7 +46,6 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
         status={transaction.status}
         expiresAt={transaction.expiresAt?.toISOString() || null}
       />
-      <MobileNav />
     </>
   );
 }

@@ -162,7 +162,6 @@ export default function HelpPage() {
         </div>
       </main>
       <Footer />
-      <MobileNav />
     </>
   );
 }

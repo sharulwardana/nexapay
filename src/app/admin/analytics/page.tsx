@@ -12,7 +12,7 @@ export default async function AdminAnalyticsPage() {
 
   // Aggregate Total Revenue
   const totalRevenueResult = await prisma.transaction.aggregate({
-    where: { status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] } },
+    where: { status: { in: ['COMPLETED', 'PAID'] } },
     _sum: { totalAmount: true },
     _count: { id: true },
   });
@@ -20,7 +20,7 @@ export default async function AdminAnalyticsPage() {
   // Aggregate Payment Method Breakdown
   const paymentBreakdown = await prisma.transaction.groupBy({
     by: ['paymentMethod'],
-    where: { status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] } },
+    where: { status: { in: ['COMPLETED', 'PAID'] } },
     _sum: { totalAmount: true },
     _count: { id: true },
     orderBy: { _sum: { totalAmount: 'desc' } },
@@ -28,8 +28,8 @@ export default async function AdminAnalyticsPage() {
 
   return (
     <AnalyticsClient
-      totalRevenue={totalRevenueResult._sum.totalAmount || 0}
-      totalCompleted={totalRevenueResult._count.id || 0}
+      totalRevenue={totalRevenueResult._sum?.totalAmount || 0}
+      totalCompleted={(totalRevenueResult._count as { id?: number } | null)?.id || 0}
       paymentBreakdown={paymentBreakdown}
     />
   );

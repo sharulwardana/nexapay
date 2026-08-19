@@ -12,7 +12,7 @@ interface TransactionItem {
   itemLabel: string;
   price: number;
   paymentMethod: string;
-  status: 'SUCCESS' | 'PENDING';
+  status: string;
   timeAgo: string;
 }
 
@@ -29,16 +29,11 @@ export default function RealTimeTransactions() {
         return;
       }
       const data = await res.json();
-      if (data.transactions) {
-        // Mask invoice ID for privacy
-        const masked = data.transactions.map((tx: any) => ({
-          ...tx,
-          invoiceMasked: tx.invoiceId ? `${tx.invoiceId.substring(0, 8)}****${tx.invoiceId.slice(-3)}` : 'INV-8910****8CD',
-        }));
-        setTransactions(masked);
+      if (data.transactions && Array.isArray(data.transactions)) {
+        setTransactions(data.transactions);
       }
-    } catch (e) {
-      console.error('Failed to load DB transactions', e);
+    } catch (err) {
+      console.error('Failed to fetch real-time transactions:', err);
     } finally {
       setIsLoading(false);
     }
@@ -46,29 +41,39 @@ export default function RealTimeTransactions() {
 
   useEffect(() => {
     fetchDbTransactions();
-    const interval = setInterval(fetchDbTransactions, 6000);
+    const interval = setInterval(fetchDbTransactions, 10000); // 10 seconds polling
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="w-full mt-10 tablet:mt-14">
-      {/* Clean Minimalist Header */}
-      <div className="text-center max-w-xl mx-auto mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[11px] font-bold mb-2">
-          <Activity className="w-3.5 h-3.5 animate-pulse" />
-          <span>Live Order Stream</span>
-        </div>
-        <h2 className="text-lg tablet:text-xl font-bold font-heading text-foreground">
-          Transaksi Terbaru
-        </h2>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          Pesanan masuk yang berhasil diproses secara otomatis.
-        </p>
-      </div>
+    <div className="section-padding">
+      <div className="container-app">
+        <div className="card-glass overflow-hidden">
+          {/* Header */}
+          <div className="p-4 tablet:p-6 border-b border-border/50 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <Activity className="w-5 h-5 text-emerald-400 animate-pulse" />
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-sm tablet:text-base text-foreground">
+                  Aktivitas Transaksi Real-Time
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Pantau pesanan yang baru saja berhasil diproses
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11px] font-medium text-emerald-400">Live</span>
+            </div>
+          </div>
 
-      {/* Ultra-Clean Minimalist Stream Cards */}
-      <div className="glass-card rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-card/60 backdrop-blur-md">
-        <div className="divide-y divide-border/30">
+          {/* List */}
           {isLoading ? (
             <div className="p-6 space-y-3">
               <div className="h-10 bg-white/5 rounded-xl animate-pulse" />
@@ -81,7 +86,7 @@ export default function RealTimeTransactions() {
           ) : (
             <AnimatePresence initial={false}>
             {transactions.map((tx) => {
-              const isSuccess = ['COMPLETED', 'PAID', 'SUCCESS'].includes(tx.status);
+              const isSuccess = ['COMPLETED', 'PAID'].includes(tx.status);
               const isWallet = tx.productName?.includes('Wallet');
               const displayProd = isWallet ? 'Isi Saldo Wallet' : tx.productName;
               const displayItem = isWallet ? 'Direct Wallet' : tx.itemLabel;

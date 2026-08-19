@@ -9,7 +9,7 @@ export async function GET() {
     const transactions = await prisma.transaction.findMany({
       take: 10,
       where: {
-        status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] }
+        status: { in: ['COMPLETED', 'PAID'] }
       },
       orderBy: { createdAt: 'desc' },
       include: {
@@ -26,8 +26,10 @@ export async function GET() {
     const formatted = transactions.map((tx) => {
       // Find fallback product name if product relation wasn't loaded from DB
       const fallbackProd = digitalProducts.find((p) => p.id === tx.productId || p.slug === tx.productId);
-      const name = tx.product?.name || fallbackProd?.name || 'Produk Game';
-      const label = tx.denomination?.label || 'Item Top Up';
+      const productRel = (tx as unknown as { product?: { name: string } | null }).product;
+      const denomRel = (tx as unknown as { denomination?: { label: string } | null }).denomination;
+      const name = productRel?.name || tx.productName || fallbackProd?.name || 'Produk Game';
+      const label = denomRel?.label || 'Item Top Up';
 
       // Format time ago
       const diffMs = Date.now() - new Date(tx.createdAt).getTime();

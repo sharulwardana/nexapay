@@ -19,7 +19,7 @@ export default async function AdminPage() {
     prisma.user.count({ where: { createdAt: { gte: today } } }),
     prisma.transaction.count(),
     prisma.transaction.aggregate({
-      where: { status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] } },
+      where: { status: { in: ['COMPLETED', 'PAID'] } },
       _sum: { totalAmount: true },
     }),
     prisma.transaction.findMany({
@@ -37,7 +37,7 @@ export default async function AdminPage() {
     totalUsers,
     newUsersToday,
     totalTransactions,
-    totalRevenue: revenueResult._sum.totalAmount || 0,
+    totalRevenue: revenueResult._sum?.totalAmount || 0,
   };
 
   // Sales Data (Last 7 Days)
@@ -47,7 +47,7 @@ export default async function AdminPage() {
 
   const recentTxsForChart = await prisma.transaction.findMany({
     where: {
-      status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] },
+      status: { in: ['COMPLETED', 'PAID'] },
       OR: [
         { createdAt: { gte: sevenDaysAgo } },
         { updatedAt: { gte: sevenDaysAgo } }
@@ -78,7 +78,7 @@ export default async function AdminPage() {
   const topProductsRaw = await prisma.transaction.groupBy({
     by: ['productId'],
     where: {
-      status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] },
+      status: { in: ['COMPLETED', 'PAID'] },
       productId: { not: null }
     },
     _sum: { totalAmount: true },
@@ -99,8 +99,8 @@ export default async function AdminPage() {
 
   const topProducts = topProductsRaw.map((p) => ({
     name: p.productId ? (productMap.get(p.productId) || 'Produk Digital') : 'Isi Saldo Wallet NexaPay',
-    revenue: p._sum.totalAmount || 0,
-    count: p._count.id,
+    revenue: p._sum?.totalAmount || 0,
+    count: (p._count as { id?: number } | null)?.id ?? 0,
     growth: 0
   }));
 

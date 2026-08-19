@@ -30,13 +30,13 @@ export default async function HomePage() {
   const topSalesRaw = await prisma.transaction.groupBy({
     by: ['productId'],
     where: {
-      status: { in: ['COMPLETED', 'PAID', 'SUCCESS'] },
+      status: { in: ['COMPLETED', 'PAID'] },
       productId: { not: null }
     },
     _count: { id: true }
   });
 
-  const salesCountMap = new Map(topSalesRaw.map(s => [s.productId, s._count.id]));
+  const salesCountMap = new Map(topSalesRaw.map(s => [s.productId, (s._count as { id?: number } | null)?.id ?? 0]));
 
   let products = await prisma.product.findMany({
     where: { isActive: true },

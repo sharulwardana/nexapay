@@ -70,7 +70,7 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
           >
             {/* Cyber Search */}
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors z-10 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search game title... (e.g. Mobile Legends, Genshin)"

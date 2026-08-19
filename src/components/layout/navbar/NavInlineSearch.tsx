@@ -111,7 +111,7 @@ export default function NavInlineSearch() {
       <button
         onClick={() => { playClick(); setIsOpen(!isOpen); }}
         onMouseEnter={playHover}
-        className="tablet:hidden flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border border-border/50"
+        className="tablet:hidden flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border border-border/50 flex-shrink-0"
         aria-label="Search"
       >
         <Search className="w-4 h-4" />

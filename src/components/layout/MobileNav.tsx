@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -17,14 +17,9 @@ const navItems = [
 
 export default function MobileNav() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
   const [isShrunk, setIsShrunk] = useState(false);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastScrollY.current;
@@ -37,7 +32,7 @@ export default function MobileNav() {
   });
 
   const isTopUpDetailPage = pathname.startsWith('/topup/') && pathname.split('/').length > 2;
-  if (!mounted || pathname.startsWith('/admin') || isTopUpDetailPage) {
+  if (pathname.startsWith('/admin') || isTopUpDetailPage) {
     return null;
   }
 
@@ -49,12 +44,11 @@ export default function MobileNav() {
       <div
         className={cn(
           "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full",
-          "bg-card/85 backdrop-blur-2xl",
-          "border border-white/10 dark:border-white/[0.06]",
-          "shadow-[0_8px_32px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.04)]",
-          "dark:shadow-[0_12px_40px_rgba(0,0,0,0.5),0_0_24px_rgba(255,115,0,0.08)]",
+          "bg-card/90 backdrop-blur-2xl",
+          "border border-white/15 dark:border-white/10",
+          "shadow-lg shadow-black/20",
           "p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
-          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97] opacity-90" : "h-[52px] tablet:h-[60px] scale-100 opacity-100"
+          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97]" : "h-[52px] tablet:h-[60px] scale-100"
         )}
       >
         <div className="grid grid-cols-5 items-center justify-center h-full w-full">

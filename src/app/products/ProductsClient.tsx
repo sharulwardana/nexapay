@@ -79,7 +79,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
           {/* Search & Category Filter */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8">
             <div className="relative mb-6 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors z-10 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search digital products... (e.g. Netflix, Telkomsel, Token PLN)"

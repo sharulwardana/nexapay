@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
 import BannersClient from './BannersClient';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Manajemen Banner | NexaAdmin',
@@ -9,10 +9,14 @@ export const metadata = {
 };
 
 export default async function AdminBannersPage() {
+  try {
+    const banners = await prisma.banner.findMany({
+      orderBy: { sortOrder: 'asc' },
+    });
 
-  const banners = await prisma.banner.findMany({
-    orderBy: { sortOrder: 'asc' },
-  });
-
-  return <BannersClient banners={banners} />;
+    return <BannersClient banners={banners || []} />;
+  } catch (error) {
+    console.error('Failed to load admin banners:', error);
+    return <BannersClient banners={[]} />;
+  }
 }

@@ -3,6 +3,8 @@ import { auth } from '@/../auth';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminMobileDock from '@/components/admin/AdminMobileDock';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: {

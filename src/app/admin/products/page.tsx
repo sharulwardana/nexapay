@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
 import ProductClient from './ProductClient';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Manajemen Produk | NexaAdmin',
@@ -9,18 +9,19 @@ export const metadata = {
 };
 
 export default async function AdminProductsPage() {
-
-  // Fetch all products with their denominations count
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: {
-      _count: {
-        select: { denominations: true }
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        _count: {
+          select: { denominations: true }
+        }
       }
-    }
-  });
+    });
 
-  return (
-    <ProductClient products={products} />
-  );
+    return <ProductClient products={products || []} />;
+  } catch (error) {
+    console.error('Failed to load admin products:', error);
+    return <ProductClient products={[]} />;
+  }
 }

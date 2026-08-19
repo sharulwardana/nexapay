@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
 import PromosClient from './PromosClient';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Manajemen Promo | NexaAdmin',
@@ -9,10 +9,14 @@ export const metadata = {
 };
 
 export default async function AdminPromosPage() {
+  try {
+    const promos = await prisma.promo.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
 
-  const promos = await prisma.promo.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-
-  return <PromosClient promos={promos} />;
+    return <PromosClient promos={promos || []} />;
+  } catch (error) {
+    console.error('Failed to load admin promos:', error);
+    return <PromosClient promos={[]} />;
+  }
 }

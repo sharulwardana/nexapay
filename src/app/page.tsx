@@ -26,54 +26,65 @@ function SectionSkeleton() {
 export const revalidate = 60; // ISR: revalidate home page every 60s
 
 export default async function HomePage() {
-  // Aggregate real-time completed transaction counts per game product (excluding wallet deposits)
-  const topSalesRaw = await prisma.transaction.groupBy({
-    by: ['productId'],
-    where: {
-      status: { in: ['COMPLETED', 'PAID'] },
-      productId: { not: null }
-    },
-    _count: { id: true }
-  });
+  let games: import('@/types').ProductWithDenominations[] = [];
 
-  const salesCountMap = new Map(topSalesRaw.map(s => [s.productId, (s._count as { id?: number } | null)?.id ?? 0]));
-
-  let products = await prisma.product.findMany({
-    where: { isActive: true },
-    include: {
-      denominations: {
-        where: { isActive: true },
+  try {
+    // Aggregate real-time completed transaction counts per game product (excluding wallet deposits)
+    const topSalesRaw = await prisma.transaction.groupBy({
+      by: ['productId'],
+      where: {
+        status: { in: ['COMPLETED', 'PAID'] },
+        productId: { not: null }
       },
-    },
-    orderBy: { sortOrder: 'asc' },
-  });
+      _count: { id: true }
+    });
 
-  // Sort products by real transaction volume (most bought games first)
-  products.sort((a, b) => {
-    const countA = salesCountMap.get(a.id) || 0;
-    const countB = salesCountMap.get(b.id) || 0;
-    if (countB !== countA) return countB - countA;
-    return a.sortOrder - b.sortOrder;
-  });
+    const salesCountMap = new Map(topSalesRaw.map(s => [s.productId, (s._count as { id?: number } | null)?.id ?? 0]));
 
-  const staticMap = new Map(digitalProducts.map((p) => [p.slug, p]));
-  const validSlugs = new Set(digitalProducts.map((p) => p.slug));
-  const filteredDbProducts = products.filter((p) => validSlugs.has(p.slug));
-  const dbSlugs = new Set(filteredDbProducts.map((p) => p.slug));
-  const missingFromDb = digitalProducts.filter((p) => !dbSlugs.has(p.slug));
-  const combined = [...filteredDbProducts, ...missingFromDb];
+    const products = await prisma.product.findMany({
+      where: { isActive: true },
+      include: {
+        denominations: {
+          where: { isActive: true },
+        },
+      },
+      orderBy: { sortOrder: 'asc' },
+    });
 
-  const allProducts = combined.map((p) => {
-    const staticInfo = staticMap.get(p.slug);
-    return {
-      ...p,
-      image: staticInfo?.image || p.image,
-      bannerImage: staticInfo?.bannerImage || p.bannerImage || p.image,
-      denominations: staticInfo?.denominations || p.denominations,
-    };
-  });
+    if (products && products.length > 0) {
+      // Sort products by real transaction volume (most bought games first)
+      products.sort((a, b) => {
+        const countA = salesCountMap.get(a.id) || 0;
+        const countB = salesCountMap.get(b.id) || 0;
+        if (countB !== countA) return countB - countA;
+        return a.sortOrder - b.sortOrder;
+      });
 
-  const games = allProducts as unknown as import('@/types').ProductWithDenominations[];
+      const staticMap = new Map(digitalProducts.map((p) => [p.slug, p]));
+      const validSlugs = new Set(digitalProducts.map((p) => p.slug));
+      const filteredDbProducts = products.filter((p) => validSlugs.has(p.slug));
+      const dbSlugs = new Set(filteredDbProducts.map((p) => p.slug));
+      const missingFromDb = digitalProducts.filter((p) => !dbSlugs.has(p.slug));
+      const combined = [...filteredDbProducts, ...missingFromDb];
+
+      games = combined.map((p) => {
+        const staticInfo = staticMap.get(p.slug);
+        return {
+          ...p,
+          image: staticInfo?.image || p.image,
+          bannerImage: staticInfo?.bannerImage || p.bannerImage || p.image,
+          denominations: staticInfo?.denominations || p.denominations,
+        };
+      }) as unknown as import('@/types').ProductWithDenominations[];
+    }
+  } catch (error) {
+    console.warn('Prisma fetch failed on homepage during prerender, falling back to static products:', error);
+  }
+
+  // Fallback to static products if DB failed or empty
+  if (games.length === 0) {
+    games = digitalProducts as unknown as import('@/types').ProductWithDenominations[];
+  }
 
   return (
     <>

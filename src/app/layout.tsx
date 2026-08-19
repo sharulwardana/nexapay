@@ -103,6 +103,7 @@ export default function RootLayout({
     <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen`}
+        suppressHydrationWarning
       >
         <JsonLd />
         <ThemeProvider

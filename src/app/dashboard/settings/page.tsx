@@ -79,18 +79,18 @@ export default function SettingsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-lg tablet:text-xl font-bold">Pengaturan</h1>
-          </motion.div>
+          </div>
 
           <div className="space-y-6">
             {/* Profile Section */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-5">
+            <div className="glass-card p-5">
               <h2 className="text-sm font-semibold mb-4 flex items-center gap-2"><User className="w-4 h-4 text-primary" /> Profil</h2>
               <div className="space-y-4">
                 <div className="flex items-center gap-4 mb-4">
@@ -125,10 +125,10 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Security */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-5">
+            <div className="glass-card p-5">
               <h2 className="text-sm font-semibold mb-4 flex items-center gap-2"><Shield className="w-4 h-4 text-primary" /> Keamanan</h2>
               <div className="space-y-3">
                 
@@ -190,10 +190,10 @@ export default function SettingsPage() {
                   <span className="text-xs text-green-500 font-medium">Aktif</span>
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             {/* Actions */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-3">
+            <div className="space-y-3">
               <button 
                 onClick={handleSave} 
                 disabled={isSaving}
@@ -208,7 +208,7 @@ export default function SettingsPage() {
               <button className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-red-500/30 text-red-500 font-medium hover:bg-red-500/10 transition-all">
                 <Trash2 className="w-4 h-4" /> Hapus Akun
               </button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </main>

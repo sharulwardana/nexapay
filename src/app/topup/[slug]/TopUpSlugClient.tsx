@@ -438,11 +438,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
       <div className="container-app pt-28 pb-4 tablet:pt-36 tablet:pb-12 relative z-10">
 
         {/* Top Game Hero Banner Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative rounded-3xl overflow-hidden mb-8 border border-border/60 glass-card shadow-2xl"
-        >
+        <div className="relative rounded-3xl overflow-hidden mb-8 border border-border/60 glass-card shadow-2xl">
           <div className="relative min-h-[170px] tablet:min-h-[210px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-4 sm:p-6 tablet:p-8">
             {game.bannerImage && (
               <Image
@@ -496,7 +492,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Layout Grid Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -505,11 +501,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
 
             {/* STEP 1: Account Identification / Data Akun */}
             <section ref={accountSectionRef} id="step-account">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group"
-              >
+              <div className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group">
                 <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-border/40">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
@@ -640,14 +632,11 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     </div>
                   ) : null}
                 </div>
-              </motion.div>
+              </div>
             </section>
 
-              <motion.div
+              <div
                 ref={denomSectionRef}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
                 className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group scroll-mt-28"
               >
                 <div className="flex items-center gap-2.5 mb-4 relative z-10 pb-3 border-b border-border/40">
@@ -822,13 +811,10 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
+              <div
                 ref={paymentSectionRef}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
                 className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group mb-12 lg:mb-0 scroll-mt-28"
               >
                 <div className="flex items-center gap-2.5 mb-4 relative z-10 pb-3 border-b border-border/40">
@@ -924,17 +910,12 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
               {/* STEP 4: Promo Code (Mobile & Tablet Only - On Desktop, Promo is inside Sidebar) */}
               <div className="lg:hidden">
                 <section id="step-promo">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group mb-4 tablet:mb-6 lg:mb-0"
-                  >
+                  <div className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group mb-4 tablet:mb-6 lg:mb-0">
                     <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-border/40">
                       <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
                         4
@@ -958,7 +939,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                         Gunakan
                       </button>
                     </div>
-                  </motion.div>
+                  </div>
                 </section>
               </div>
             </div>

@@ -38,17 +38,15 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-2.5 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
+      className="fixed bottom-3 left-0 right-0 z-50 lg:hidden px-3 pointer-events-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <div
         className={cn(
           "pointer-events-auto max-w-[340px] tablet:max-w-[440px] w-[90%] mx-auto rounded-full",
-          "bg-card/90 backdrop-blur-2xl",
-          "border border-white/15 dark:border-white/10",
-          "shadow-lg shadow-black/20",
+          "bg-[#0f111a] border border-white/10 shadow-2xl shadow-black/80",
           "p-1 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
-          isShrunk ? "h-[42px] tablet:h-[48px] scale-[0.97]" : "h-[52px] tablet:h-[60px] scale-100"
+          isShrunk ? "h-[44px] tablet:h-[48px] scale-[0.97]" : "h-[54px] tablet:h-[60px] scale-100"
         )}
       >
         <div className="grid grid-cols-5 items-center justify-center h-full w-full">
@@ -68,9 +66,9 @@ export default function MobileNav() {
                     layoutId="mobile-nav-active-pill"
                     className={cn(
                       "absolute inset-0 rounded-full",
-                      "bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20",
+                      "bg-primary/20",
                       "border border-primary/40",
-                      "shadow-[0_0_12px_rgba(255,115,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                      "shadow-[0_0_10px_rgba(255,115,0,0.25)]"
                     )}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />

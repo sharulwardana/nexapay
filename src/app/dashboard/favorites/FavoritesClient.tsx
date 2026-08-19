@@ -47,9 +47,9 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -57,17 +57,13 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
               <h1 className="text-lg tablet:text-xl font-bold">Favorit</h1>
               <p className="text-xs text-muted-foreground">{favorites.length} produk tersimpan</p>
             </div>
-          </motion.div>
+          </div>
 
           <div className="space-y-3">
             <AnimatePresence>
-              {favorites.map((item, i) => (
-                <motion.div
+              {favorites.map((item) => (
+                <div
                   key={item.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: i * 0.05 }}
                   className="glass-card p-4 flex items-center gap-3"
                 >
                   {/* Icon */}
@@ -98,7 +94,7 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
                       {loadingId === item.productId ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                     </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </AnimatePresence>
           </div>

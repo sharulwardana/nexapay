@@ -154,20 +154,18 @@ export default function WalletClient({
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
-        <div className="container-app max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
+        <div className="container-app max-w-2xl">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
             <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-lg tablet:text-xl font-bold">Wallet NexaPay</h1>
-          </motion.div>
+          </div>
 
           {/* 3D Holographic Metallic NexaPay Card (2026 Edition) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15, rotateX: 5 }} 
-            animate={{ opacity: 1, y: 0, rotateX: 0 }} 
-            transition={{ delay: 0.05, duration: 0.5 }}
+          <div 
             className="group relative p-6 tablet:p-8 rounded-3xl mb-6 overflow-hidden transition-all duration-500 shadow-2xl hover:shadow-[0_20px_50px_rgba(255,115,0,0.25)] border border-white/20"
             style={{
               background: 'linear-gradient(135deg, #141414 0%, #1f1f23 40%, #0a0a0d 100%)',
@@ -237,10 +235,10 @@ export default function WalletClient({
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Filters */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          <div
             className="flex gap-2 overflow-x-auto no-scrollbar mb-4"
           >
             {['ALL', 'TOPUP', 'PURCHASE', 'CASHBACK', 'REFUND', 'REFERRAL'].map((f) => (
@@ -255,10 +253,10 @@ export default function WalletClient({
                 {f === 'ALL' ? 'Semua' : f.charAt(0) + f.slice(1).toLowerCase()}
               </button>
             ))}
-          </motion.div>
+          </div>
 
           {/* History */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card overflow-hidden">
+          <div className="glass-card overflow-hidden">
             <div className="p-4 border-b border-border">
               <h2 className="text-sm font-semibold">Riwayat Transaksi Wallet</h2>
             </div>
@@ -292,7 +290,7 @@ export default function WalletClient({
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
       </main>
 

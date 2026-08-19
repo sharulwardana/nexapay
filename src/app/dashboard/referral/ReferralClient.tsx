@@ -47,17 +47,17 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-lg tablet:text-xl font-bold">Referral Program</h1>
-          </motion.div>
+          </div>
 
           {/* Referral Card */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+          <div
             className="glass-card p-6 tablet:p-8 bg-gradient-to-br from-primary/5 to-accent/5 mb-6 text-center"
           >
             <Gift className="w-12 h-12 text-primary mx-auto mb-3" />
@@ -89,24 +89,24 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
                 <Share2 className="w-4 h-4 shrink-0 text-primary" /> Bagikan Link
               </button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-3 tablet:gap-4 mb-6">
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-4 text-center">
+            <div className="glass-card p-4 text-center">
               <Users className="w-6 h-6 text-primary mx-auto mb-1" />
               <p className="text-xl font-bold">{totalReferrals}</p>
               <p className="text-[10px] text-muted-foreground">Teman Direferensikan</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-4 text-center">
+            </div>
+            <div className="glass-card p-4 text-center">
               <DollarSign className="w-6 h-6 text-green-500 mx-auto mb-1" />
               <p className="text-xl font-bold text-green-500">{formatCurrency(totalEarned)}</p>
               <p className="text-[10px] text-muted-foreground">Total Bonus Diterima</p>
-            </motion.div>
+            </div>
           </div>
 
           {/* How it Works */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card p-5 mb-6">
+          <div className="glass-card p-5 mb-6">
             <h3 className="text-sm font-semibold mb-4">Cara Kerja</h3>
             <div className="space-y-4">
               {[
@@ -123,10 +123,10 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* History */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass-card overflow-hidden">
+          <div className="glass-card overflow-hidden">
             <div className="p-4 border-b border-border">
               <h3 className="text-sm font-semibold">Riwayat Referral</h3>
             </div>
@@ -155,7 +155,7 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
                 Belum ada teman yang menggunakan kode referralmu.
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
       </main>
       <Footer />

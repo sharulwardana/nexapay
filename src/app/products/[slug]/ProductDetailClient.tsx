@@ -103,10 +103,10 @@ export default function ProductDetailClient({ product }: { product: any }) {
 
   return (
     <>
-      <main className="min-h-screen pt-24 tablet:pt-32 pb-24">
+      <main className="min-h-screen pt-24 tablet:pt-32 pb-24 aurora-bg">
         <div className="container-app max-w-5xl">
           {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <button onClick={() => router.push('/products')} className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </button>
@@ -119,12 +119,12 @@ export default function ProductDetailClient({ product }: { product: any }) {
                 <p className="text-xs text-muted-foreground">{product.publisher} • {catInfo?.label}</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               {/* Step 1: Select Denomination */}
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-4 tablet:p-6">
+              <div className="glass-card p-4 tablet:p-6">
                 <h2 className="text-base font-semibold mb-1">1. Pilih Nominal</h2>
                 <p className="text-xs text-muted-foreground mb-4">Pilih nominal yang ingin kamu beli</p>
                 <div className="grid grid-cols-2 tablet:grid-cols-3 gap-2 tablet:gap-3">
@@ -155,10 +155,10 @@ export default function ProductDetailClient({ product }: { product: any }) {
                     </button>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
               {/* Step 2: Account Input */}
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-4 tablet:p-6">
+              <div className="glass-card p-4 tablet:p-6">
                 <h2 className="text-base font-semibold mb-1">2. {inputLabel}</h2>
                 <p className="text-xs text-muted-foreground mb-4">Masukkan {inputLabel.toLowerCase()} tujuan</p>
                 <div className="relative">
@@ -174,10 +174,10 @@ export default function ProductDetailClient({ product }: { product: any }) {
                     )}
                   />
                 </div>
-              </motion.div>
+              </div>
 
               {/* Step 3: Payment */}
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-4 tablet:p-6">
+              <div className="glass-card p-4 tablet:p-6">
                 <h2 className="text-base font-semibold mb-1">3. Metode Pembayaran</h2>
                 <p className="text-xs text-muted-foreground mb-4">Pilih cara pembayaran</p>
                 <div className="space-y-4">
@@ -219,7 +219,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Sidebar Summary */}

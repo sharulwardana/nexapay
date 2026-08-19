@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
-  User, Wallet, Receipt, Heart, Gift, Star, Settings, LogOut, Copy, ChevronRight,
-  TrendingUp, Clock, CheckCircle, ArrowUpRight, Crown, Shield
+  User, Wallet, Receipt, Heart, Gift, Star, Settings, Copy, ChevronRight,
+  TrendingUp, Clock, CheckCircle, Crown, Shield
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import MobileNav from '@/components/layout/MobileNav';
@@ -47,22 +45,18 @@ export default function DashboardClient({
     ? ((points - loyalty.minPoints) / (nextLevel.minPoints - loyalty.minPoints)) * 100
     : 100;
 
-  const totalTransactions = recentTransactions.length; // From DB, this would be total count
+  const totalTransactions = recentTransactions.length;
   const totalSpent = recentTransactions.reduce((acc, curr) => acc + curr.totalAmount, 0);
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-5xl">
           {/* Top Section Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             {/* Profile Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="lg:col-span-2"
-            >
+            <div className="lg:col-span-2">
               <SpotlightCard className="h-full p-5 tablet:p-6 bg-card border-border" spotlightColor="rgba(255, 255, 255, 0.05)">
                 <div className="flex items-center gap-3.5 tablet:gap-4">
                   <div className="w-14 h-14 tablet:w-16 tablet:h-16 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 flex items-center justify-center text-xl tablet:text-2xl font-black text-white font-heading shadow-lg shadow-amber-500/20 flex-shrink-0">
@@ -103,11 +97,9 @@ export default function DashboardClient({
                     )}
                   </div>
                   <div className="w-full h-2.5 rounded-full bg-muted overflow-hidden relative">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${progress}%` }}
-                      transition={{ duration: 1.5, delay: 0.3, ease: 'easeOut' }}
-                      className="absolute top-0 left-0 h-full rounded-full bg-primary"
+                    <div
+                      style={{ width: `${progress}%` }}
+                      className="absolute top-0 left-0 h-full rounded-full bg-primary transition-all duration-500"
                     />
                   </div>
                   {nextLevel && (
@@ -117,48 +109,43 @@ export default function DashboardClient({
                   )}
                 </div>
               </SpotlightCard>
-            </motion.div>
+            </div>
 
             {/* Daily Reward Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="lg:col-span-1"
-            >
+            <div className="lg:col-span-1">
               <SpotlightCard className="h-full p-5 tablet:p-6 bg-card border-border flex flex-col justify-center" spotlightColor="rgba(255, 255, 255, 0.05)">
                 <DailyCheckIn initialHasClaimed={initialHasClaimed} />
               </SpotlightCard>
-            </motion.div>
+            </div>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-3 gap-3 tablet:gap-4 mb-6">
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="solid-card p-4 tablet:p-5 text-center">
+            <div className="solid-card p-4 tablet:p-5 text-center">
               <div className="w-10 h-10 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-2">
                 <Wallet className="w-5 h-5 text-primary" />
               </div>
               <p className="text-base tablet:text-lg font-bold font-heading">{formatCurrency(dbUser.walletBalance || 0)}</p>
               <p className="text-[11px] text-muted-foreground">Saldo Wallet</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="solid-card p-4 tablet:p-5 text-center">
+            </div>
+            <div className="solid-card p-4 tablet:p-5 text-center">
               <div className="w-10 h-10 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center mb-2">
                 <Receipt className="w-5 h-5 text-cyan-500" />
               </div>
               <p className="text-base tablet:text-lg font-bold font-heading">{totalTransactions}</p>
               <p className="text-[11px] text-muted-foreground">Total Transaksi</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="solid-card p-4 tablet:p-5 text-center">
+            </div>
+            <div className="solid-card p-4 tablet:p-5 text-center">
               <div className="w-10 h-10 mx-auto rounded-full bg-green-500/10 flex items-center justify-center mb-2">
                 <TrendingUp className="w-5 h-5 text-green-500" />
               </div>
               <p className="text-base tablet:text-lg font-bold font-heading">{formatCurrency(totalSpent)}</p>
               <p className="text-[11px] text-muted-foreground">Total Belanja</p>
-            </motion.div>
+            </div>
           </div>
 
           {/* Quick Actions */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="grid grid-cols-5 gap-2 tablet:gap-3 mb-6">
+          <div className="grid grid-cols-5 gap-2 tablet:gap-3 mb-6">
             {quickActions.map((action) => (
               <Link
                 key={action.href}
@@ -173,12 +160,10 @@ export default function DashboardClient({
                 </span>
               </Link>
             ))}
-          </motion.div>
+          </div>
 
           {/* Referral Code */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="glass-card p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5"
-          >
+          <div className="glass-card p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Kode Referral Kamu</p>
@@ -190,7 +175,8 @@ export default function DashboardClient({
                         navigator.clipboard.writeText(dbUser.referralCode);
                       }
                     }}
-                    className="p-1.5 rounded-lg hover:bg-muted/50 transition-all"
+                    className="p-1.5 rounded-lg hover:bg-muted/50 transition-all cursor-pointer"
+                    aria-label="Salin Kode Referral"
                   >
                     <Copy className="w-4 h-4 text-muted-foreground" />
                   </button>
@@ -199,10 +185,10 @@ export default function DashboardClient({
               </div>
               <Gift className="w-8 h-8 text-primary/30" />
             </div>
-          </motion.div>
+          </div>
 
           {/* Recent Transactions */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass-card overflow-hidden">
+          <div className="glass-card overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <h2 className="text-sm font-semibold">Transaksi Terakhir</h2>
               <Link href="/dashboard/transactions" className="text-xs text-primary hover:underline flex items-center gap-1">
@@ -232,7 +218,7 @@ export default function DashboardClient({
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium line-clamp-1">{tx.productName} — {tx.denominationName}</p>
+                      <p className="text-sm font-medium line-clamp-1">{tx.productName}</p>
                       <p className="text-[10px] text-muted-foreground">{tx.id} • {new Date(tx.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
@@ -250,7 +236,7 @@ export default function DashboardClient({
                 ))
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
       </main>
       <Footer />

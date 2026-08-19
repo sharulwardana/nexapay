@@ -57,7 +57,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
 
   return (
     <>
-      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden">
+      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden aurora-bg">
         {/* Ambient Glow */}
         <div className="absolute top-0 right-1/3 w-96 h-96 bg-accent/10 rounded-full blur-[130px] pointer-events-none" />
 
@@ -128,58 +128,53 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
 
           {/* Product Grid */}
           <div className="grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredProducts.map((product, index) => {
+            {filteredProducts.map((product) => {
               const minPrice = product.denominations.length > 0
                 ? Math.min(...product.denominations.map(d => d.price))
                 : 0;
               const catInfo = CATEGORIES.find(c => c.id === product.category);
               
               return (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
                 >
                   <Link href={`/products/${product.slug}`} className="group block h-full rounded-2xl bg-card/40 border border-border/80 hover:border-accent/50 backdrop-blur-md overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:hover:shadow-accent/10">
                     <div className="relative aspect-[4/3] overflow-hidden">
                       {/* Gradient Backdrop */}
                       <div className={cn('absolute inset-0 bg-gradient-to-br transition-opacity duration-500 group-hover:opacity-60', catInfo?.color || 'from-primary/30 to-accent/30')} style={{ opacity: 0.2 }} />
                       
-                      {/* Floating Particles/Shapes Effect */}
-                      <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/5 blur-2xl group-hover:scale-150 transition-transform duration-700" />
-                      <div className="absolute -left-2 -top-2 w-16 h-16 rounded-full bg-white/10 blur-xl group-hover:scale-125 transition-transform duration-700" />
-                      
                       <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
                         <span className="text-base tablet:text-lg font-heading font-bold text-foreground text-center leading-tight drop-shadow-md group-hover:scale-105 transition-transform duration-300">
                           {product.name}
                         </span>
                         {product.publisher && (
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80 mt-2">{product.publisher}</span>
+                          <span className="text-xs text-muted-foreground mt-1 font-medium">
+                            {product.publisher}
+                          </span>
                         )}
                       </div>
-                      <div className="absolute top-2.5 left-2.5">
-                        <span className="px-2 py-1 rounded-md bg-black/40 dark:bg-white/10 border border-white/5 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-wider">
-                          {catInfo?.label}
+
+                      {/* Category Badge */}
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase bg-black/40 text-foreground backdrop-blur-md border border-white/10 shadow-sm">
+                          {catInfo?.label || product.category}
                         </span>
                       </div>
                     </div>
-                    <div className="p-4 border-t border-white/5">
-                      <h3 className="text-xs tablet:text-sm font-bold text-foreground line-clamp-1 group-hover:text-accent transition-colors font-heading">
-                        {product.name}
-                      </h3>
-                      <p className="text-[10px] font-medium text-muted-foreground mt-1">
-                        Tersedia {product.denominations.length} Variasi Denom
-                      </p>
-                      <p className="text-xs tablet:text-sm font-bold text-accent mt-3 flex items-center justify-between">
-                        <span>Mulai {formatCurrency(minPrice)}</span>
-                        <span className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                          <Zap className="w-3 h-3" />
+
+                    <div className="p-4 bg-card/60 flex items-center justify-between border-t border-border/50">
+                      <div>
+                        <span className="text-[10px] text-muted-foreground block font-medium">Mulai dari</span>
+                        <span className="text-sm font-extrabold text-foreground group-hover:text-accent transition-colors">
+                          {minPrice > 0 ? formatCurrency(minPrice) : 'Lihat Pilihan'}
                         </span>
-                      </p>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
+                        <Zap className="w-4 h-4" />
+                      </div>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>

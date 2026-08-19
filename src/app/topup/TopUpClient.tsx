@@ -37,7 +37,7 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
 
   return (
     <>
-      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden">
+      <main className="min-h-screen pt-24 tablet:pt-28 pb-24 relative overflow-hidden aurora-bg">
         {/* Glow ambient background */}
         <div className="absolute top-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -116,19 +116,11 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
 
           {/* Games Grid — Codashop & UniPin Density (6 Cols) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 tablet:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 tablet:gap-4 pb-8">
-            {filteredGames.map((game, index) => {
-              return (
-                <motion.div
-                  key={game.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                  className="h-full"
-                >
-                  <CyberGameCard game={game as unknown as import('@/types').ProductWithDenominations} index={index} priorityImage={index < 6} />
-                </motion.div>
-              );
-            })}
+            {filteredGames.map((game, index) => (
+              <div key={game.id} className="h-full">
+                <CyberGameCard game={game as unknown as import('@/types').ProductWithDenominations} index={index} priorityImage={index < 6} />
+              </div>
+            ))}
           </div>
 
           {/* Empty State */}

@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Tag, Clock, Copy, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
@@ -12,26 +10,20 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
 export default function PromoPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 tablet:pt-32 pb-24">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
         <div className="container-app">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="mb-8">
             <h1 className="heading-2 mb-2">🔥 Promo & Diskon</h1>
-            <p className="body-default mb-8">Jangan lewatkan penawaran terbaik dari NexaPay</p>
-          </motion.div>
+            <p className="body-default">Jangan lewatkan penawaran terbaik dari NexaPay</p>
+          </div>
 
           <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4 tablet:gap-6">
             {promotions.map((promo, i) => (
-              <motion.div
+              <div
                 key={promo.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
                 className="glass-card overflow-hidden group"
               >
                 {/* Banner gradient */}
@@ -64,7 +56,8 @@ export default function PromoPage() {
                         navigator.clipboard.writeText(promo.code);
                         toast.success('Kode promo disalin!');
                       }}
-                      className="p-2.5 rounded-lg border border-border hover:bg-primary/10 hover:border-primary/30 transition-all"
+                      className="p-2.5 rounded-lg border border-border hover:bg-primary/10 hover:border-primary/30 transition-all cursor-pointer"
+                      aria-label="Salin Kode Promo"
                     >
                       <Copy className="w-4 h-4" />
                     </button>
@@ -73,18 +66,14 @@ export default function PromoPage() {
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Clock className="w-3.5 h-3.5" />
-                      {mounted ? (
-                        <span>Berlaku hingga {new Date(promo.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                      ) : (
-                        <span>Memuat...</span>
-                      )}
+                      <span>Berlaku hingga {new Date(promo.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     </div>
-                    <Link href="/topup" className="text-primary hover:underline flex items-center gap-0.5">
+                    <Link href="/topup" className="text-primary hover:underline flex items-center gap-0.5 font-bold">
                       Pakai <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

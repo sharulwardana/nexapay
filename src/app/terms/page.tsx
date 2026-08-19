@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ShieldCheck, FileText, CheckCircle2, Lock, AlertTriangle, HelpCircle } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 
 export const metadata = {

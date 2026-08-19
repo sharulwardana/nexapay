@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Heart, Trash2, ShoppingCart, Gamepad2, Loader2 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';

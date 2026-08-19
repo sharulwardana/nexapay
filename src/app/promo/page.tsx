@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Tag, Clock, Copy, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { promotions } from '@/data/testimonials';
 import { cn } from '@/lib/utils';

@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, ShoppingBag, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi, Cpu } from 'lucide-react';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { CATEGORIES } from '@/lib/constants';
 import { formatCurrency, cn } from '@/lib/utils';

@@ -7,7 +7,6 @@ import {
   HelpCircle, ShieldCheck, Clock, CreditCard, Gamepad2, Zap, Sparkles, Cpu,
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 

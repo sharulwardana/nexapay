@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, ShieldCheck, Cpu, Signal, CheckCircle2, Sparkles } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';

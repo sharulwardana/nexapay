@@ -6,7 +6,6 @@ import {
   TrendingUp, Clock, CheckCircle, Crown, Shield
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { LOYALTY_LEVELS } from '@/lib/constants';

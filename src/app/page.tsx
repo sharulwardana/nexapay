@@ -3,7 +3,6 @@ import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import PromoCarousel from '@/components/home/PromoCarousel';
 import PopularGames from '@/components/home/PopularGames';

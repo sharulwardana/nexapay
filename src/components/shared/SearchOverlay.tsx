@@ -117,7 +117,7 @@ export default function SearchOverlay() {
                     {results.map((product) => (
                       <Link
                         key={product.id}
-                        href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
+                        href={['GAME_TOPUP', 'GAMES', 'Game Top Up'].includes(product.category) ? `/topup/${product.slug}` : `/products/${product.slug}`}
                         onClick={handleClose}
                         className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors"
                       >

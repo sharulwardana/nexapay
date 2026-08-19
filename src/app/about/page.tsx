@@ -1,5 +1,4 @@
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import prisma from '@/lib/prisma';
 import AboutClient from './AboutClient';

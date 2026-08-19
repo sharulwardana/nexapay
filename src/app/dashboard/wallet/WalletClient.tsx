@@ -8,7 +8,6 @@ import {
   Send, CheckCircle2, QrCode, Building2, Copy, Check, Zap, Sparkles 
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { toast } from 'sonner';

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check, CreditCard, ShieldCheck, Loader2, Zap, ShoppingBag, ShoppingCart, Phone } from 'lucide-react';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { PAYMENT_METHODS, CATEGORIES } from '@/lib/constants';
 import { formatCurrency, cn } from '@/lib/utils';

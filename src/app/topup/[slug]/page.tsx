@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import TopUpSlugClient from './TopUpSlugClient';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 import Footer from '@/components/layout/Footer';
 import { Search, Receipt, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import RealTimeTransactions from '@/components/shared/RealTimeTransactions';

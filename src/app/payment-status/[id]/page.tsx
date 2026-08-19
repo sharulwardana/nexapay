@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import PaymentStatusClient from './PaymentStatusClient';
 import Navbar from '@/components/layout/Navbar';
-import MobileNav from '@/components/layout/MobileNav';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;

@@ -7,7 +7,8 @@ import { formatCurrency } from '@/lib/utils';
 
 interface TransactionItem {
   id: string;
-  invoiceMasked: string;
+  invoiceMasked?: string;
+  invoiceId?: string;
   productName: string;
   itemLabel: string;
   price: number;
@@ -128,7 +129,7 @@ export default function RealTimeTransactions() {
                   <div className="text-right flex-shrink-0">
                     <div className="flex items-center justify-end gap-2">
                       <span className="font-mono text-[10px] text-muted-foreground/80">
-                        {tx.invoiceMasked}
+                        {tx.invoiceMasked || (tx.invoiceId ? `${tx.invoiceId.slice(0, 7)}***` : 'INV-***')}
                       </span>
                       <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold ${
                         isSuccess

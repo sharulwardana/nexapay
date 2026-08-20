@@ -55,7 +55,7 @@ export default function PaymentPartners() {
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="flex items-center justify-center gap-3 mb-8"
+        className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 px-4"
       >
         <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-md shadow-sm">
           <Shield className="w-3.5 h-3.5 text-emerald-400" />

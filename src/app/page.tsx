@@ -88,7 +88,7 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="min-h-screen pb-24 aurora-bg">
+      <main id="main-content" className="min-h-screen pb-24 aurora-bg w-full max-w-full overflow-x-hidden">
         {/* Aurora decorative orbs */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
           <div className="floating-orb w-[600px] h-[600px] -top-[200px] -left-[200px] bg-violet-500/[0.06]" />

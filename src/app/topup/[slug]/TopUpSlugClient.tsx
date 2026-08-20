@@ -314,6 +314,66 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
 
   const isVoucherProduct = ['steam-wallet', 'roblox'].includes(game.slug);
 
+  const [isCheckingNickname, setIsCheckingNickname] = useState(false);
+  const [verifiedNickname, setVerifiedNickname] = useState<string | null>(null);
+  const [nicknameRegion, setNicknameRegion] = useState<string | null>(null);
+  const [nicknameError, setNicknameError] = useState<string | null>(null);
+
+  // Auto-check in-game nickname when User ID (and Server ID if required) is typed
+  useEffect(() => {
+    if (isVoucherProduct || !userId || userId.trim().length < 4) {
+      setVerifiedNickname(null);
+      setNicknameRegion(null);
+      setNicknameError(null);
+      setIsCheckingNickname(false);
+      return;
+    }
+
+    // For games that strictly require server/zone ID
+    if (['mobile-legends', 'genshin-impact', 'honkai-star-rail', 'zenless-zone-zero'].includes(game.slug) && !serverId) {
+      setVerifiedNickname(null);
+      setNicknameRegion(null);
+      setNicknameError(null);
+      setIsCheckingNickname(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsCheckingNickname(true);
+      setNicknameError(null);
+      try {
+        const res = await fetch('/api/game/check-nickname', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug: game.slug,
+            userId: userId.trim(),
+            zoneId: serverId ? serverId.trim() : undefined,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success && data.nickname) {
+          setVerifiedNickname(data.nickname);
+          setNicknameRegion(data.region || null);
+          setNicknameError(null);
+        } else {
+          setVerifiedNickname(null);
+          setNicknameRegion(null);
+          if (data.message && !data.message.includes('belum lengkap')) {
+            setNicknameError(data.message);
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to verify nickname:', err);
+      } finally {
+        setIsCheckingNickname(false);
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [userId, serverId, game.slug, isVoucherProduct]);
+
   const validateAccount = () => {
     const targetUserId = isVoucherProduct ? (userId || 'VOUCHER') : userId;
     if (!targetUserId) {
@@ -551,15 +611,6 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                         placeholder={['valorant', 'wild-rift'].includes(game.slug) ? 'Masukkan Riot ID + Tag (Contoh: Westbourne#SEA)' : 'Masukkan User ID / Player ID'}
                         className="w-full px-4 py-3 rounded-xl bg-background/50 border border-border text-sm outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
                       />
-                      {userId.trim().length >= 4 && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
-                          className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold shadow-sm"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>ID Siap Terverifikasi ✓ (Siap Kirim Top Up Instan)</span>
-                        </motion.div>
-                      )}
                     </div>
                   )}
                   {['genshin-impact', 'honkai-star-rail', 'zenless-zone-zero'].includes(game.slug) ? (
@@ -626,11 +677,69 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                         type="text"
                         value={serverId}
                         onChange={(e) => { setServerId(e.target.value); setIsValidated(false); }}
-                        placeholder="Masukkan Server ID / Zone ID"
+                        placeholder="Masukkan Server ID / Zone ID (Contoh: 2103)"
                         className="w-full px-4 py-3 rounded-xl bg-background/50 border border-border text-sm outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
                       />
                     </div>
                   ) : null}
+
+                  {/* Real-Time Nickname Verification Badge */}
+                  {!isVoucherProduct && (
+                    <div className="pt-1">
+                      {isCheckingNickname && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                          className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/25 text-primary text-xs font-semibold shadow-sm backdrop-blur-md"
+                        >
+                          <Loader2 className="w-3.5 h-3.5 animate-spin flex-shrink-0" />
+                          <span>Menghubungi server game & memverifikasi akun...</span>
+                        </motion.div>
+                      )}
+
+                      {!isCheckingNickname && verifiedNickname && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.96, y: 4 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                          className="p-3 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-emerald-500/10 to-teal-500/15 border border-emerald-500/30 shadow-[0_0_25px_rgba(52,211,153,0.15)] flex items-center justify-between gap-2.5 relative overflow-hidden backdrop-blur-xl"
+                        >
+                          {/* Ambient Glow */}
+                          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
+
+                          <div className="flex items-center gap-2.5 min-w-0 relative z-10">
+                            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 shadow-sm shadow-emerald-500/20">
+                              <CheckCircle2 className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <span className="text-[9px] sm:text-[10px] text-emerald-400/70 font-mono font-bold tracking-wider flex-shrink-0">NICKNAME:</span>
+                                <span className="text-xs sm:text-sm font-black text-white tracking-wide truncate">{verifiedNickname}</span>
+                              </div>
+                              <p className="text-[10px] text-emerald-400 font-medium truncate mt-0.5">
+                                Akun Resmi Terverifikasi
+                              </p>
+                            </div>
+                          </div>
+
+                          {nicknameRegion && (
+                            <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono text-[9px] sm:text-[10px] font-extrabold border border-emerald-500/30 flex-shrink-0 relative z-10 shadow-sm">
+                              {nicknameRegion}
+                            </span>
+                          )}
+                        </motion.div>
+                      )}
+
+                      {!isCheckingNickname && nicknameError && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                          className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium"
+                        >
+                          <Info className="w-3.5 h-3.5 flex-shrink-0 text-amber-400" />
+                          <span className="truncate">{nicknameError}</span>
+                        </motion.div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </section>

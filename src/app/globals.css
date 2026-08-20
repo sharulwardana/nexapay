@@ -94,7 +94,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden max-w-full;
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -102,6 +102,7 @@
   }
 
   html {
+    @apply overflow-x-hidden max-w-full;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }

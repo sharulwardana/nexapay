@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   DollarSign, CheckCircle, Clock, AlertCircle, Search, Filter,
-  ChevronLeft, ChevronRight, ArrowUpRight, Receipt
+  ChevronLeft, ChevronRight, ArrowUpRight, Receipt, Download, FileSpreadsheet
 } from 'lucide-react';
 import { cn, formatCurrency, formatPaymentMethod } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   COMPLETED: { label: 'Selesai', color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: CheckCircle },
@@ -65,6 +66,50 @@ export default function TransactionsClient({ transactions, stats }: {
     });
   };
 
+  const exportToCSV = () => {
+    if (!filtered || filtered.length === 0) {
+      toast.error('Tidak ada data transaksi untuk diekspor.');
+      return;
+    }
+
+    const headers = [
+      'No. Invoice',
+      'Waktu Transaksi',
+      'Email Pelanggan',
+      'Nama Pelanggan',
+      'Produk Game',
+      'Denominasi',
+      'Metode Pembayaran',
+      'Total Harga (IDR)',
+      'Status',
+    ];
+
+    const rows = filtered.map((tx) => [
+      `"${tx.invoiceId || tx.id}"`,
+      `"${new Date(tx.createdAt).toLocaleString('id-ID')}"`,
+      `"${tx.user?.email || 'Guest'}"`,
+      `"${tx.user?.name || '-'}"`,
+      `"${tx.product?.name || tx.productName || 'Top Up'}"`,
+      `"${tx.denomination?.label || '-'}"`,
+      `"${formatPaymentMethod(tx.paymentMethod)}"`,
+      tx.totalAmount,
+      `"${tx.status}"`,
+    ]);
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute('download', `Laporan_Transaksi_NexaPay_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success(`Laporan ${filtered.length} transaksi berhasil diunduh!`);
+  };
+
   return (
     <>
         <header className="sticky top-0 z-40 h-16 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-2xl flex items-center justify-between px-4 sm:px-6">
@@ -73,6 +118,14 @@ export default function TransactionsClient({ transactions, stats }: {
               <h1 className="text-lg sm:text-xl font-bold font-heading tracking-tight truncate">Riwayat Transaksi</h1>
             </div>
           </div>
+          <button
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-xs font-bold transition-all active:scale-95 shadow-sm hover:shadow-emerald-500/10 cursor-pointer"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            <span className="hidden sm:inline">Unduh Laporan (Excel / CSV)</span>
+            <span className="sm:hidden">Unduh CSV</span>
+          </button>
         </header>
 
         {/* Content */}

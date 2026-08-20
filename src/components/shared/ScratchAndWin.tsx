@@ -171,17 +171,24 @@ export default function ScratchAndWin() {
         initial={{ scale: 0 }}
         animate={{ 
           scale: 1,
-          y: isMobile ? (isShrunk ? 16 : 0) : 0
+          y: [0, -5, 0],
         }}
-        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-        whileHover={{ scale: 1.1, rotate: 10 }}
-        whileTap={{ scale: 0.9 }}
+        transition={{ 
+          scale: { type: 'spring', stiffness: 350, damping: 30 },
+          y: { repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.5 }
+        }}
+        whileHover={{ scale: 1.08, rotate: 6 }}
+        whileTap={{ scale: 0.92 }}
         onClick={() => {
           setIsOpen(true);
         }}
-        className="flex fixed bottom-[136px] right-4 tablet:right-6 tablet:bottom-[92px] w-12 h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] items-center justify-center z-40 transition-shadow duration-200"
+        className="flex fixed bottom-[138px] right-3 sm:right-4 tablet:right-6 tablet:bottom-[84px] w-11 h-11 sm:w-12 sm:h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.4)] hover:shadow-[0_6px_25px_rgba(245,158,11,0.55)] items-center justify-center z-40 transition-shadow duration-200 cursor-pointer"
+        aria-label="Scratch & Win Hadiah"
       >
         <Gift className="w-5 h-5 tablet:w-6 tablet:h-6 text-white" />
+        <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white font-black text-[9px] border-2 border-background animate-bounce">
+          FREE
+        </span>
       </motion.button>
 
       {/* Scratch Modal */}

@@ -17,17 +17,16 @@ export default {
   ],
   callbacks: {
     async session({ session, token }) {
-      if (!token || !token.sub) {
-        return null as unknown as typeof session;
-      }
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
-      if (token.role && session.user) {
-        session.user.role = token.role as string;
-      }
-      if (token.loyaltyPoints !== undefined && session.user) {
-        session.user.loyaltyPoints = token.loyaltyPoints as number;
+      if (session.user && token) {
+        if (token.sub) {
+          session.user.id = token.sub;
+        }
+        if (token.role) {
+          session.user.role = token.role as string;
+        }
+        if (token.loyaltyPoints !== undefined) {
+          session.user.loyaltyPoints = token.loyaltyPoints as number;
+        }
       }
       return session;
     },

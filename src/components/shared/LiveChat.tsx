@@ -122,16 +122,21 @@ export default function LiveChat() {
             initial={{ scale: 0 }}
             animate={{ 
               scale: 1,
-              y: isMobile ? (isShrunk ? 16 : 0) : 0
+              y: [0, -5, 0],
             }}
-            transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+            transition={{ 
+              scale: { type: 'spring', stiffness: 350, damping: 30 },
+              y: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' }
+            }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             exit={{ scale: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-[76px] right-4 tablet:bottom-6 tablet:right-6 z-40 w-12 h-12 tablet:w-14 tablet:h-14 rounded-full bg-primary text-white shadow-elevated hover:shadow-lg hover:scale-105 transition-shadow duration-200 flex items-center justify-center"
+            className="fixed bottom-[84px] right-3 sm:right-4 tablet:bottom-6 tablet:right-6 z-40 w-11 h-11 sm:w-12 sm:h-12 tablet:w-14 tablet:h-14 rounded-full bg-gradient-to-tr from-primary to-orange-500 text-white shadow-[0_4px_20px_rgba(255,115,0,0.35)] hover:shadow-[0_6px_25px_rgba(255,115,0,0.5)] transition-shadow duration-200 flex items-center justify-center cursor-pointer"
             aria-label="Open Chat"
           >
             <MessageCircle className="w-5 h-5" />
-            <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
+            <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-background animate-pulse" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -143,7 +148,7 @@ export default function LiveChat() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed z-50 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col bottom-[72px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-110px)]"
+            className="fixed z-50 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col bottom-[88px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-110px)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">

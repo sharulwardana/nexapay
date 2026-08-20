@@ -25,15 +25,18 @@ type ProductWithDenoms = {
 
 export default function ProductsClient({ products }: { products: ProductWithDenoms[] }) {
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category');
+  const rawParam = searchParams.get('category') || searchParams.get('cat');
+  const normalizedCategoryParam = rawParam 
+    ? (rawParam === 'EWALLET' ? 'EWALLET_TOPUP' : rawParam)
+    : null;
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState(categoryParam || 'ALL');
+  const [activeCategory, setActiveCategory] = useState(normalizedCategoryParam || 'ALL');
 
   useEffect(() => {
-    if (categoryParam) {
-      setActiveCategory(categoryParam);
+    if (normalizedCategoryParam) {
+      setActiveCategory(normalizedCategoryParam);
     }
-  }, [categoryParam]);
+  }, [normalizedCategoryParam]);
 
   const filteredProducts = useMemo(() => {
     let result = products;

@@ -143,6 +143,7 @@ model User {
   referralsUsed   Referral[]    @relation("Referee")
   coupons         UserCoupon[]
   chatMessages    ChatMessage[]
+  pushSubscriptions PushSubscription[]
 
   @@index([email])
   @@index([referralCode])
@@ -369,4 +370,19 @@ model SiteConfig {
   value String 
   
   @@index([key])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String?
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([endpoint])
 }

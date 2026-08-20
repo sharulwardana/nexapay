@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { auth } from '@/../auth';
 import { PAYMENT_METHODS, getLoyaltyDiscount } from '@/lib/constants';
+import { sendPushToUser } from '@/lib/push';
 import { z } from 'zod';
 import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';
@@ -182,6 +183,16 @@ export async function POST(req: NextRequest) {
 
       return { transaction, pointsEarned: isWalletPayment ? pointsEarned : 0, isWalletPayment };
     });
+
+    // Send push notification if completed via wallet
+    if (result.isWalletPayment && !isGuest && result.transaction.userId) {
+      sendPushToUser(result.transaction.userId, {
+        title: 'Top Up Berhasil! 💎',
+        body: `Pembayaran ${result.transaction.productName} berhasil via NexaPay Wallet!`,
+        icon: '/favicon.ico',
+        url: `/payment-status/${result.transaction.invoiceId}`,
+      }).catch((err) => console.error('Failed to send push on wallet checkout:', err));
+    }
 
     return NextResponse.json({
       success: true,

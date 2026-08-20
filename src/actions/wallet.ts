@@ -6,6 +6,8 @@ import { auth } from '@/../auth';
 import { z } from 'zod';
 import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';
+import { sendPushToUser } from '@/lib/push';
+import { formatCurrency } from '@/lib/utils';
 
 // Rate limiters for wallet operations
 const topUpLimiter = rateLimit({ interval: 60000, uniqueTokenPerInterval: 500 });
@@ -92,6 +94,13 @@ export async function topUpWallet(amount: number) {
       revalidatePath('/dashboard/wallet');
       revalidatePath('/dashboard');
       revalidatePath('/admin');
+
+      sendPushToUser(session.user.id, {
+        title: 'Top Up Saldo Berhasil! 💳',
+        body: `Saldo NexaPay Wallet Anda bertambah ${formatCurrency(validatedAmount)}.`,
+        icon: '/favicon.ico',
+        url: '/dashboard/wallet',
+      }).catch((err) => console.error('Failed to send push on wallet topup:', err));
 
       return {
         success: true,
@@ -242,6 +251,22 @@ export async function transferWallet(recipientEmailOrPhone: string, amount: numb
     revalidatePath('/dashboard/wallet');
     revalidatePath('/dashboard');
     revalidatePath('/admin');
+
+    // Send push to recipient
+    sendPushToUser(recipient.id, {
+      title: 'Saldo Masuk! 💰',
+      body: `Anda menerima transfer ${formatCurrency(validatedAmount)} dari ${result.senderName || session.user.email}.`,
+      icon: '/favicon.ico',
+      url: '/dashboard/wallet',
+    }).catch((err) => console.error('Failed to send push to recipient:', err));
+
+    // Send push to sender
+    sendPushToUser(session.user.id, {
+      title: 'Transfer Berhasil! 🚀',
+      body: `Transfer ${formatCurrency(validatedAmount)} ke ${result.recipientName} telah berhasil.`,
+      icon: '/favicon.ico',
+      url: '/dashboard/wallet',
+    }).catch((err) => console.error('Failed to send push to sender:', err));
 
     return {
       success: true,

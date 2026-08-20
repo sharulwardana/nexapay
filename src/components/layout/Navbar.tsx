@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSearchStore } from '@/store/globalStore';
 import { getLoyaltyRank } from '@/store/userStore';

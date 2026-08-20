@@ -2,10 +2,9 @@
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi } from 'lucide-react';
-import { cn, formatCurrency } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/constants';
 import type { ProductWithDenominations } from '@/types';
 import CyberGameCard from '@/components/shared/CyberGameCard';

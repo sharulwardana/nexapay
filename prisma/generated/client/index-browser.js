@@ -248,7 +248,8 @@ exports.Prisma.PromoScalarFieldEnum = {
   startDate: 'startDate',
   endDate: 'endDate',
   isActive: 'isActive',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BannerScalarFieldEnum = {
@@ -334,6 +335,16 @@ exports.Prisma.SiteConfigScalarFieldEnum = {
   value: 'value'
 };
 
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -348,7 +359,40 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
 
+exports.LoyaltyLevel = exports.$Enums.LoyaltyLevel = {
+  BRONZE: 'BRONZE',
+  SILVER: 'SILVER',
+  GOLD: 'GOLD',
+  PLATINUM: 'PLATINUM',
+  DIAMOND: 'DIAMOND'
+};
+
+exports.TransactionStatus = exports.$Enums.TransactionStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+exports.PromoType = exports.$Enums.PromoType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+  promo: 'promo'
+};
 
 exports.Prisma.ModelName = {
   Account: 'Account',
@@ -366,7 +410,8 @@ exports.Prisma.ModelName = {
   UserCoupon: 'UserCoupon',
   ChatMessage: 'ChatMessage',
   NewsArticle: 'NewsArticle',
-  SiteConfig: 'SiteConfig'
+  SiteConfig: 'SiteConfig',
+  PushSubscription: 'PushSubscription'
 };
 
 /**

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const SearchOverlay = dynamic(() => import('@/components/shared/SearchOverlay'), { ssr: false });
 const ScratchAndWin = dynamic(() => import('@/components/shared/ScratchAndWin'), { ssr: false });
 const LiveChat = dynamic(() => import('@/components/shared/LiveChat'), { ssr: false });
+const PushNotificationBanner = dynamic(() => import('@/components/shared/PushNotificationBanner'), { ssr: false });
 
 export default function ClientOverlays() {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function ClientOverlays() {
       <SearchOverlay />
       {!isDashboard && <ScratchAndWin />}
       <LiveChat />
+      <PushNotificationBanner />
     </>
   );
 }

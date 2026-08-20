@@ -95,3 +95,60 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+// ─── Web Push Notification Handlers ──────────────────────────────────────────
+
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+
+  try {
+    const data = event.data.json();
+    const title = data.title || 'NexaPay — Update Transaksi';
+    const options = {
+      body: data.body || 'Ada pembaruan status transaksi pada akun NexaPay Anda.',
+      icon: data.icon || '/favicon.ico',
+      badge: '/favicon.ico',
+      image: data.image || undefined,
+      vibrate: [100, 50, 100],
+      data: {
+        url: data.url || '/',
+        dateOfArrival: Date.now(),
+        primaryKey: 1,
+      },
+      actions: [
+        { action: 'open', title: 'Buka Detail 🚀' },
+        { action: 'close', title: 'Tutup' },
+      ],
+      tag: data.tag || 'nexapay-notification',
+      renotify: true,
+    };
+
+    event.waitUntil(self.registration.showNotification(title, options));
+  } catch (err) {
+    console.error('[SW] Failed to process push event:', err);
+  }
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'close') return;
+
+  const targetUrl = event.notification.data?.url || '/';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      // If a window is already open, focus it and navigate
+      for (const client of windowClients) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          client.navigate(targetUrl);
+          return client.focus();
+        }
+      }
+      // Otherwise open a new window
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
+  );
+});

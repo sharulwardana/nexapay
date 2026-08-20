@@ -3,15 +3,25 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, User, Mail, Lock, Shield, Save, LogOut, Trash2, Loader2, X } from 'lucide-react';
+import { ArrowLeft, User, Mail, Lock, Shield, Save, LogOut, Trash2, Loader2, X, Bell, Sparkles } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useSession, signOut } from 'next-auth/react';
+import { usePushNotification } from '@/hooks/usePushNotification';
 
 export default function SettingsPage() {
   const { data: session, update } = useSession();
+  const { 
+    isSupported, 
+    permission, 
+    isSubscribed, 
+    isLoading: pushLoading, 
+    subscribe, 
+    unsubscribe, 
+    sendTestNotification 
+  } = usePushNotification();
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -122,6 +132,66 @@ export default function SettingsPage() {
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-muted/30 border border-border text-sm text-muted-foreground cursor-not-allowed" 
                     />
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Push Notifications Section */}
+            <div className="glass-card p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-primary" /> Notifikasi Pop-up (Web Push)
+                </h2>
+                <span className={cn(
+                  "px-2.5 py-0.5 rounded-full text-[10px] font-bold border",
+                  isSubscribed 
+                    ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" 
+                    : "bg-muted text-muted-foreground border-border"
+                )}>
+                  {isSubscribed ? 'Aktif' : 'Nonaktif'}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                Terima pembaruan status transaksi instan langsung di layar HP/Laptop Anda secara real-time meskipun browser sedang ditutup.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-muted/30 border border-border">
+                <div>
+                  <p className="text-xs font-bold text-foreground">Status Izin Browser</p>
+                  <p className="text-[11px] text-muted-foreground capitalize mt-0.5">
+                    {permission === 'granted' ? 'Izin Diberikan ✅' : permission === 'denied' ? 'Izin Diblokir di Browser ❌' : 'Belum Dikonfigurasi'}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {isSubscribed ? (
+                    <>
+                      <button
+                        onClick={sendTestNotification}
+                        disabled={pushLoading}
+                        className="px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 text-xs font-bold transition-all active:scale-95 flex items-center gap-1"
+                      >
+                        {pushLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                        <span>Kirim Tes</span>
+                      </button>
+                      <button
+                        onClick={unsubscribe}
+                        disabled={pushLoading}
+                        className="px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-medium transition-all"
+                      >
+                        Nonaktifkan
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={subscribe}
+                      disabled={pushLoading}
+                      className="px-4 py-2 rounded-xl gradient-primary text-white text-xs font-bold shadow-sm shadow-primary/25 hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                    >
+                      {pushLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Bell className="w-3.5 h-3.5" />}
+                      <span>Aktifkan Notifikasi Pop-up</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

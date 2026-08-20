@@ -142,7 +142,7 @@ export default function NavInlineSearch() {
                     {results.map((product) => (
                       <Link
                         key={product.id}
-                        href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
+                        href={['GAME_TOPUP', 'GAMES', 'Game Top Up'].includes(product.category) ? `/topup/${product.slug}` : `/products/${product.slug}`}
                         onClick={() => setIsOpen(false)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-primary/10 transition-colors group"
                       >
@@ -247,7 +247,7 @@ export default function NavInlineSearch() {
                       {results.map((product) => (
                         <Link
                           key={product.id}
-                          href={product.category === 'GAME_TOPUP' ? `/topup/${product.slug}` : `/products/${product.slug}`}
+                          href={['GAME_TOPUP', 'GAMES', 'Game Top Up'].includes(product.category) ? `/topup/${product.slug}` : `/products/${product.slug}`}
                           onClick={() => setIsOpen(false)}
                           className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30 hover:bg-primary/10 border border-border/40 hover:border-primary/40 transition-all active:scale-[0.98]"
                         >

@@ -7,8 +7,7 @@ import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DollarSign, ShoppingCart, Users, UserPlus,
-  ArrowUpRight, ArrowDownRight,
-  Search, MoreHorizontal, Activity, Zap, Package, Receipt, BarChart3, RefreshCw
+  ArrowUpRight, ArrowDownRight, RefreshCw
 } from 'lucide-react';
 import { cn, formatCurrency, formatNumber, triggerHaptic } from '@/lib/utils';
 

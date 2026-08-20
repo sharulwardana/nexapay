@@ -93,6 +93,86 @@ export type NewsArticle = $Result.DefaultSelection<Prisma.$NewsArticlePayload>
  * 
  */
 export type SiteConfig = $Result.DefaultSelection<Prisma.$SiteConfigPayload>
+/**
+ * Model PushSubscription
+ * 
+ */
+export type PushSubscription = $Result.DefaultSelection<Prisma.$PushSubscriptionPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const Role: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const TransactionStatus: {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
+export const LoyaltyLevel: {
+  BRONZE: 'BRONZE',
+  SILVER: 'SILVER',
+  GOLD: 'GOLD',
+  PLATINUM: 'PLATINUM',
+  DIAMOND: 'DIAMOND'
+};
+
+export type LoyaltyLevel = (typeof LoyaltyLevel)[keyof typeof LoyaltyLevel]
+
+
+export const PromoType: {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+};
+
+export type PromoType = (typeof PromoType)[keyof typeof PromoType]
+
+
+export const NotificationType: {
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+  promo: 'promo'
+};
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+}
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
+
+export type TransactionStatus = $Enums.TransactionStatus
+
+export const TransactionStatus: typeof $Enums.TransactionStatus
+
+export type LoyaltyLevel = $Enums.LoyaltyLevel
+
+export const LoyaltyLevel: typeof $Enums.LoyaltyLevel
+
+export type PromoType = $Enums.PromoType
+
+export const PromoType: typeof $Enums.PromoType
+
+export type NotificationType = $Enums.NotificationType
+
+export const NotificationType: typeof $Enums.NotificationType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -374,6 +454,16 @@ export class PrismaClient<
     * ```
     */
   get siteConfig(): Prisma.SiteConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pushSubscription`: Exposes CRUD operations for the **PushSubscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PushSubscriptions
+    * const pushSubscriptions = await prisma.pushSubscription.findMany()
+    * ```
+    */
+  get pushSubscription(): Prisma.PushSubscriptionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -836,7 +926,8 @@ export namespace Prisma {
     UserCoupon: 'UserCoupon',
     ChatMessage: 'ChatMessage',
     NewsArticle: 'NewsArticle',
-    SiteConfig: 'SiteConfig'
+    SiteConfig: 'SiteConfig',
+    PushSubscription: 'PushSubscription'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -852,7 +943,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "verificationToken" | "user" | "product" | "denomination" | "transaction" | "promo" | "banner" | "notification" | "favorite" | "referral" | "userCoupon" | "chatMessage" | "newsArticle" | "siteConfig"
+      modelProps: "account" | "session" | "verificationToken" | "user" | "product" | "denomination" | "transaction" | "promo" | "banner" | "notification" | "favorite" | "referral" | "userCoupon" | "chatMessage" | "newsArticle" | "siteConfig" | "pushSubscription"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2040,6 +2131,80 @@ export namespace Prisma {
           }
         }
       }
+      PushSubscription: {
+        payload: Prisma.$PushSubscriptionPayload<ExtArgs>
+        fields: Prisma.PushSubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.PushSubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PushSubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          update: {
+            args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PushSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePushSubscription>
+          }
+          groupBy: {
+            args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PushSubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PushSubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<PushSubscriptionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2179,6 +2344,7 @@ export namespace Prisma {
     chatMessage?: ChatMessageOmit
     newsArticle?: NewsArticleOmit
     siteConfig?: SiteConfigOmit
+    pushSubscription?: PushSubscriptionOmit
   }
 
   /* Types for Logging */
@@ -2268,6 +2434,7 @@ export namespace Prisma {
     referralsUsed: number
     coupons: number
     chatMessages: number
+    pushSubscriptions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2280,6 +2447,7 @@ export namespace Prisma {
     referralsUsed?: boolean | UserCountOutputTypeCountReferralsUsedArgs
     coupons?: boolean | UserCountOutputTypeCountCouponsArgs
     chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
+    pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
   }
 
   // Custom InputTypes
@@ -2354,6 +2522,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChatMessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PushSubscriptionWhereInput
   }
 
 
@@ -5683,9 +5858,9 @@ export namespace Prisma {
     image: string | null
     password: string | null
     phone: string | null
-    role: string | null
+    role: $Enums.Role | null
     walletBalance: number | null
-    loyaltyLevel: string | null
+    loyaltyLevel: $Enums.LoyaltyLevel | null
     loyaltyPoints: number | null
     referralCode: string | null
     referredBy: string | null
@@ -5703,9 +5878,9 @@ export namespace Prisma {
     image: string | null
     password: string | null
     phone: string | null
-    role: string | null
+    role: $Enums.Role | null
     walletBalance: number | null
-    loyaltyLevel: string | null
+    loyaltyLevel: $Enums.LoyaltyLevel | null
     loyaltyPoints: number | null
     referralCode: string | null
     referredBy: string | null
@@ -5902,9 +6077,9 @@ export namespace Prisma {
     image: string | null
     password: string | null
     phone: string | null
-    role: string
+    role: $Enums.Role
     walletBalance: number
-    loyaltyLevel: string
+    loyaltyLevel: $Enums.LoyaltyLevel
     loyaltyPoints: number
     referralCode: string | null
     referredBy: string | null
@@ -5960,6 +6135,7 @@ export namespace Prisma {
     referralsUsed?: boolean | User$referralsUsedArgs<ExtArgs>
     coupons?: boolean | User$couponsArgs<ExtArgs>
     chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
+    pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6034,6 +6210,7 @@ export namespace Prisma {
     referralsUsed?: boolean | User$referralsUsedArgs<ExtArgs>
     coupons?: boolean | User$couponsArgs<ExtArgs>
     chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
+    pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6051,6 +6228,7 @@ export namespace Prisma {
       referralsUsed: Prisma.$ReferralPayload<ExtArgs>[]
       coupons: Prisma.$UserCouponPayload<ExtArgs>[]
       chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
+      pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6060,9 +6238,9 @@ export namespace Prisma {
       image: string | null
       password: string | null
       phone: string | null
-      role: string
+      role: $Enums.Role
       walletBalance: number
-      loyaltyLevel: string
+      loyaltyLevel: $Enums.LoyaltyLevel
       loyaltyPoints: number
       referralCode: string | null
       referredBy: string | null
@@ -6473,6 +6651,7 @@ export namespace Prisma {
     referralsUsed<T extends User$referralsUsedArgs<ExtArgs> = {}>(args?: Subset<T, User$referralsUsedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     coupons<T extends User$couponsArgs<ExtArgs> = {}>(args?: Subset<T, User$couponsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCouponPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatMessages<T extends User$chatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6509,9 +6688,9 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
     readonly walletBalance: FieldRef<"User", 'Int'>
-    readonly loyaltyLevel: FieldRef<"User", 'String'>
+    readonly loyaltyLevel: FieldRef<"User", 'LoyaltyLevel'>
     readonly loyaltyPoints: FieldRef<"User", 'Int'>
     readonly referralCode: FieldRef<"User", 'String'>
     readonly referredBy: FieldRef<"User", 'String'>
@@ -7125,6 +7304,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * User.pushSubscriptions
+   */
+  export type User$pushSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    where?: PushSubscriptionWhereInput
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    cursor?: PushSubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
   }
 
   /**
@@ -9748,7 +9951,7 @@ export namespace Prisma {
     discount: number | null
     totalAmount: number | null
     paymentMethod: string | null
-    status: string | null
+    status: $Enums.TransactionStatus | null
     gameUserId: string | null
     gameServerId: string | null
     phoneNumber: string | null
@@ -9778,7 +9981,7 @@ export namespace Prisma {
     discount: number | null
     totalAmount: number | null
     paymentMethod: string | null
-    status: string | null
+    status: $Enums.TransactionStatus | null
     gameUserId: string | null
     gameServerId: string | null
     phoneNumber: string | null
@@ -10031,7 +10234,7 @@ export namespace Prisma {
     discount: number
     totalAmount: number
     paymentMethod: string
-    status: string
+    status: $Enums.TransactionStatus
     gameUserId: string | null
     gameServerId: string | null
     phoneNumber: string | null
@@ -10233,7 +10436,7 @@ export namespace Prisma {
       discount: number
       totalAmount: number
       paymentMethod: string
-      status: string
+      status: $Enums.TransactionStatus
       gameUserId: string | null
       gameServerId: string | null
       phoneNumber: string | null
@@ -10686,7 +10889,7 @@ export namespace Prisma {
     readonly discount: FieldRef<"Transaction", 'Int'>
     readonly totalAmount: FieldRef<"Transaction", 'Int'>
     readonly paymentMethod: FieldRef<"Transaction", 'String'>
-    readonly status: FieldRef<"Transaction", 'String'>
+    readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly gameUserId: FieldRef<"Transaction", 'String'>
     readonly gameServerId: FieldRef<"Transaction", 'String'>
     readonly phoneNumber: FieldRef<"Transaction", 'String'>
@@ -11193,7 +11396,7 @@ export namespace Prisma {
     code: string | null
     name: string | null
     description: string | null
-    type: string | null
+    type: $Enums.PromoType | null
     value: number | null
     minPurchase: number | null
     maxDiscount: number | null
@@ -11204,6 +11407,7 @@ export namespace Prisma {
     endDate: Date | null
     isActive: boolean | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type PromoMaxAggregateOutputType = {
@@ -11211,7 +11415,7 @@ export namespace Prisma {
     code: string | null
     name: string | null
     description: string | null
-    type: string | null
+    type: $Enums.PromoType | null
     value: number | null
     minPurchase: number | null
     maxDiscount: number | null
@@ -11222,6 +11426,7 @@ export namespace Prisma {
     endDate: Date | null
     isActive: boolean | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type PromoCountAggregateOutputType = {
@@ -11240,6 +11445,7 @@ export namespace Prisma {
     endDate: number
     isActive: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -11278,6 +11484,7 @@ export namespace Prisma {
     endDate?: true
     isActive?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type PromoMaxAggregateInputType = {
@@ -11296,6 +11503,7 @@ export namespace Prisma {
     endDate?: true
     isActive?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type PromoCountAggregateInputType = {
@@ -11314,6 +11522,7 @@ export namespace Prisma {
     endDate?: true
     isActive?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -11408,7 +11617,7 @@ export namespace Prisma {
     code: string
     name: string
     description: string | null
-    type: string
+    type: $Enums.PromoType
     value: number
     minPurchase: number
     maxDiscount: number | null
@@ -11419,6 +11628,7 @@ export namespace Prisma {
     endDate: Date
     isActive: boolean
     createdAt: Date
+    updatedAt: Date
     _count: PromoCountAggregateOutputType | null
     _avg: PromoAvgAggregateOutputType | null
     _sum: PromoSumAggregateOutputType | null
@@ -11456,6 +11666,7 @@ export namespace Prisma {
     endDate?: boolean
     isActive?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["promo"]>
 
   export type PromoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11474,6 +11685,7 @@ export namespace Prisma {
     endDate?: boolean
     isActive?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["promo"]>
 
   export type PromoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11492,6 +11704,7 @@ export namespace Prisma {
     endDate?: boolean
     isActive?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["promo"]>
 
   export type PromoSelectScalar = {
@@ -11510,9 +11723,10 @@ export namespace Prisma {
     endDate?: boolean
     isActive?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type PromoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "type" | "value" | "minPurchase" | "maxDiscount" | "usageLimit" | "usageCount" | "perUserLimit" | "startDate" | "endDate" | "isActive" | "createdAt", ExtArgs["result"]["promo"]>
+  export type PromoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "type" | "value" | "minPurchase" | "maxDiscount" | "usageLimit" | "usageCount" | "perUserLimit" | "startDate" | "endDate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["promo"]>
 
   export type $PromoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Promo"
@@ -11522,7 +11736,7 @@ export namespace Prisma {
       code: string
       name: string
       description: string | null
-      type: string
+      type: $Enums.PromoType
       value: number
       minPurchase: number
       maxDiscount: number | null
@@ -11533,6 +11747,7 @@ export namespace Prisma {
       endDate: Date
       isActive: boolean
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["promo"]>
     composites: {}
   }
@@ -11960,7 +12175,7 @@ export namespace Prisma {
     readonly code: FieldRef<"Promo", 'String'>
     readonly name: FieldRef<"Promo", 'String'>
     readonly description: FieldRef<"Promo", 'String'>
-    readonly type: FieldRef<"Promo", 'String'>
+    readonly type: FieldRef<"Promo", 'PromoType'>
     readonly value: FieldRef<"Promo", 'Int'>
     readonly minPurchase: FieldRef<"Promo", 'Int'>
     readonly maxDiscount: FieldRef<"Promo", 'Int'>
@@ -11971,6 +12186,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Promo", 'DateTime'>
     readonly isActive: FieldRef<"Promo", 'Boolean'>
     readonly createdAt: FieldRef<"Promo", 'DateTime'>
+    readonly updatedAt: FieldRef<"Promo", 'DateTime'>
   }
     
 
@@ -13482,7 +13698,7 @@ export namespace Prisma {
     userId: string | null
     title: string | null
     message: string | null
-    type: string | null
+    type: $Enums.NotificationType | null
     link: string | null
     isRead: boolean | null
     createdAt: Date | null
@@ -13493,7 +13709,7 @@ export namespace Prisma {
     userId: string | null
     title: string | null
     message: string | null
-    type: string | null
+    type: $Enums.NotificationType | null
     link: string | null
     isRead: boolean | null
     createdAt: Date | null
@@ -13623,7 +13839,7 @@ export namespace Prisma {
     userId: string
     title: string
     message: string
-    type: string
+    type: $Enums.NotificationType
     link: string | null
     isRead: boolean
     createdAt: Date
@@ -13714,7 +13930,7 @@ export namespace Prisma {
       userId: string
       title: string
       message: string
-      type: string
+      type: $Enums.NotificationType
       link: string | null
       isRead: boolean
       createdAt: Date
@@ -14146,7 +14362,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Notification", 'String'>
     readonly title: FieldRef<"Notification", 'String'>
     readonly message: FieldRef<"Notification", 'String'>
-    readonly type: FieldRef<"Notification", 'String'>
+    readonly type: FieldRef<"Notification", 'NotificationType'>
     readonly link: FieldRef<"Notification", 'String'>
     readonly isRead: FieldRef<"Notification", 'Boolean'>
     readonly createdAt: FieldRef<"Notification", 'DateTime'>
@@ -21008,6 +21224,1114 @@ export namespace Prisma {
 
 
   /**
+   * Model PushSubscription
+   */
+
+  export type AggregatePushSubscription = {
+    _count: PushSubscriptionCountAggregateOutputType | null
+    _min: PushSubscriptionMinAggregateOutputType | null
+    _max: PushSubscriptionMaxAggregateOutputType | null
+  }
+
+  export type PushSubscriptionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    endpoint: string | null
+    p256dh: string | null
+    auth: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PushSubscriptionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    endpoint: string | null
+    p256dh: string | null
+    auth: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PushSubscriptionCountAggregateOutputType = {
+    id: number
+    userId: number
+    endpoint: number
+    p256dh: number
+    auth: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PushSubscriptionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dh?: true
+    auth?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PushSubscriptionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dh?: true
+    auth?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PushSubscriptionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    endpoint?: true
+    p256dh?: true
+    auth?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PushSubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushSubscription to aggregate.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PushSubscriptions
+    **/
+    _count?: true | PushSubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PushSubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PushSubscriptionMaxAggregateInputType
+  }
+
+  export type GetPushSubscriptionAggregateType<T extends PushSubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePushSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePushSubscription[P]>
+      : GetScalarType<T[P], AggregatePushSubscription[P]>
+  }
+
+
+
+
+  export type PushSubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PushSubscriptionWhereInput
+    orderBy?: PushSubscriptionOrderByWithAggregationInput | PushSubscriptionOrderByWithAggregationInput[]
+    by: PushSubscriptionScalarFieldEnum[] | PushSubscriptionScalarFieldEnum
+    having?: PushSubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PushSubscriptionCountAggregateInputType | true
+    _min?: PushSubscriptionMinAggregateInputType
+    _max?: PushSubscriptionMaxAggregateInputType
+  }
+
+  export type PushSubscriptionGroupByOutputType = {
+    id: string
+    userId: string | null
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PushSubscriptionCountAggregateOutputType | null
+    _min: PushSubscriptionMinAggregateOutputType | null
+    _max: PushSubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetPushSubscriptionGroupByPayload<T extends PushSubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PushSubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PushSubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PushSubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], PushSubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PushSubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dh?: boolean
+    auth?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }, ExtArgs["result"]["pushSubscription"]>
+
+  export type PushSubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dh?: boolean
+    auth?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }, ExtArgs["result"]["pushSubscription"]>
+
+  export type PushSubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dh?: boolean
+    auth?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }, ExtArgs["result"]["pushSubscription"]>
+
+  export type PushSubscriptionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    endpoint?: boolean
+    p256dh?: boolean
+    auth?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PushSubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "endpoint" | "p256dh" | "auth" | "createdAt" | "updatedAt", ExtArgs["result"]["pushSubscription"]>
+  export type PushSubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }
+  export type PushSubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }
+  export type PushSubscriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | PushSubscription$userArgs<ExtArgs>
+  }
+
+  export type $PushSubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PushSubscription"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string | null
+      endpoint: string
+      p256dh: string
+      auth: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["pushSubscription"]>
+    composites: {}
+  }
+
+  type PushSubscriptionGetPayload<S extends boolean | null | undefined | PushSubscriptionDefaultArgs> = $Result.GetResult<Prisma.$PushSubscriptionPayload, S>
+
+  type PushSubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PushSubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PushSubscriptionCountAggregateInputType | true
+    }
+
+  export interface PushSubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PushSubscription'], meta: { name: 'PushSubscription' } }
+    /**
+     * Find zero or one PushSubscription that matches the filter.
+     * @param {PushSubscriptionFindUniqueArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PushSubscriptionFindUniqueArgs>(args: SelectSubset<T, PushSubscriptionFindUniqueArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PushSubscription that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PushSubscriptionFindUniqueOrThrowArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PushSubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PushSubscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindFirstArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PushSubscriptionFindFirstArgs>(args?: SelectSubset<T, PushSubscriptionFindFirstArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PushSubscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindFirstOrThrowArgs} args - Arguments to find a PushSubscription
+     * @example
+     * // Get one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PushSubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, PushSubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PushSubscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PushSubscriptions
+     * const pushSubscriptions = await prisma.pushSubscription.findMany()
+     * 
+     * // Get first 10 PushSubscriptions
+     * const pushSubscriptions = await prisma.pushSubscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pushSubscriptionWithIdOnly = await prisma.pushSubscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PushSubscriptionFindManyArgs>(args?: SelectSubset<T, PushSubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PushSubscription.
+     * @param {PushSubscriptionCreateArgs} args - Arguments to create a PushSubscription.
+     * @example
+     * // Create one PushSubscription
+     * const PushSubscription = await prisma.pushSubscription.create({
+     *   data: {
+     *     // ... data to create a PushSubscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends PushSubscriptionCreateArgs>(args: SelectSubset<T, PushSubscriptionCreateArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PushSubscriptions.
+     * @param {PushSubscriptionCreateManyArgs} args - Arguments to create many PushSubscriptions.
+     * @example
+     * // Create many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PushSubscriptionCreateManyArgs>(args?: SelectSubset<T, PushSubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PushSubscriptions and returns the data saved in the database.
+     * @param {PushSubscriptionCreateManyAndReturnArgs} args - Arguments to create many PushSubscriptions.
+     * @example
+     * // Create many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PushSubscriptions and only return the `id`
+     * const pushSubscriptionWithIdOnly = await prisma.pushSubscription.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PushSubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, PushSubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PushSubscription.
+     * @param {PushSubscriptionDeleteArgs} args - Arguments to delete one PushSubscription.
+     * @example
+     * // Delete one PushSubscription
+     * const PushSubscription = await prisma.pushSubscription.delete({
+     *   where: {
+     *     // ... filter to delete one PushSubscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PushSubscriptionDeleteArgs>(args: SelectSubset<T, PushSubscriptionDeleteArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PushSubscription.
+     * @param {PushSubscriptionUpdateArgs} args - Arguments to update one PushSubscription.
+     * @example
+     * // Update one PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PushSubscriptionUpdateArgs>(args: SelectSubset<T, PushSubscriptionUpdateArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PushSubscriptions.
+     * @param {PushSubscriptionDeleteManyArgs} args - Arguments to filter PushSubscriptions to delete.
+     * @example
+     * // Delete a few PushSubscriptions
+     * const { count } = await prisma.pushSubscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PushSubscriptionDeleteManyArgs>(args?: SelectSubset<T, PushSubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PushSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PushSubscriptionUpdateManyArgs>(args: SelectSubset<T, PushSubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PushSubscriptions and returns the data updated in the database.
+     * @param {PushSubscriptionUpdateManyAndReturnArgs} args - Arguments to update many PushSubscriptions.
+     * @example
+     * // Update many PushSubscriptions
+     * const pushSubscription = await prisma.pushSubscription.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PushSubscriptions and only return the `id`
+     * const pushSubscriptionWithIdOnly = await prisma.pushSubscription.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PushSubscriptionUpdateManyAndReturnArgs>(args: SelectSubset<T, PushSubscriptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PushSubscription.
+     * @param {PushSubscriptionUpsertArgs} args - Arguments to update or create a PushSubscription.
+     * @example
+     * // Update or create a PushSubscription
+     * const pushSubscription = await prisma.pushSubscription.upsert({
+     *   create: {
+     *     // ... data to create a PushSubscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PushSubscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PushSubscriptionUpsertArgs>(args: SelectSubset<T, PushSubscriptionUpsertArgs<ExtArgs>>): Prisma__PushSubscriptionClient<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PushSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionCountArgs} args - Arguments to filter PushSubscriptions to count.
+     * @example
+     * // Count the number of PushSubscriptions
+     * const count = await prisma.pushSubscription.count({
+     *   where: {
+     *     // ... the filter for the PushSubscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PushSubscriptionCountArgs>(
+      args?: Subset<T, PushSubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PushSubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PushSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PushSubscriptionAggregateArgs>(args: Subset<T, PushSubscriptionAggregateArgs>): Prisma.PrismaPromise<GetPushSubscriptionAggregateType<T>>
+
+    /**
+     * Group by PushSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushSubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PushSubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PushSubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: PushSubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PushSubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPushSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PushSubscription model
+   */
+  readonly fields: PushSubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PushSubscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PushSubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends PushSubscription$userArgs<ExtArgs> = {}>(args?: Subset<T, PushSubscription$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PushSubscription model
+   */
+  interface PushSubscriptionFieldRefs {
+    readonly id: FieldRef<"PushSubscription", 'String'>
+    readonly userId: FieldRef<"PushSubscription", 'String'>
+    readonly endpoint: FieldRef<"PushSubscription", 'String'>
+    readonly p256dh: FieldRef<"PushSubscription", 'String'>
+    readonly auth: FieldRef<"PushSubscription", 'String'>
+    readonly createdAt: FieldRef<"PushSubscription", 'DateTime'>
+    readonly updatedAt: FieldRef<"PushSubscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PushSubscription findUnique
+   */
+  export type PushSubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription findUniqueOrThrow
+   */
+  export type PushSubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription findFirst
+   */
+  export type PushSubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushSubscriptions.
+     */
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription findFirstOrThrow
+   */
+  export type PushSubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscription to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushSubscriptions.
+     */
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription findMany
+   */
+  export type PushSubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PushSubscriptions to fetch.
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushSubscriptions to fetch.
+     */
+    orderBy?: PushSubscriptionOrderByWithRelationInput | PushSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PushSubscriptions.
+     */
+    cursor?: PushSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushSubscriptions.
+     */
+    distinct?: PushSubscriptionScalarFieldEnum | PushSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * PushSubscription create
+   */
+  export type PushSubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PushSubscription.
+     */
+    data: XOR<PushSubscriptionCreateInput, PushSubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * PushSubscription createMany
+   */
+  export type PushSubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PushSubscriptions.
+     */
+    data: PushSubscriptionCreateManyInput | PushSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PushSubscription createManyAndReturn
+   */
+  export type PushSubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many PushSubscriptions.
+     */
+    data: PushSubscriptionCreateManyInput | PushSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PushSubscription update
+   */
+  export type PushSubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PushSubscription.
+     */
+    data: XOR<PushSubscriptionUpdateInput, PushSubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which PushSubscription to update.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription updateMany
+   */
+  export type PushSubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PushSubscriptions.
+     */
+    data: XOR<PushSubscriptionUpdateManyMutationInput, PushSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which PushSubscriptions to update
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * Limit how many PushSubscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PushSubscription updateManyAndReturn
+   */
+  export type PushSubscriptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to update PushSubscriptions.
+     */
+    data: XOR<PushSubscriptionUpdateManyMutationInput, PushSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which PushSubscriptions to update
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * Limit how many PushSubscriptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PushSubscription upsert
+   */
+  export type PushSubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PushSubscription to update in case it exists.
+     */
+    where: PushSubscriptionWhereUniqueInput
+    /**
+     * In case the PushSubscription found by the `where` argument doesn't exist, create a new PushSubscription with this data.
+     */
+    create: XOR<PushSubscriptionCreateInput, PushSubscriptionUncheckedCreateInput>
+    /**
+     * In case the PushSubscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PushSubscriptionUpdateInput, PushSubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * PushSubscription delete
+   */
+  export type PushSubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter which PushSubscription to delete.
+     */
+    where: PushSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * PushSubscription deleteMany
+   */
+  export type PushSubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushSubscriptions to delete
+     */
+    where?: PushSubscriptionWhereInput
+    /**
+     * Limit how many PushSubscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PushSubscription.user
+   */
+  export type PushSubscription$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * PushSubscription without action
+   */
+  export type PushSubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushSubscription
+     */
+    select?: PushSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PushSubscription
+     */
+    omit?: PushSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PushSubscriptionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -21170,7 +22494,8 @@ export namespace Prisma {
     startDate: 'startDate',
     endDate: 'endDate',
     isActive: 'isActive',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type PromoScalarFieldEnum = (typeof PromoScalarFieldEnum)[keyof typeof PromoScalarFieldEnum]
@@ -21283,6 +22608,19 @@ export namespace Prisma {
   export type SiteConfigScalarFieldEnum = (typeof SiteConfigScalarFieldEnum)[keyof typeof SiteConfigScalarFieldEnum]
 
 
+  export const PushSubscriptionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    endpoint: 'endpoint',
+    p256dh: 'p256dh',
+    auth: 'auth',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -21355,9 +22693,79 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LoyaltyLevel'
+   */
+  export type EnumLoyaltyLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoyaltyLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'LoyaltyLevel[]'
+   */
+  export type ListEnumLoyaltyLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoyaltyLevel[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionStatus'
+   */
+  export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionStatus[]'
+   */
+  export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PromoType'
+   */
+  export type EnumPromoTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromoType'>
+    
+
+
+  /**
+   * Reference to a field of type 'PromoType[]'
+   */
+  export type ListEnumPromoTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromoType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType'
+   */
+  export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType[]'
+   */
+  export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
     
 
 
@@ -21575,9 +22983,9 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     walletBalance?: IntFilter<"User"> | number
-    loyaltyLevel?: StringFilter<"User"> | string
+    loyaltyLevel?: EnumLoyaltyLevelFilter<"User"> | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFilter<"User"> | number
     referralCode?: StringNullableFilter<"User"> | string | null
     referredBy?: StringNullableFilter<"User"> | string | null
@@ -21594,6 +23002,7 @@ export namespace Prisma {
     referralsUsed?: ReferralListRelationFilter
     coupons?: UserCouponListRelationFilter
     chatMessages?: ChatMessageListRelationFilter
+    pushSubscriptions?: PushSubscriptionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21623,6 +23032,7 @@ export namespace Prisma {
     referralsUsed?: ReferralOrderByRelationAggregateInput
     coupons?: UserCouponOrderByRelationAggregateInput
     chatMessages?: ChatMessageOrderByRelationAggregateInput
+    pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21637,9 +23047,9 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     walletBalance?: IntFilter<"User"> | number
-    loyaltyLevel?: StringFilter<"User"> | string
+    loyaltyLevel?: EnumLoyaltyLevelFilter<"User"> | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFilter<"User"> | number
     referredBy?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -21655,6 +23065,7 @@ export namespace Prisma {
     referralsUsed?: ReferralListRelationFilter
     coupons?: UserCouponListRelationFilter
     chatMessages?: ChatMessageListRelationFilter
+    pushSubscriptions?: PushSubscriptionListRelationFilter
   }, "id" | "email" | "referralCode">
 
   export type UserOrderByWithAggregationInput = {
@@ -21693,9 +23104,9 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    role?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     walletBalance?: IntWithAggregatesFilter<"User"> | number
-    loyaltyLevel?: StringWithAggregatesFilter<"User"> | string
+    loyaltyLevel?: EnumLoyaltyLevelWithAggregatesFilter<"User"> | $Enums.LoyaltyLevel
     loyaltyPoints?: IntWithAggregatesFilter<"User"> | number
     referralCode?: StringNullableWithAggregatesFilter<"User"> | string | null
     referredBy?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -21939,7 +23350,7 @@ export namespace Prisma {
     discount?: IntFilter<"Transaction"> | number
     totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
-    status?: StringFilter<"Transaction"> | string
+    status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
     gameServerId?: StringNullableFilter<"Transaction"> | string | null
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
@@ -22008,7 +23419,7 @@ export namespace Prisma {
     discount?: IntFilter<"Transaction"> | number
     totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
-    status?: StringFilter<"Transaction"> | string
+    status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
     gameServerId?: StringNullableFilter<"Transaction"> | string | null
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
@@ -22079,7 +23490,7 @@ export namespace Prisma {
     discount?: IntWithAggregatesFilter<"Transaction"> | number
     totalAmount?: IntWithAggregatesFilter<"Transaction"> | number
     paymentMethod?: StringWithAggregatesFilter<"Transaction"> | string
-    status?: StringWithAggregatesFilter<"Transaction"> | string
+    status?: EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
     gameUserId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     gameServerId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     phoneNumber?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -22104,7 +23515,7 @@ export namespace Prisma {
     code?: StringFilter<"Promo"> | string
     name?: StringFilter<"Promo"> | string
     description?: StringNullableFilter<"Promo"> | string | null
-    type?: StringFilter<"Promo"> | string
+    type?: EnumPromoTypeFilter<"Promo"> | $Enums.PromoType
     value?: IntFilter<"Promo"> | number
     minPurchase?: IntFilter<"Promo"> | number
     maxDiscount?: IntNullableFilter<"Promo"> | number | null
@@ -22115,6 +23526,7 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Promo"> | Date | string
     isActive?: BoolFilter<"Promo"> | boolean
     createdAt?: DateTimeFilter<"Promo"> | Date | string
+    updatedAt?: DateTimeFilter<"Promo"> | Date | string
   }
 
   export type PromoOrderByWithRelationInput = {
@@ -22133,6 +23545,7 @@ export namespace Prisma {
     endDate?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PromoWhereUniqueInput = Prisma.AtLeast<{
@@ -22143,7 +23556,7 @@ export namespace Prisma {
     NOT?: PromoWhereInput | PromoWhereInput[]
     name?: StringFilter<"Promo"> | string
     description?: StringNullableFilter<"Promo"> | string | null
-    type?: StringFilter<"Promo"> | string
+    type?: EnumPromoTypeFilter<"Promo"> | $Enums.PromoType
     value?: IntFilter<"Promo"> | number
     minPurchase?: IntFilter<"Promo"> | number
     maxDiscount?: IntNullableFilter<"Promo"> | number | null
@@ -22154,6 +23567,7 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Promo"> | Date | string
     isActive?: BoolFilter<"Promo"> | boolean
     createdAt?: DateTimeFilter<"Promo"> | Date | string
+    updatedAt?: DateTimeFilter<"Promo"> | Date | string
   }, "id" | "code">
 
   export type PromoOrderByWithAggregationInput = {
@@ -22172,6 +23586,7 @@ export namespace Prisma {
     endDate?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: PromoCountOrderByAggregateInput
     _avg?: PromoAvgOrderByAggregateInput
     _max?: PromoMaxOrderByAggregateInput
@@ -22187,7 +23602,7 @@ export namespace Prisma {
     code?: StringWithAggregatesFilter<"Promo"> | string
     name?: StringWithAggregatesFilter<"Promo"> | string
     description?: StringNullableWithAggregatesFilter<"Promo"> | string | null
-    type?: StringWithAggregatesFilter<"Promo"> | string
+    type?: EnumPromoTypeWithAggregatesFilter<"Promo"> | $Enums.PromoType
     value?: IntWithAggregatesFilter<"Promo"> | number
     minPurchase?: IntWithAggregatesFilter<"Promo"> | number
     maxDiscount?: IntNullableWithAggregatesFilter<"Promo"> | number | null
@@ -22198,6 +23613,7 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter<"Promo"> | Date | string
     isActive?: BoolWithAggregatesFilter<"Promo"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Promo"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Promo"> | Date | string
   }
 
   export type BannerWhereInput = {
@@ -22297,7 +23713,7 @@ export namespace Prisma {
     userId?: StringFilter<"Notification"> | string
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
-    type?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
     link?: StringNullableFilter<"Notification"> | string | null
     isRead?: BoolFilter<"Notification"> | boolean
     createdAt?: DateTimeFilter<"Notification"> | Date | string
@@ -22324,7 +23740,7 @@ export namespace Prisma {
     userId?: StringFilter<"Notification"> | string
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
-    type?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
     link?: StringNullableFilter<"Notification"> | string | null
     isRead?: BoolFilter<"Notification"> | boolean
     createdAt?: DateTimeFilter<"Notification"> | Date | string
@@ -22353,7 +23769,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Notification"> | string
     title?: StringWithAggregatesFilter<"Notification"> | string
     message?: StringWithAggregatesFilter<"Notification"> | string
-    type?: StringWithAggregatesFilter<"Notification"> | string
+    type?: EnumNotificationTypeWithAggregatesFilter<"Notification"> | $Enums.NotificationType
     link?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     isRead?: BoolWithAggregatesFilter<"Notification"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
@@ -22737,6 +24153,71 @@ export namespace Prisma {
     value?: StringWithAggregatesFilter<"SiteConfig"> | string
   }
 
+  export type PushSubscriptionWhereInput = {
+    AND?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    OR?: PushSubscriptionWhereInput[]
+    NOT?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    id?: StringFilter<"PushSubscription"> | string
+    userId?: StringNullableFilter<"PushSubscription"> | string | null
+    endpoint?: StringFilter<"PushSubscription"> | string
+    p256dh?: StringFilter<"PushSubscription"> | string
+    auth?: StringFilter<"PushSubscription"> | string
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    updatedAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type PushSubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    endpoint?: SortOrder
+    p256dh?: SortOrder
+    auth?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PushSubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    endpoint?: string
+    AND?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    OR?: PushSubscriptionWhereInput[]
+    NOT?: PushSubscriptionWhereInput | PushSubscriptionWhereInput[]
+    userId?: StringNullableFilter<"PushSubscription"> | string | null
+    p256dh?: StringFilter<"PushSubscription"> | string
+    auth?: StringFilter<"PushSubscription"> | string
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    updatedAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "endpoint">
+
+  export type PushSubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    endpoint?: SortOrder
+    p256dh?: SortOrder
+    auth?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PushSubscriptionCountOrderByAggregateInput
+    _max?: PushSubscriptionMaxOrderByAggregateInput
+    _min?: PushSubscriptionMinOrderByAggregateInput
+  }
+
+  export type PushSubscriptionScalarWhereWithAggregatesInput = {
+    AND?: PushSubscriptionScalarWhereWithAggregatesInput | PushSubscriptionScalarWhereWithAggregatesInput[]
+    OR?: PushSubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: PushSubscriptionScalarWhereWithAggregatesInput | PushSubscriptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PushSubscription"> | string
+    userId?: StringNullableWithAggregatesFilter<"PushSubscription"> | string | null
+    endpoint?: StringWithAggregatesFilter<"PushSubscription"> | string
+    p256dh?: StringWithAggregatesFilter<"PushSubscription"> | string
+    auth?: StringWithAggregatesFilter<"PushSubscription"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PushSubscription"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PushSubscription"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -22939,9 +24420,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -22958,6 +24439,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -22968,9 +24450,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -22987,6 +24469,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -22997,9 +24480,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23016,6 +24499,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23026,9 +24510,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23045,6 +24529,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -23055,9 +24540,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -23075,9 +24560,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23095,9 +24580,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23377,7 +24862,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -23410,7 +24895,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -23437,7 +24922,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23470,7 +24955,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23500,7 +24985,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -23527,7 +25012,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23557,7 +25042,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23579,7 +25064,7 @@ export namespace Prisma {
     code: string
     name: string
     description?: string | null
-    type: string
+    type: $Enums.PromoType
     value: number
     minPurchase?: number
     maxDiscount?: number | null
@@ -23590,6 +25075,7 @@ export namespace Prisma {
     endDate: Date | string
     isActive?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PromoUncheckedCreateInput = {
@@ -23597,7 +25083,7 @@ export namespace Prisma {
     code: string
     name: string
     description?: string | null
-    type: string
+    type: $Enums.PromoType
     value: number
     minPurchase?: number
     maxDiscount?: number | null
@@ -23608,6 +25094,7 @@ export namespace Prisma {
     endDate: Date | string
     isActive?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PromoUpdateInput = {
@@ -23615,7 +25102,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumPromoTypeFieldUpdateOperationsInput | $Enums.PromoType
     value?: IntFieldUpdateOperationsInput | number
     minPurchase?: IntFieldUpdateOperationsInput | number
     maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23626,6 +25113,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PromoUncheckedUpdateInput = {
@@ -23633,7 +25121,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumPromoTypeFieldUpdateOperationsInput | $Enums.PromoType
     value?: IntFieldUpdateOperationsInput | number
     minPurchase?: IntFieldUpdateOperationsInput | number
     maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23644,6 +25132,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PromoCreateManyInput = {
@@ -23651,7 +25140,7 @@ export namespace Prisma {
     code: string
     name: string
     description?: string | null
-    type: string
+    type: $Enums.PromoType
     value: number
     minPurchase?: number
     maxDiscount?: number | null
@@ -23662,6 +25151,7 @@ export namespace Prisma {
     endDate: Date | string
     isActive?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PromoUpdateManyMutationInput = {
@@ -23669,7 +25159,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumPromoTypeFieldUpdateOperationsInput | $Enums.PromoType
     value?: IntFieldUpdateOperationsInput | number
     minPurchase?: IntFieldUpdateOperationsInput | number
     maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23680,6 +25170,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PromoUncheckedUpdateManyInput = {
@@ -23687,7 +25178,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumPromoTypeFieldUpdateOperationsInput | $Enums.PromoType
     value?: IntFieldUpdateOperationsInput | number
     minPurchase?: IntFieldUpdateOperationsInput | number
     maxDiscount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23698,6 +25189,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BannerCreateInput = {
@@ -23809,7 +25301,7 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -23821,7 +25313,7 @@ export namespace Prisma {
     userId: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -23831,7 +25323,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23843,7 +25335,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23854,7 +25346,7 @@ export namespace Prisma {
     userId: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -23864,7 +25356,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23875,7 +25367,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24274,6 +25766,75 @@ export namespace Prisma {
     value?: StringFieldUpdateOperationsInput | string
   }
 
+  export type PushSubscriptionCreateInput = {
+    id?: string
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutPushSubscriptionsInput
+  }
+
+  export type PushSubscriptionUncheckedCreateInput = {
+    id?: string
+    userId?: string | null
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushSubscriptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutPushSubscriptionsNestedInput
+  }
+
+  export type PushSubscriptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionCreateManyInput = {
+    id?: string
+    userId?: string | null
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushSubscriptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24515,6 +26076,13 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -24524,6 +26092,13 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type EnumLoyaltyLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoyaltyLevel | EnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoyaltyLevelFilter<$PrismaModel> | $Enums.LoyaltyLevel
   }
 
   export type AccountListRelationFilter = {
@@ -24574,6 +26149,12 @@ export namespace Prisma {
     none?: ChatMessageWhereInput
   }
 
+  export type PushSubscriptionListRelationFilter = {
+    every?: PushSubscriptionWhereInput
+    some?: PushSubscriptionWhereInput
+    none?: PushSubscriptionWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -24603,6 +26184,10 @@ export namespace Prisma {
   }
 
   export type ChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PushSubscriptionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24690,6 +26275,16 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -24704,6 +26299,16 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumLoyaltyLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoyaltyLevel | EnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoyaltyLevelWithAggregatesFilter<$PrismaModel> | $Enums.LoyaltyLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLoyaltyLevelFilter<$PrismaModel>
+    _max?: NestedEnumLoyaltyLevelFilter<$PrismaModel>
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -24867,6 +26472,13 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type EnumTransactionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
+  }
+
   export type ProductNullableScalarRelationFilter = {
     is?: ProductWhereInput | null
     isNot?: ProductWhereInput | null
@@ -24981,6 +26593,23 @@ export namespace Prisma {
     totalAmount?: SortOrder
   }
 
+  export type EnumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionStatusWithAggregatesFilter<$PrismaModel> | $Enums.TransactionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionStatusFilter<$PrismaModel>
+    _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPromoTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PromoType | EnumPromoTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPromoTypeFilter<$PrismaModel> | $Enums.PromoType
+  }
+
   export type PromoCountOrderByAggregateInput = {
     id?: SortOrder
     code?: SortOrder
@@ -24997,6 +26626,7 @@ export namespace Prisma {
     endDate?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PromoAvgOrderByAggregateInput = {
@@ -25024,6 +26654,7 @@ export namespace Prisma {
     endDate?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PromoMinOrderByAggregateInput = {
@@ -25042,6 +26673,7 @@ export namespace Prisma {
     endDate?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PromoSumOrderByAggregateInput = {
@@ -25051,6 +26683,16 @@ export namespace Prisma {
     usageLimit?: SortOrder
     usageCount?: SortOrder
     perUserLimit?: SortOrder
+  }
+
+  export type EnumPromoTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PromoType | EnumPromoTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPromoTypeWithAggregatesFilter<$PrismaModel> | $Enums.PromoType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPromoTypeFilter<$PrismaModel>
+    _max?: NestedEnumPromoTypeFilter<$PrismaModel>
   }
 
   export type BannerCountOrderByAggregateInput = {
@@ -25106,6 +26748,13 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type EnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
   export type NotificationCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -25137,6 +26786,16 @@ export namespace Prisma {
     link?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type EnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
   export type FavoriteUserIdProductIdCompoundUniqueInput = {
@@ -25328,6 +26987,36 @@ export namespace Prisma {
     value?: SortOrder
   }
 
+  export type PushSubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dh?: SortOrder
+    auth?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PushSubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dh?: SortOrder
+    auth?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PushSubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    endpoint?: SortOrder
+    p256dh?: SortOrder
+    auth?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -25439,6 +27128,13 @@ export namespace Prisma {
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
+  export type PushSubscriptionCreateNestedManyWithoutUserInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -25502,8 +27198,19 @@ export namespace Prisma {
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
+  export type PushSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -25512,6 +27219,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumLoyaltyLevelFieldUpdateOperationsInput = {
+    set?: $Enums.LoyaltyLevel
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -25640,6 +27351,20 @@ export namespace Prisma {
     deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
+  export type PushSubscriptionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: PushSubscriptionUpsertWithWhereUniqueWithoutUserInput | PushSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    set?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    disconnect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    delete?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    update?: PushSubscriptionUpdateWithWhereUniqueWithoutUserInput | PushSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PushSubscriptionUpdateManyWithWhereWithoutUserInput | PushSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -25764,6 +27489,20 @@ export namespace Prisma {
     update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: PushSubscriptionUpsertWithWhereUniqueWithoutUserInput | PushSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PushSubscriptionCreateManyUserInputEnvelope
+    set?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    disconnect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    delete?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    connect?: PushSubscriptionWhereUniqueInput | PushSubscriptionWhereUniqueInput[]
+    update?: PushSubscriptionUpdateWithWhereUniqueWithoutUserInput | PushSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PushSubscriptionUpdateManyWithWhereWithoutUserInput | PushSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
   }
 
   export type DenominationCreateNestedManyWithoutProductInput = {
@@ -25970,6 +27709,10 @@ export namespace Prisma {
     connect?: DenominationWhereUniqueInput
   }
 
+  export type EnumTransactionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TransactionStatus
+  }
+
   export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
     create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
@@ -25998,10 +27741,18 @@ export namespace Prisma {
     update?: XOR<XOR<DenominationUpdateToOneWithWhereWithoutTransactionsInput, DenominationUpdateWithoutTransactionsInput>, DenominationUncheckedUpdateWithoutTransactionsInput>
   }
 
+  export type EnumPromoTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PromoType
+  }
+
   export type UserCreateNestedOneWithoutNotificationsInput = {
     create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type EnumNotificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationType
   }
 
   export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
@@ -26096,6 +27847,22 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChatMessagesInput, UserUpdateWithoutChatMessagesInput>, UserUncheckedUpdateWithoutChatMessagesInput>
+  }
+
+  export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
+    create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutPushSubscriptionsNestedInput = {
+    create?: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushSubscriptionsInput
+    upsert?: UserUpsertWithoutPushSubscriptionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPushSubscriptionsInput, UserUpdateWithoutPushSubscriptionsInput>, UserUncheckedUpdateWithoutPushSubscriptionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -26245,6 +28012,20 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type NestedEnumLoyaltyLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoyaltyLevel | EnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoyaltyLevelFilter<$PrismaModel> | $Enums.LoyaltyLevel
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -26257,6 +28038,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -26286,6 +28077,16 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumLoyaltyLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoyaltyLevel | EnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoyaltyLevel[] | ListEnumLoyaltyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoyaltyLevelWithAggregatesFilter<$PrismaModel> | $Enums.LoyaltyLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLoyaltyLevelFilter<$PrismaModel>
+    _max?: NestedEnumLoyaltyLevelFilter<$PrismaModel>
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -26299,6 +28100,57 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedEnumTransactionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
+  }
+
+  export type NestedEnumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionStatusWithAggregatesFilter<$PrismaModel> | $Enums.TransactionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionStatusFilter<$PrismaModel>
+    _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPromoTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PromoType | EnumPromoTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPromoTypeFilter<$PrismaModel> | $Enums.PromoType
+  }
+
+  export type NestedEnumPromoTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PromoType | EnumPromoTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PromoType[] | ListEnumPromoTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPromoTypeWithAggregatesFilter<$PrismaModel> | $Enums.PromoType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPromoTypeFilter<$PrismaModel>
+    _max?: NestedEnumPromoTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -26307,9 +28159,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -26325,6 +28177,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -26335,9 +28188,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -26353,6 +28206,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -26379,9 +28233,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26397,6 +28251,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -26407,9 +28262,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26425,6 +28280,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -26435,9 +28291,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -26453,6 +28309,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -26463,9 +28320,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -26481,6 +28338,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -26507,9 +28365,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26525,6 +28383,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -26535,9 +28394,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26553,6 +28412,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -26625,7 +28485,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -26656,7 +28516,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -26709,7 +28569,7 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -26719,7 +28579,7 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -26841,6 +28701,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PushSubscriptionCreateWithoutUserInput = {
+    id?: string
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushSubscriptionUncheckedCreateWithoutUserInput = {
+    id?: string
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushSubscriptionCreateOrConnectWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    create: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushSubscriptionCreateManyUserInputEnvelope = {
+    data: PushSubscriptionCreateManyUserInput | PushSubscriptionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -26933,7 +28821,7 @@ export namespace Prisma {
     discount?: IntFilter<"Transaction"> | number
     totalAmount?: IntFilter<"Transaction"> | number
     paymentMethod?: StringFilter<"Transaction"> | string
-    status?: StringFilter<"Transaction"> | string
+    status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gameUserId?: StringNullableFilter<"Transaction"> | string | null
     gameServerId?: StringNullableFilter<"Transaction"> | string | null
     phoneNumber?: StringNullableFilter<"Transaction"> | string | null
@@ -27000,7 +28888,7 @@ export namespace Prisma {
     userId?: StringFilter<"Notification"> | string
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
-    type?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
     link?: StringNullableFilter<"Notification"> | string | null
     isRead?: BoolFilter<"Notification"> | boolean
     createdAt?: DateTimeFilter<"Notification"> | Date | string
@@ -27107,6 +28995,35 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
   }
 
+  export type PushSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    update: XOR<PushSubscriptionUpdateWithoutUserInput, PushSubscriptionUncheckedUpdateWithoutUserInput>
+    create: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushSubscriptionUpdateWithWhereUniqueWithoutUserInput = {
+    where: PushSubscriptionWhereUniqueInput
+    data: XOR<PushSubscriptionUpdateWithoutUserInput, PushSubscriptionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PushSubscriptionUpdateManyWithWhereWithoutUserInput = {
+    where: PushSubscriptionScalarWhereInput
+    data: XOR<PushSubscriptionUpdateManyMutationInput, PushSubscriptionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PushSubscriptionScalarWhereInput = {
+    AND?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+    OR?: PushSubscriptionScalarWhereInput[]
+    NOT?: PushSubscriptionScalarWhereInput | PushSubscriptionScalarWhereInput[]
+    id?: StringFilter<"PushSubscription"> | string
+    userId?: StringNullableFilter<"PushSubscription"> | string | null
+    endpoint?: StringFilter<"PushSubscription"> | string
+    p256dh?: StringFilter<"PushSubscription"> | string
+    auth?: StringFilter<"PushSubscription"> | string
+    createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
+    updatedAt?: DateTimeFilter<"PushSubscription"> | Date | string
+  }
+
   export type DenominationCreateWithoutProductInput = {
     id?: string
     label: string
@@ -27161,7 +29078,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -27192,7 +29109,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -27364,7 +29281,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -27395,7 +29312,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -27497,9 +29414,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27515,6 +29432,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -27525,9 +29443,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27543,6 +29461,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -27653,9 +29572,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27671,6 +29590,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -27681,9 +29601,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27699,6 +29619,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutTransactionsInput = {
@@ -27805,9 +29726,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27823,6 +29744,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -27833,9 +29755,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27851,6 +29773,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -27877,9 +29800,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27895,6 +29818,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -27905,9 +29829,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27923,6 +29847,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutFavoritesInput = {
@@ -27933,9 +29858,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27951,6 +29876,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFavoritesInput = {
@@ -27961,9 +29887,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -27979,6 +29905,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -28050,9 +29977,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28068,6 +29995,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFavoritesInput = {
@@ -28078,9 +30006,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28096,6 +30024,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutFavoritesInput = {
@@ -28157,9 +30086,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28175,6 +30104,7 @@ export namespace Prisma {
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsGivenInput = {
@@ -28185,9 +30115,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28203,6 +30133,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsGivenInput = {
@@ -28218,9 +30149,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28236,6 +30167,7 @@ export namespace Prisma {
     referralsGiven?: ReferralCreateNestedManyWithoutReferrerInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsUsedInput = {
@@ -28246,9 +30178,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28264,6 +30196,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsUsedInput = {
@@ -28290,9 +30223,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28308,6 +30241,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsGivenInput = {
@@ -28318,9 +30252,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28336,6 +30270,7 @@ export namespace Prisma {
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReferralsUsedInput = {
@@ -28357,9 +30292,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28375,6 +30310,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUpdateManyWithoutReferrerNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsUsedInput = {
@@ -28385,9 +30321,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28403,6 +30339,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCouponsInput = {
@@ -28413,9 +30350,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28431,6 +30368,7 @@ export namespace Prisma {
     referralsGiven?: ReferralCreateNestedManyWithoutReferrerInput
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCouponsInput = {
@@ -28441,9 +30379,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28459,6 +30397,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCouponsInput = {
@@ -28485,9 +30424,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28503,6 +30442,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCouponsInput = {
@@ -28513,9 +30453,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28531,6 +30471,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutChatMessagesInput = {
@@ -28541,9 +30482,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28559,6 +30500,7 @@ export namespace Prisma {
     referralsGiven?: ReferralCreateNestedManyWithoutReferrerInput
     referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatMessagesInput = {
@@ -28569,9 +30511,9 @@ export namespace Prisma {
     image?: string | null
     password?: string | null
     phone?: string | null
-    role?: string
+    role?: $Enums.Role
     walletBalance?: number
-    loyaltyLevel?: string
+    loyaltyLevel?: $Enums.LoyaltyLevel
     loyaltyPoints?: number
     referralCode?: string | null
     referredBy?: string | null
@@ -28587,6 +30529,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
     coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatMessagesInput = {
@@ -28613,9 +30556,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28631,6 +30574,7 @@ export namespace Prisma {
     referralsGiven?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatMessagesInput = {
@@ -28641,9 +30585,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     walletBalance?: IntFieldUpdateOperationsInput | number
-    loyaltyLevel?: StringFieldUpdateOperationsInput | string
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
     loyaltyPoints?: IntFieldUpdateOperationsInput | number
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28659,6 +30603,139 @@ export namespace Prisma {
     referralsGiven?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
     coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPushSubscriptionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    phone?: string | null
+    role?: $Enums.Role
+    walletBalance?: number
+    loyaltyLevel?: $Enums.LoyaltyLevel
+    loyaltyPoints?: number
+    referralCode?: string | null
+    referredBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    favorites?: FavoriteCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    referralsGiven?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsUsed?: ReferralCreateNestedManyWithoutRefereeInput
+    coupons?: UserCouponCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    phone?: string | null
+    role?: $Enums.Role
+    walletBalance?: number
+    loyaltyLevel?: $Enums.LoyaltyLevel
+    loyaltyPoints?: number
+    referralCode?: string | null
+    referredBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastCheckIn?: Date | string | null
+    lastScratch?: Date | string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    favorites?: FavoriteUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    referralsGiven?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsUsed?: ReferralUncheckedCreateNestedManyWithoutRefereeInput
+    coupons?: UserCouponUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+  }
+
+  export type UserUpsertWithoutPushSubscriptionsInput = {
+    update: XOR<UserUpdateWithoutPushSubscriptionsInput, UserUncheckedUpdateWithoutPushSubscriptionsInput>
+    create: XOR<UserCreateWithoutPushSubscriptionsInput, UserUncheckedCreateWithoutPushSubscriptionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPushSubscriptionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPushSubscriptionsInput, UserUncheckedUpdateWithoutPushSubscriptionsInput>
+  }
+
+  export type UserUpdateWithoutPushSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    walletBalance?: IntFieldUpdateOperationsInput | number
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
+    loyaltyPoints?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    favorites?: FavoriteUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    referralsGiven?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsUsed?: ReferralUpdateManyWithoutRefereeNestedInput
+    coupons?: UserCouponUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    walletBalance?: IntFieldUpdateOperationsInput | number
+    loyaltyLevel?: EnumLoyaltyLevelFieldUpdateOperationsInput | $Enums.LoyaltyLevel
+    loyaltyPoints?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastCheckIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastScratch?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    favorites?: FavoriteUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    referralsGiven?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsUsed?: ReferralUncheckedUpdateManyWithoutRefereeNestedInput
+    coupons?: UserCouponUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -28693,7 +30770,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -28720,7 +30797,7 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    type?: string
+    type?: $Enums.NotificationType
     link?: string | null
     isRead?: boolean
     createdAt?: Date | string
@@ -28757,6 +30834,15 @@ export namespace Prisma {
     isBot?: boolean
     sessionId: string
     createdAt?: Date | string
+  }
+
+  export type PushSubscriptionCreateManyUserInput = {
+    id?: string
+    endpoint: string
+    p256dh: string
+    auth: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -28829,7 +30915,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28860,7 +30946,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28889,7 +30975,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28928,7 +31014,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28938,7 +31024,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28948,7 +31034,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
     link?: NullableStringFieldUpdateOperationsInput | string | null
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29053,6 +31139,33 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PushSubscriptionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushSubscriptionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    p256dh?: StringFieldUpdateOperationsInput | string
+    auth?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DenominationCreateManyProductInput = {
     id?: string
     label: string
@@ -29081,7 +31194,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -29164,7 +31277,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29195,7 +31308,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29224,7 +31337,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29271,7 +31384,7 @@ export namespace Prisma {
     discount?: number
     totalAmount: number
     paymentMethod: string
-    status?: string
+    status?: $Enums.TransactionStatus
     gameUserId?: string | null
     gameServerId?: string | null
     phoneNumber?: string | null
@@ -29298,7 +31411,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29329,7 +31442,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29358,7 +31471,7 @@ export namespace Prisma {
     discount?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gameUserId?: NullableStringFieldUpdateOperationsInput | string | null
     gameServerId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null

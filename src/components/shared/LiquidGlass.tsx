@@ -50,10 +50,17 @@ export default function LiquidGlass({
     let animId: number;
 
     const updateElastic = () => {
-      setElasticPos((prev) => ({
-        x: prev.x + (mousePos.x - prev.x) * (elasticity * 1.5),
-        y: prev.y + (mousePos.y - prev.y) * (elasticity * 1.5),
-      }));
+      setElasticPos((prev) => {
+        const dx = mousePos.x - prev.x;
+        const dy = mousePos.y - prev.y;
+        if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+          return prev;
+        }
+        return {
+          x: prev.x + dx * (elasticity * 1.5),
+          y: prev.y + dy * (elasticity * 1.5),
+        };
+      });
       animId = requestAnimationFrame(updateElastic);
     };
 

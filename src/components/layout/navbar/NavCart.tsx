@@ -131,11 +131,11 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
                     <span className="font-bold text-base gradient-text">{formatCurrency(getTotal())}</span>
                   </div>
                   <Link
-                    href="/checkout"
+                    href={cartItems[0]?.productId ? (['game-mlbb', 'game-ff', 'game-val', 'game-genshin', 'game-pubgm', 'game-hsr', 'game-codm', 'game-roblox', 'game-steam', 'game-wr', 'game-aov', 'game-zzz'].includes(cartItems[0].productId) || cartItems[0].productId.startsWith('game-') ? `/topup/${cartItems[0].productId.replace('game-mlbb', 'mobile-legends').replace('game-ff', 'free-fire').replace('game-val', 'valorant').replace('game-genshin', 'genshin-impact').replace('game-pubgm', 'pubg-mobile').replace('game-hsr', 'honkai-star-rail').replace('game-codm', 'call-of-duty-mobile').replace('game-roblox', 'roblox').replace('game-steam', 'steam-wallet').replace('game-wr', 'wild-rift').replace('game-aov', 'arena-of-valor').replace('game-zzz', 'zenless-zone-zero').replace('game-', '')}` : `/products/${cartItems[0].productId}`) : '/topup'}
                     onClick={() => { playClick(); closeAll(); }}
                     className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl gradient-primary text-white font-bold text-xs shadow-neon-violet transition-all active:scale-[0.98]"
                   >
-                    <Zap className="w-3.5 h-3.5" /> Checkout Sekarang
+                    <Zap className="w-3.5 h-3.5" /> Lanjutkan Pembayaran
                   </Link>
                   <button
                     onClick={() => { playClick(); onToggle(); }}

@@ -37,9 +37,15 @@ export async function GET() {
       const secs = Math.floor((diffMs % 60000) / 1000);
       const timeAgo = mins > 0 ? `${mins} menit lalu` : secs > 5 ? `${secs} detik lalu` : 'Baru saja';
 
+      const invoice = tx.invoiceId || tx.id;
+      const invoiceMasked = invoice.length > 8 
+        ? `${invoice.slice(0, 7)}***${invoice.slice(-3)}` 
+        : invoice;
+
       return {
         id: tx.id,
-        invoiceId: tx.invoiceId || tx.id,
+        invoiceId: invoice,
+        invoiceMasked,
         productName: name,
         itemLabel: label,
         price: tx.totalAmount || tx.amount,

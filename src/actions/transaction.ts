@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth-helpers';
+import { sendPushToUser } from '@/lib/push';
 import type { TransactionStatus } from '@/types';
 
 const VALID_STATUSES: TransactionStatus[] = ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED', 'REFUNDED', 'PAID'];
@@ -48,6 +49,14 @@ export async function updateTransactionStatus(invoiceId: string, newStatus: Tran
           where: { id: existingTx.userId },
           data: { loyaltyPoints: { increment: pointsEarned } },
         });
+
+        // Trigger real-time web push notification
+        sendPushToUser(existingTx.userId, {
+          title: 'Top Up Berhasil! 💎',
+          body: `Pesanan ${existingTx.productName} (${existingTx.invoiceId}) telah selesai diproses!`,
+          icon: '/favicon.ico',
+          url: `/payment-status/${existingTx.invoiceId}`,
+        }).catch((err) => console.error('Failed to send push on status update:', err));
       }
 
       return updated;

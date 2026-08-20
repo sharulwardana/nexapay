@@ -47,6 +47,7 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
+  const isFloat = target % 1 !== 0;
 
   useEffect(() => {
     if (!isInView) return;
@@ -57,13 +58,18 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
       const progress = Math.min(elapsed / duration, 1);
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
+      setCount(isFloat ? Number((eased * target).toFixed(1)) : Math.floor(eased * target));
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, [isInView, target]);
+  }, [isInView, target, isFloat]);
 
-  return <span ref={ref}>{count.toLocaleString('id-ID')}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {isFloat ? count.toFixed(1) : count.toLocaleString('id-ID')}
+      {suffix}
+    </span>
+  );
 }
 
 const stats = [

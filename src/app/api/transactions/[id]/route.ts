@@ -17,9 +17,15 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid transaction ID' }, { status: 400 });
     }
 
-    const transaction = await prisma.transaction.findUnique({
-      where: { invoiceId: id },
+    const transaction = await prisma.transaction.findFirst({
+      where: {
+        OR: [
+          { invoiceId: id },
+          { id },
+        ],
+      },
       select: {
+        id: true,
         invoiceId: true,
         status: true,
         paymentMethod: true,
@@ -42,7 +48,7 @@ export async function GET(
       new Date(transaction.expiresAt) < new Date()
     ) {
       await prisma.transaction.update({
-        where: { invoiceId: id },
+        where: { id: transaction.id },
         data: { status: 'FAILED' },
       });
 

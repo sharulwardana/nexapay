@@ -20,15 +20,26 @@ export default function MobileNav() {
   const [isShrunk, setIsShrunk] = useState(false);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
+  const scrollDelta = useRef(0);
 
-  // Smooth scroll shrink detection (iOS 26 dynamic morph)
+  // Buttery smooth scroll hysteresis filter (Zero flutter / Zero rapid toggle)
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const diff = latest - lastScrollY.current;
-    if (latest > 90 && diff > 12) {
+    
+    // Accumulate directional scroll delta
+    if (diff > 0) {
+      scrollDelta.current = Math.max(0, scrollDelta.current) + diff;
+    } else {
+      scrollDelta.current = Math.min(0, scrollDelta.current) + diff;
+    }
+
+    // Only morph on sustained, deliberate scrolling
+    if (latest > 100 && scrollDelta.current > 35) {
       setIsShrunk(true);
-    } else if (diff < -10 || latest < 35) {
+    } else if (scrollDelta.current < -25 || latest < 30) {
       setIsShrunk(false);
     }
+
     lastScrollY.current = latest;
   });
 
@@ -52,40 +63,41 @@ export default function MobileNav() {
       aria-label="Navigasi Mobile Liquid Glass iOS 26"
       className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-2"
       style={{
-        bottom: 'max(0.5rem, calc(env(safe-area-inset-bottom, 0px) - 1.1rem))',
+        bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* 2026 Liquid Glass Capsule (Proportional Geometry: Mobile S, M, L) */}
+      {/* 2026 Wide Horizontal Stadium Capsule (Buttery Smooth 120 FPS Morphing, Zero Vibration) */}
       <div
         className={cn(
-          'pointer-events-auto relative mx-auto transform-gpu will-change-transform touch-manipulation',
+          'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation backface-hidden',
+          // Ultra-smooth 120 FPS hardware-accelerated CSS transition synchronized with inner elements
           'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          // Responsive width & height: Never circular or squished
+          // 2D Morphing
           isShrunk
-            ? 'w-[80%] max-w-[260px] xs:max-w-[285px] sm:max-w-[310px] h-[40px] sm:h-[42px]' // Shrunk compact pill
-            : 'w-[96%] max-w-[335px] xs:max-w-[370px] sm:max-w-[415px] h-[52px] sm:h-[56px]', // Expanded proportional pill
-          'rounded-full overflow-hidden p-1',
-          // Ultra-Clean Liquid Glass Material
-          'bg-[#0B0D14]/80 dark:bg-black/60 backdrop-blur-2xl backdrop-saturate-200',
-          'border border-white/20 dark:border-white/15',
-          'shadow-[0_10px_30px_rgba(0,0,0,0.35),0_0_15px_rgba(249,115,22,0.15),inset_0_1px_1.5px_rgba(255,255,255,0.4)]'
+            ? 'w-[76%] max-w-[260px] xs:max-w-[285px] sm:max-w-[310px] h-[38px] sm:h-[40px]' // Shrunk compact
+            : 'w-[96%] max-w-[365px] xs:max-w-[400px] sm:max-w-[445px] h-[48px] sm:h-[50px]', // Expanded Wide Stadium Pill
+          'rounded-full overflow-hidden p-[2.5px]', // Exact uniform margin
+          // Dark Translucent Liquid Glass Container
+          'bg-[#141620]/95 dark:bg-[#0c0e14]/95 backdrop-blur-2xl backdrop-saturate-150',
+          'border border-white/15 dark:border-white/10',
+          'shadow-[0_10px_32px_rgba(0,0,0,0.5),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)]'
         )}
       >
         {/* Top Edge Specular Reflex */}
-        <div className="absolute top-0 inset-x-6 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
 
-        {/* 5-Column Navigation Grid */}
+        {/* 5 Strictly Equal 20% Columns Grid */}
         <div className="relative grid grid-cols-5 items-center h-full w-full">
-          {/* Active Tab Pill — Sleek Horizontal Rounded Squircle (Never a squished ball) */}
+          {/* Active Tab Bubble — Synchronized Smooth Horizontal Glide */}
           {activeIndex !== -1 && (
             <div
               className={cn(
-                'absolute inset-y-0.5 w-1/5 rounded-[1.25rem] pointer-events-none z-0',
+                'absolute inset-0 w-1/5 h-full rounded-full pointer-events-none z-0',
                 'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform',
-                // Sleek Liquid Glow Pill
+                // Glowing Cyber Orange Theme Liquid Capsule
                 'bg-gradient-to-b from-primary/30 via-primary/20 to-primary/10',
                 'border border-primary/50',
-                'shadow-[0_0_15px_rgba(249,115,22,0.3),inset_0_1px_2px_rgba(255,255,255,0.45)]'
+                'shadow-[0_0_14px_rgba(249,115,22,0.3),inset_0_1px_1.5px_rgba(255,255,255,0.4)]'
               )}
               style={{
                 transform: `translateX(${activeIndex * 100}%)`,
@@ -104,41 +116,45 @@ export default function MobileNav() {
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={item.label}
                 className={cn(
-                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-[1.25rem] select-none active:scale-90',
-                  'transition-all duration-200',
-                  isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full select-none active:scale-90',
+                  'transition-colors duration-200 px-0.5',
+                  isActive ? 'text-primary font-bold' : 'text-zinc-400 hover:text-white'
                 )}
               >
-                {/* Icon Container (Centered & Proportionate) */}
-                <div className="relative flex items-center justify-center transition-transform duration-200">
+                {/* Fixed-Position Icon Container (Immune to any vertical jumps or vibration) */}
+                <div className="relative flex items-center justify-center w-full">
                   <Icon
                     className={cn(
-                      'transition-all duration-200',
+                      'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                       isShrunk
-                        ? 'w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]'
-                        : 'w-[19px] h-[19px] sm:w-[21px] sm:h-[21px]',
+                        ? 'w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] scale-100'
+                        : 'w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] scale-100',
                       isActive
-                        ? 'stroke-[2.5] scale-110 text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
-                        : 'stroke-[1.8] opacity-75 hover:opacity-100'
+                        ? 'stroke-[2.5] text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
+                        : 'stroke-[1.8] opacity-75 hover:opacity-100 text-zinc-300'
                     )}
                   />
                 </div>
 
-                {/* Text Label with Safe Descender Height */}
-                <span
+                {/* Sub-grid CSS Smooth Height Collapse for Label (Zero Layout Reflow Jumps) */}
+                <div
                   className={cn(
-                    'font-heading tracking-tight leading-tight text-center transition-all duration-200 origin-center',
-                    'text-[9px] xs:text-[10px] sm:text-[10.5px]',
-                    isShrunk
-                      ? 'opacity-0 max-h-0 scale-75 mt-0 pointer-events-none overflow-hidden'
-                      : 'opacity-100 max-h-4 scale-100 mt-0.5 pb-0.5',
-                    isActive
-                      ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
-                      : 'font-medium opacity-80'
+                    'grid transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden',
+                    isShrunk ? 'grid-rows-[0fr] opacity-0 mt-0' : 'grid-rows-[1fr] opacity-100 mt-0.5'
                   )}
                 >
-                  {item.label}
-                </span>
+                  <span
+                    className={cn(
+                      'font-heading tracking-tight leading-none text-center min-h-0 overflow-hidden pb-0.5',
+                      'text-[9px] xs:text-[9.5px] sm:text-[10px]',
+                      isActive
+                        ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
+                        : 'font-medium text-zinc-300'
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                </div>
               </Link>
             );
           })}

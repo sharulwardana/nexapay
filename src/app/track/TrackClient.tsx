@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/layout/Footer';
-import { Search, Receipt, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, Receipt, ShieldCheck, ArrowRight, Sparkles, Clipboard } from 'lucide-react';
 import RealTimeTransactions from '@/components/shared/RealTimeTransactions';
 import { toast } from 'sonner';
 
@@ -41,9 +41,9 @@ export default function TrackClient() {
 
             <form onSubmit={handleSearch} className="space-y-4 relative z-10">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                    Nomor Invoice Transaksi
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground font-heading">
+                    Nomor Invoice
                   </label>
                   <button
                     type="button"
@@ -52,15 +52,16 @@ export default function TrackClient() {
                         const text = await navigator.clipboard.readText();
                         if (text) {
                           setInvoiceId(text.trim());
-                          toast.success('Nomor invoice ditempel dari clipboard!');
+                          toast.success('Nomor invoice berhasil ditempel!');
                         }
                       } catch {
                         toast.error('Gagal mengakses clipboard');
                       }
                     }}
-                    className="text-[11px] font-bold text-primary hover:underline cursor-pointer flex items-center gap-1"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/25 text-primary text-[10.5px] sm:text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-sm"
                   >
-                    Tempel dari Clipboard 📋
+                    <Clipboard className="w-3 h-3" />
+                    <span>Tempel</span>
                   </button>
                 </div>
                 <div className="relative">

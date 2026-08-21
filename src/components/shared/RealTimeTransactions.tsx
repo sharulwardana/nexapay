@@ -51,26 +51,26 @@ export default function RealTimeTransactions() {
       <div className="container-app">
         <div className="card-glass overflow-hidden">
           {/* Header */}
-          <div className="p-4 tablet:p-6 border-b border-border/50 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-emerald-400 animate-pulse" />
+          <div className="p-3.5 sm:p-5 tablet:p-6 border-b border-border/50 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 animate-pulse" />
               </div>
-              <div>
-                <h3 className="font-heading font-bold text-sm tablet:text-base text-foreground">
+              <div className="min-w-0 flex-1">
+                <h3 className="font-heading font-bold text-xs sm:text-sm tablet:text-base text-foreground truncate">
                   Aktivitas Transaksi Real-Time
                 </h3>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
                   Pantau pesanan yang baru saja berhasil diproses
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase flex-shrink-0 shadow-sm">
+              <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[11px] font-medium text-emerald-400">Live</span>
+              <span>LIVE</span>
             </div>
           </div>
 

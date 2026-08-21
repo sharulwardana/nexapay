@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Home, Gamepad2, ShoppingBag, Ticket, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -21,14 +21,12 @@ export default function MobileNav() {
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
 
-  // Instagram iOS 26 dynamic scroll shrink detection
+  // Stable scroll threshold: only triggers on deliberate scroll (zero jitter / zero twitching)
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const diff = latest - lastScrollY.current;
-    if (latest > 70 && diff > 8) {
-      // Scrolling down -> shrink to compact liquid pill
+    if (latest > 120 && diff > 15) {
       setIsShrunk(true);
-    } else if (diff < -6 || latest < 25) {
-      // Scrolling up or near top -> expand back smoothly
+    } else if (diff < -15 || latest < 40) {
       setIsShrunk(false);
     }
     lastScrollY.current = latest;
@@ -52,45 +50,35 @@ export default function MobileNav() {
   return (
     <nav
       aria-label="Navigasi Mobile Liquid Glass iOS 26"
-      className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-2"
+      className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-3"
       style={{
-        bottom: 'calc(0.6rem + env(safe-area-inset-bottom, 0px))',
+        // Snug fit: sits right above Safari iOS toolbar and Android gesture bar without huge gap
+        bottom: 'max(0.45rem, calc(env(safe-area-inset-bottom, 0px) - 1.25rem))',
       }}
     >
-      {/* 2026 Instagram-style Liquid Glass Morphing Capsule */}
-      <motion.div
-        layout
-        transition={{
-          type: 'spring',
-          stiffness: 360,
-          damping: 28,
-          mass: 0.7,
-        }}
+      {/* 2026 Instagram-style Liquid Glass Morphing Capsule (Rock-Solid Stability, Zero Wobble) */}
+      <div
         className={cn(
           'pointer-events-auto relative mx-auto transform-gpu will-change-transform touch-manipulation',
-          // Dynamic responsive width morphing on Mobile S, M, L
-          isShrunk
-            ? 'w-[82%] max-w-[270px] xs:max-w-[295px] sm:max-w-[325px]' // Shrunk compact pill
-            : 'w-[94%] max-w-[320px] xs:max-w-[365px] sm:max-w-[400px]', // Expanded full pill
+          // Ultra-smooth 60/120 FPS CSS transition
+          'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          // Stable width across Mobile S, M, L (avoids any horizontal active pill wobble)
+          'w-[94%] max-w-[365px] xs:max-w-[400px] sm:max-w-[435px]',
+          // Dynamic height morphing: 56px (expanded) -> 42px (compact)
+          isShrunk ? 'h-[42px] sm:h-[44px]' : 'h-[56px] sm:h-[60px]',
           'rounded-full overflow-hidden p-1',
-          // Ultra-Premium Liquid Glass Material
-          'bg-[#0B0D14]/80 backdrop-blur-3xl backdrop-saturate-200',
+          // Ultra-Premium Liquid Glass Material (VisionOS / iOS 26)
+          'bg-[#0B0D14]/85 backdrop-blur-2xl backdrop-saturate-200',
           'border border-white/20 dark:border-white/15',
           'shadow-[0_16px_45px_rgba(0,0,0,0.75),0_0_25px_rgba(249,115,22,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.4)]'
         )}
       >
         {/* Top Edge Specular Reflex */}
-        <div className="absolute top-0 inset-x-6 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
 
-        {/* Grid of 5 Navigation Tabs with Ergonomic Touch Targets */}
-        <motion.div
-          layout
-          className={cn(
-            'relative grid grid-cols-5 items-center w-full transition-all duration-300',
-            isShrunk ? 'h-[38px] sm:h-[40px]' : 'h-[52px] sm:h-[56px]'
-          )}
-        >
-          {/* Active Tab Pill — Completely flush, full-height, zero gaps */}
+        {/* Grid of 5 Navigation Tabs with Rock-Solid Position & Ergonomic Touch Targets */}
+        <div className="relative grid grid-cols-5 items-center h-full w-full">
+          {/* Active Tab Pill — Flush, zero gaps, rock-solid X position */}
           {activeIndex !== -1 && (
             <motion.div
               layoutId="instagramActivePill"
@@ -107,9 +95,9 @@ export default function MobileNav() {
               }}
               transition={{
                 type: 'spring',
-                stiffness: 400,
-                damping: 28,
-                mass: 0.75,
+                stiffness: 420,
+                damping: 30,
+                mass: 0.7,
               }}
             />
           )}
@@ -125,52 +113,44 @@ export default function MobileNav() {
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={item.label}
                 className={cn(
-                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full transition-all duration-200 select-none active:scale-90',
+                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full select-none active:scale-90',
+                  'transition-all duration-200',
                   isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                {/* Icon Container (Centered & Ergonomic) */}
-                <motion.div
-                  layout
-                  className="relative flex items-center justify-center"
-                >
+                {/* Icon Container (Rock-Solid Centered Position) */}
+                <div className="relative flex items-center justify-center">
                   <Icon
                     className={cn(
                       'transition-all duration-200',
-                      isShrunk
-                        ? 'w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]'
-                        : 'w-[19px] h-[19px] sm:w-[20px] sm:h-[20px]',
+                      'w-[19px] h-[19px] sm:w-[21px] sm:h-[21px]',
                       isActive
                         ? 'stroke-[2.5] scale-110 text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
                         : 'stroke-[1.8] opacity-75 hover:opacity-100'
                     )}
                   />
-                </motion.div>
+                </div>
 
-                {/* Text Label — Smooth Fade Morph with Clean Typography & Zero Letter Clipping */}
-                <AnimatePresence initial={false}>
-                  {!isShrunk && (
-                    <motion.span
-                      initial={{ opacity: 0, height: 0, scale: 0.85 }}
-                      animate={{ opacity: 1, height: 'auto', scale: 1 }}
-                      exit={{ opacity: 0, height: 0, scale: 0.85 }}
-                      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                      className={cn(
-                        'text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-heading tracking-tight leading-tight pb-0.5 text-center mt-0.5 transition-colors duration-200',
-                        isActive
-                          ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
-                          : 'font-medium opacity-80'
-                      )}
-                    >
-                      {item.label}
-                    </motion.span>
+                {/* Text Label — Smooth Fade (Zero Jitter, Zero Clipping) */}
+                <span
+                  className={cn(
+                    'font-heading tracking-tight leading-tight pb-0.5 text-center transition-all duration-200 origin-center',
+                    'text-[9.5px] xs:text-[10px] sm:text-[10.5px]',
+                    isShrunk
+                      ? 'opacity-0 max-h-0 scale-75 mt-0 pointer-events-none overflow-hidden'
+                      : 'opacity-100 max-h-4 scale-100 mt-0.5',
+                    isActive
+                      ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
+                      : 'font-medium opacity-80'
                   )}
-                </AnimatePresence>
+                >
+                  {item.label}
+                </span>
               </Link>
             );
           })}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </nav>
   );
 }

@@ -251,3 +251,10 @@ export interface TransactionWithRelations extends Omit<Transaction, 'product' | 
   product?: { name: string } | null;
   denomination?: { label: string } | null;
 }
+
+/**
+ * Standardized Server Action return type for consistent API and Action responses.
+ */
+export type ActionResult<T = void> = 
+  | { success: true; data: T; message?: string }
+  | { success: false; error: string; code?: string };

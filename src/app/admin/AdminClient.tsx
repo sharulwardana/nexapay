@@ -18,7 +18,16 @@ export default function AdminClient({
   salesData,
   topProducts,
 }: { 
-  stats: { totalRevenue: number; totalTransactions: number; totalUsers: number; newUsersToday: number }, 
+  stats: { 
+    totalRevenue: number; 
+    totalTransactions: number; 
+    totalUsers: number; 
+    newUsersToday: number;
+    revenueGrowth?: number;
+    transactionGrowth?: number;
+    userGrowth?: number;
+    newUserGrowth?: number;
+  }, 
   recentTransactions: {
     id: string;
     invoiceId: string;
@@ -39,14 +48,11 @@ export default function AdminClient({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
 
-  // Feature 2: Real-time Auto-Refresh Stats (every 15 seconds)
+  // Auto-refresh every 30 seconds (reduced from 15s to lower server load)
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsRefreshing(true);
       router.refresh();
-      setTimeout(() => setIsRefreshing(false), 800);
-    }, 15000);
-
+    }, 30000);
     return () => clearInterval(interval);
   }, [router]);
 
@@ -59,10 +65,10 @@ export default function AdminClient({
   };
 
   const statsCards = [
-    { label: 'Total Pendapatan', value: stats.totalRevenue, change: 12.5, icon: DollarSign, color: 'from-violet-500 to-fuchsia-600', shadow: 'shadow-violet-500/20' },
-    { label: 'Total Transaksi', value: stats.totalTransactions, change: 8.3, icon: ShoppingCart, color: 'from-blue-500 to-cyan-500', shadow: 'shadow-blue-500/20' },
-    { label: 'Pengguna Terdaftar', value: stats.totalUsers, change: 15.2, icon: Users, color: 'from-emerald-400 to-teal-500', shadow: 'shadow-emerald-500/20' },
-    { label: 'Pengguna Baru Hari Ini', value: stats.newUsersToday, change: -2.1, icon: UserPlus, color: 'from-orange-400 to-pink-500', shadow: 'shadow-orange-500/20' },
+    { label: 'Total Pendapatan', value: stats.totalRevenue, change: stats.revenueGrowth ?? 0, icon: DollarSign, color: 'from-violet-500 to-fuchsia-600', shadow: 'shadow-violet-500/20' },
+    { label: 'Total Transaksi', value: stats.totalTransactions, change: stats.transactionGrowth ?? 0, icon: ShoppingCart, color: 'from-blue-500 to-cyan-500', shadow: 'shadow-blue-500/20' },
+    { label: 'Pengguna Terdaftar', value: stats.totalUsers, change: stats.userGrowth ?? 0, icon: Users, color: 'from-emerald-400 to-teal-500', shadow: 'shadow-emerald-500/20' },
+    { label: 'Pengguna Baru Hari Ini', value: stats.newUsersToday, change: stats.newUserGrowth ?? 0, icon: UserPlus, color: 'from-orange-400 to-pink-500', shadow: 'shadow-orange-500/20' },
   ];
   
   const maxSale = Math.max(...salesData.map(d => d.value), 10000);
@@ -129,8 +135,8 @@ export default function AdminClient({
                   </div>
                   
                   <div className="relative z-10 min-w-0">
-                    <p className="text-white/40 text-xs font-medium mb-1 truncate">{stat.label}</p>
-                    <h3 className="text-lg mobile-m:text-xl tablet:text-2xl laptop-l:text-3xl font-bold font-heading tracking-tight truncate">
+                    <p className="text-white/40 text-[11px] sm:text-xs font-medium mb-1 truncate">{stat.label}</p>
+                    <h3 className="text-sm xs:text-base mobile-m:text-lg tablet:text-xl laptop-l:text-2xl font-bold font-heading tracking-tight truncate">
                       {stat.label.includes('Pendapatan') ? formatCurrency(stat.value) : formatNumber(stat.value)}
                     </h3>
                   </div>

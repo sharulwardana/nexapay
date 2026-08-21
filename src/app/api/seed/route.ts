@@ -70,7 +70,7 @@ export async function GET() {
       }
     }
     return NextResponse.json({ success: true, message: 'Seeded products' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Seed error:', error);
     return NextResponse.json({ error: 'Terjadi kesalahan saat seeding database.' }, { status: 500 });
   }

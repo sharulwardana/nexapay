@@ -94,7 +94,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden max-w-full;
+    @apply bg-background text-foreground antialiased max-w-full;
+    overflow-x: clip;
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -102,7 +103,8 @@
   }
 
   html {
-    @apply overflow-x-hidden max-w-full;
+    @apply max-w-full;
+    overflow-x: clip;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
@@ -455,8 +457,14 @@
 
   /* ─── Container ─── */
   .container-app {
-    @apply w-full mx-auto px-4 xs:px-5;
-    max-width: min(1280px, 100% - 2rem);
+    @apply w-full mx-auto px-2.5 sm:px-4;
+    max-width: min(1280px, 100% - 0.75rem);
+  }
+  @media (min-width: 640px) {
+    .container-app {
+      @apply px-4;
+      max-width: min(1280px, 100% - 2rem);
+    }
   }
   @media (min-width: 768px) {
     .container-app {
@@ -479,7 +487,13 @@
   @media (min-width: 2560px) {
     .container-app {
       @apply px-16;
-      max-width: min(1920px, 100% - 8rem);
+      max-width: min(2200px, 100% - 8rem);
+    }
+  }
+  @media (min-width: 3840px) {
+    .container-app {
+      @apply px-20;
+      max-width: min(2800px, 100% - 10rem);
     }
   }
 

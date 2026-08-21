@@ -10,11 +10,13 @@ import { cn, formatCurrency } from '@/lib/utils';
 import { getLiveWalletBalance } from '@/actions/wallet';
 import { NAV_LINKS } from '@/lib/constants';
 
+import type { Session } from 'next-auth';
+
 interface NavMobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   isLoggedIn: boolean;
-  session: any;
+  session: Session | null;
 }
 
 const productCategories = [
@@ -44,7 +46,7 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+            className="fixed inset-0 bg-black/75 backdrop-blur-md z-[100] lg:hidden"
             onClick={onClose}
           />
           <motion.div
@@ -52,7 +54,7 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-            className="fixed top-0 right-0 bottom-0 w-72 max-w-[80vw] z-[70] bg-background border-l border-border overflow-y-auto lg:hidden"
+            className="fixed top-0 right-0 bottom-0 w-72 max-w-[85vw] z-[110] bg-background border-l border-border/80 shadow-2xl overflow-y-auto lg:hidden"
           >
             <div className="flex items-center justify-between h-14 pl-4 pr-6 border-b border-border/40 flex-shrink-0 mt-[29px]">
               <span className="font-heading font-bold text-base">
@@ -114,7 +116,7 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
                         <User className="w-3.5 h-3.5" /> Dashboard
                       </Link>
 
-                      <button onClick={() => { signOut(); onClose(); }} className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition-colors">
+                      <button onClick={() => { signOut({ redirectTo: '/' }); onClose(); }} className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition-colors">
                         <LogOut className="w-3.5 h-3.5" /> Keluar
                       </button>
                     </div>

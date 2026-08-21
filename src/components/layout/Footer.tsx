@@ -30,10 +30,48 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: 'Instagram', href: 'https://instagram.com/nexapay', color: 'hover:text-pink-500' },
-  { name: 'Twitter', href: 'https://twitter.com/nexapay', color: 'hover:text-sky-500' },
-  { name: 'Discord', href: 'https://discord.gg/nexapay', color: 'hover:text-indigo-500' },
-  { name: 'YouTube', href: 'https://youtube.com/@nexapay', color: 'hover:text-red-500' },
+  { 
+    name: 'Instagram', 
+    href: 'https://instagram.com/nexapay', 
+    color: 'hover:text-pink-500 hover:border-pink-500/30 hover:bg-pink-500/10',
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Twitter', 
+    href: 'https://twitter.com/nexapay', 
+    color: 'hover:text-sky-400 hover:border-sky-400/30 hover:bg-sky-400/10',
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Discord', 
+    href: 'https://discord.gg/nexapay', 
+    color: 'hover:text-indigo-400 hover:border-indigo-400/30 hover:bg-indigo-400/10',
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.175 13.175 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z" />
+      </svg>
+    )
+  },
+  { 
+    name: 'YouTube', 
+    href: 'https://youtube.com/@nexapay', 
+    color: 'hover:text-red-500 hover:border-red-500/30 hover:bg-red-500/10',
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    )
+  },
 ];
 
 const paymentLogos = [
@@ -100,16 +138,18 @@ export default function Footer() {
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-2 mt-5">
+            <div className="flex flex-wrap items-center gap-2 mt-5">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 text-[11px] font-bold text-muted-foreground ${social.color} hover:border-primary/40 hover:bg-white/[0.08] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 shadow-sm`}
+                  aria-label={social.name}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 text-[11px] font-bold text-muted-foreground ${social.color} backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 shadow-sm`}
                 >
-                  {social.name}
+                  {social.icon}
+                  <span>{social.name}</span>
                 </a>
               ))}
             </div>
@@ -180,7 +220,7 @@ export default function Footer() {
       </div>
 
       {/* Mobile nav spacer */}
-      <div className="h-20 lg:hidden" />
+      <div className="h-20 sm:h-24 lg:hidden" />
     </footer>
   );
 }

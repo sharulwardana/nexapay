@@ -35,18 +35,43 @@ export async function toggleUserRole(userId: string, currentRole: string) {
   }
 }
 
+import { logAdminAudit } from '@/lib/audit';
+
 export async function updateUserBalance(userId: string, amount: number) {
   try {
-    await requireAdmin();
+    const admin = await requireAdmin();
 
     const parsed = updateUserBalanceSchema.safeParse({ userId, amount });
     if (!parsed.success) {
       return { success: false, error: parsed.error.errors[0].message };
     }
 
+    // Prevent negative balance when decrementing
+    if (parsed.data.amount < 0) {
+      const currentUser = await prisma.user.findUnique({
+        where: { id: parsed.data.userId },
+        select: { walletBalance: true },
+      });
+      if (!currentUser) {
+        return { success: false, error: 'User tidak ditemukan' };
+      }
+      if (currentUser.walletBalance + parsed.data.amount < 0) {
+        return { success: false, error: `Saldo tidak mencukupi. Saldo saat ini: ${currentUser.walletBalance}` };
+      }
+    }
+
     const user = await prisma.user.update({
       where: { id: parsed.data.userId },
       data: { walletBalance: { increment: parsed.data.amount } },
+    });
+
+    logAdminAudit({
+      adminId: (admin as { id?: string }).id || 'admin',
+      adminEmail: (admin as { email?: string }).email,
+      action: 'UPDATE_USER_BALANCE',
+      targetId: userId,
+      targetType: 'user',
+      details: { amount: parsed.data.amount, newBalance: user.walletBalance },
     });
 
     revalidatePath('/admin/users');

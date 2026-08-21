@@ -25,13 +25,8 @@ export default function rateLimit(options?: RateLimitOptions) {
           lastCleanup = now;
         }
 
-        const tokenCount = tokenCache.get(token) || [0];
-        if (tokenCount[0] === 0) {
-          tokenCache.set(token, [now]);
-        }
-
-        const timestamps = tokenCache.get(token)!;
-        const validTimestamps = timestamps.filter(t => now - t < (options?.interval || 60000));
+        const existingTimestamps = tokenCache.get(token) || [];
+        const validTimestamps = existingTimestamps.filter(t => now - t < (options?.interval || 60000));
 
         if (validTimestamps.length >= limit) {
           reject('Rate limit exceeded');

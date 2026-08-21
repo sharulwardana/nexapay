@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, Check, Gamepad2, CreditCard, ShieldCheck, Loader2,
-  Info, Tag, Zap, Star, ShoppingCart, Gem, Heart, User, X, Home, CheckCircle2, HelpCircle, Sparkles, Globe, ChevronDown
+  Info, Tag, Zap, Star, ShoppingCart, Gem, Heart, User, X, Home, CheckCircle2, HelpCircle, Sparkles, Globe, ChevronDown, Phone, MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -48,7 +48,7 @@ function FaqAccordionSection({
   gridCols = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
 }: {
   items: Array<{
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     title: string;
     content: React.ReactNode;
     iconBg?: string;
@@ -87,7 +87,7 @@ function FaqAccordionSection({
                   )}>
                     <Icon className="w-4 h-4" />
                   </div>
-                  <span className="text-foreground font-bold truncate">{item.title}</span>
+                  <span className="text-foreground font-bold text-xs sm:text-sm leading-snug">{item.title}</span>
                 </div>
                 <div className={cn(
                   'w-6 h-6 rounded-full flex items-center justify-center bg-background/50 border border-white/10 transition-transform duration-300 flex-shrink-0',
@@ -158,7 +158,9 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
   const [isValidating, setIsValidating] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [promoCode, setPromoCode] = useState('');
+  const [showPromoInput, setShowPromoInput] = useState(false);
   const [denomCategoryFilter, setDenomCategoryFilter] = useState('ALL');
   const [paymentCategoryFilter, setPaymentCategoryFilter] = useState('ALL');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -197,11 +199,19 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
     if (game) {
       const savedUserId = localStorage.getItem(`nexapay_userid_${game.slug}`);
       const savedServerId = localStorage.getItem(`nexapay_serverid_${game.slug}`);
+      const savedPhone = localStorage.getItem('nexapay_user_phone');
       if (savedUserId) setUserId(savedUserId);
       if (savedServerId) setServerId(savedServerId);
+      if (savedPhone) setPhoneNumber(savedPhone);
       setDenomCategoryFilter('ALL');
     }
   }, [game]);
+
+  useEffect(() => {
+    if (phoneNumber) {
+      localStorage.setItem('nexapay_user_phone', phoneNumber);
+    }
+  }, [phoneNumber]);
 
   const denom = game.denominations.find((d) => d.id === selectedDenom);
   const payment = PAYMENT_METHODS.find((p) => p.id === selectedPayment);
@@ -257,12 +267,12 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
   const hasFlash = game.denominations.some((d) => d.isActive && d.isFlashSale && d.flashSalePrice);
 
   const denomCategories = [
-    { id: 'ALL', label: 'Semua Item', icon: Gem },
-    ...(hasRecharge ? [{ id: 'RECHARGE', label: '2x Recharge Bonus', icon: Zap }] : []),
+    { id: 'ALL', label: 'Semua', icon: Gem },
+    ...(hasRecharge ? [{ id: 'RECHARGE', label: '2x Bonus', icon: Zap }] : []),
     ...(hasChronalNexus ? [{ id: 'NEXUS', label: 'Chronal Nexus', icon: Gem }] : []),
     ...(hasCurrency ? [{ id: 'CURRENCY', label: currencyLabel, icon: Gem }] : []),
-    ...(hasPass ? [{ id: 'PASS', label: 'Pass & Membership', icon: ShieldCheck }] : []),
-    ...(hasPopular ? [{ id: 'HOT', label: 'Paling Laris', icon: Star }] : []),
+    ...(hasPass ? [{ id: 'PASS', label: 'Pass', icon: ShieldCheck }] : []),
+    ...(hasPopular ? [{ id: 'HOT', label: 'Populer', icon: Star }] : []),
     ...(hasFlash ? [{ id: 'FLASH', label: 'Flash Sale', icon: Zap }] : []),
   ];
 
@@ -289,10 +299,10 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
   });
 
   const paymentCategoryPills = [
-    { id: 'ALL', label: 'Semua Metode' },
+    { id: 'ALL', label: 'Semua' },
     { id: 'QRIS', label: 'QRIS' },
     { id: 'E-Wallet', label: 'E-Wallet' },
-    { id: 'Bank Transfer', label: 'Virtual Account' },
+    { id: 'Bank Transfer', label: 'Bank VA' },
     { id: 'Minimarket', label: 'Minimarket' },
   ];
 
@@ -411,10 +421,18 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
     });
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     const targetUserId = isVoucherProduct ? (userId || 'VOUCHER') : userId;
-    if (!targetUserId || !denom) {
+    if (!targetUserId && !isVoucherProduct) {
+      toast.error('Harap masukkan User ID terlebih dahulu!');
+      accountSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!denom) {
       toast.error('Harap pilih Nominal terlebih dahulu!');
+      denomSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     addItem({
@@ -436,10 +454,23 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
     });
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     const targetUserId = isVoucherProduct ? (userId || 'VOUCHER') : userId;
-    if (!targetUserId || !selectedDenom || !selectedPayment) {
-      toast.error('Harap pilih Nominal dan Metode Pembayaran!');
+    if (!targetUserId && !isVoucherProduct) {
+      toast.error('Harap masukkan User ID terlebih dahulu!');
+      accountSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!selectedDenom) {
+      toast.error('Harap pilih Nominal terlebih dahulu!');
+      denomSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!selectedPayment) {
+      toast.error('Harap pilih Metode Pembayaran terlebih dahulu!');
+      paymentSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -498,8 +529,8 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
       <div className="container-app pt-28 pb-4 tablet:pt-36 tablet:pb-12 relative z-10">
 
         {/* Top Game Hero Banner Header */}
-        <div className="relative rounded-3xl overflow-hidden mb-8 border border-border/60 glass-card shadow-2xl">
-          <div className="relative min-h-[170px] tablet:min-h-[210px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-4 sm:p-6 tablet:p-8">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-6 sm:mb-8 border border-border/60 glass-card shadow-2xl">
+          <div className="relative min-h-[140px] sm:min-h-[170px] tablet:min-h-[210px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-3.5 sm:p-6 tablet:p-8">
             {game.bannerImage && (
               <Image
                 src={game.bannerImage || game.image}
@@ -514,8 +545,8 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
             <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
-            <div className="relative z-10 flex items-center gap-4 sm:gap-6 tablet:gap-8 w-full">
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 tablet:w-28 tablet:h-28 rounded-2xl overflow-hidden border-2 border-primary/40 shadow-[0_0_25px_rgba(255,115,0,0.3)] flex-shrink-0 bg-card">
+            <div className="relative z-10 flex items-center gap-3 sm:gap-6 tablet:gap-8 w-full">
+              <div className="relative w-16 h-16 sm:w-24 sm:h-24 tablet:w-28 tablet:h-28 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-primary/40 shadow-[0_0_25px_rgba(255,115,0,0.3)] flex-shrink-0 bg-card">
                 <Image
                   src={game.image}
                   alt={game.name}
@@ -530,23 +561,23 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
               <div className="min-w-0 flex-1 space-y-1 tablet:space-y-2">
                 {game.publisher && (
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/20 text-primary border border-primary/30">
+                    <span className="px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-primary/20 text-primary border border-primary/30">
                       {game.publisher}
                     </span>
                   </div>
                 )}
-                <h1 className="text-xl sm:text-2xl tablet:text-3xl font-black font-heading text-foreground tracking-tight line-clamp-1">
+                <h1 className="text-base sm:text-2xl tablet:text-3xl font-black font-heading text-foreground tracking-tight leading-snug">
                   {game.name}
                 </h1>
-                <p className="text-xs tablet:text-sm text-muted-foreground line-clamp-2 max-w-xl leading-relaxed">
+                <p className="text-[11px] sm:text-xs tablet:text-sm text-muted-foreground line-clamp-3 max-w-xl leading-relaxed">
                   {game.description}
                 </p>
-                <div className="flex items-center gap-x-3 gap-y-1 pt-0.5 text-[10px] sm:text-[11px] text-muted-foreground font-medium flex-wrap">
+                <div className="flex items-center gap-x-2.5 gap-y-1 pt-0.5 text-[9.5px] sm:text-[11px] text-muted-foreground font-medium flex-wrap">
                   <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Proses Instan 24 Jam
+                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Proses Instan 24 Jam
                   </span>
                   <span className="flex items-center gap-1 text-sky-400 font-semibold">
-                    <ShieldCheck className="w-3.5 h-3.5" /> 100% Resmi & Legal
+                    <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 100% Resmi & Legal
                   </span>
                 </div>
               </div>
@@ -554,50 +585,78 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
           </div>
         </div>
 
-        {/* Layout Grid Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column: Interactive Form Steps */}
-          <div className="lg:col-span-8 space-y-8">
+        {/* Layout Grid Main Content — 2 Columns on Tablet & Desktop (>= 768px) with sticky tracking */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 tablet:gap-6 lg:gap-8 items-start">
+          {/* Left Column: Interactive Form Steps (7 cols on tablet, 8 cols on laptop/desktop) */}
+          <div className="md:col-span-7 lg:col-span-8 space-y-5 sm:space-y-6 lg:space-y-8">
 
             {/* STEP 1: Account Identification / Data Akun */}
             <section ref={accountSectionRef} id="step-account">
-              <div className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group">
-                <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-border/40">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
+              <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group">
+                <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
+                  <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
                       1
                     </div>
-                    <User className="w-4 h-4 text-primary flex-shrink-0" />
-                    <h2 className="text-sm tablet:text-base font-bold font-heading text-foreground whitespace-nowrap">
+                    <User className="w-4 h-4 text-primary flex-shrink-0 hidden sm:block" />
+                    <h2 className="text-xs sm:text-sm tablet:text-base font-bold font-heading text-foreground whitespace-nowrap">
                       {isVoucherProduct ? (
                         'Status Voucher'
                       ) : (
                         <>
-                          <span className="tablet:hidden">Data Akun</span>
-                          <span className="hidden tablet:inline">Masukkan Data Akun</span>
+                          <span className="lg:hidden">Data Akun</span>
+                          <span className="hidden lg:inline">Masukkan Data Akun</span>
                         </>
                       )}
                     </h2>
                   </div>
                   {!isVoucherProduct && (
                     <button 
+                      type="button"
                       onClick={() => setShowHelpModal(true)}
-                      className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-primary/20 transition-all active:scale-95 flex-shrink-0"
+                      className="flex items-center gap-1 text-[9.5px] sm:text-[11px] font-bold text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-primary/20 transition-all active:scale-95 flex-shrink-0 cursor-pointer"
                     >
                       <Info className="w-3 h-3" />
                       <span>Petunjuk ID</span>
                     </button>
                   )}
                 </div>
-                <div className="space-y-4 relative z-10">
+                <div className="space-y-3 sm:space-y-4 relative z-10">
                   {isVoucherProduct ? (
-                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground space-y-1">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-primary/10 border border-primary/20 text-xs sm:text-sm text-foreground space-y-1">
                       <div className="font-bold text-primary flex items-center gap-2">
                         <span>🎟️ Voucher Langsung Dikirim ke Email / No. WA</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-[11px] sm:text-xs text-muted-foreground">
                         Ini adalah produk Kode Voucher Resmi ({game.name}). Tidak memerlukan User ID Game. Kode voucher akan dikirimkan otomatis secara instan setelah pembayaran berhasil.
                       </p>
+                    </div>
+                  ) : ['mobile-legends'].includes(game.slug) ? (
+                    <div className="grid grid-cols-5 gap-2 sm:gap-2.5">
+                      <div className="col-span-3">
+                        <label className="block text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                          User ID <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={userId}
+                          onChange={(e) => { setUserId(e.target.value); setIsValidated(false); }}
+                          placeholder="Contoh: 12345678"
+                          className="w-full px-3 py-2.5 sm:px-3.5 sm:py-3 rounded-xl bg-background/50 border border-border text-xs sm:text-sm font-semibold outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <label className="block text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                          Zone ID <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={serverId}
+                          onChange={(e) => { setServerId(e.target.value); setIsValidated(false); }}
+                          placeholder="(2103)"
+                          className="w-full px-3 py-2.5 sm:px-3.5 sm:py-3 rounded-xl bg-background/50 border border-border text-xs sm:text-sm font-semibold outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div>
@@ -668,19 +727,6 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                         })}
                       </div>
                     </div>
-                  ) : ['mobile-legends'].includes(game.slug) ? (
-                    <div>
-                      <label className="block text-sm font-medium mb-1.5">
-                        Server ID / Zone ID <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={serverId}
-                        onChange={(e) => { setServerId(e.target.value); setIsValidated(false); }}
-                        placeholder="Masukkan Server ID / Zone ID (Contoh: 2103)"
-                        className="w-full px-4 py-3 rounded-xl bg-background/50 border border-border text-sm outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
-                      />
-                    </div>
                   ) : null}
 
                   {/* Real-Time Nickname Verification Badge */}
@@ -746,46 +792,46 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
 
               <div
                 ref={denomSectionRef}
-                className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group scroll-mt-28"
+                className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group scroll-mt-28"
               >
-                <div className="flex items-center gap-2.5 mb-4 relative z-10 pb-3 border-b border-border/40">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
+                <div className="flex items-center gap-2 sm:gap-2.5 mb-3.5 sm:mb-4 relative z-10 pb-3 border-b border-border/40">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
                     2
                   </div>
                   <Tag className="w-4 h-4 text-primary flex-shrink-0" />
-                  <h2 className="text-sm tablet:text-base font-bold font-heading text-foreground">Pilih Nominal</h2>
+                  <h2 className="text-xs sm:text-sm tablet:text-base font-bold font-heading text-foreground">Pilih Nominal</h2>
                 </div>
 
                 {/* Live Flash Sale Countdown Banner */}
-                <div className="flex flex-wrap items-center justify-between gap-2 p-3 mb-5 rounded-xl bg-gradient-to-r from-red-500/15 via-orange-500/10 to-primary/10 border border-red-500/25 text-xs font-bold relative z-10">
-                  <div className="flex items-center gap-2 text-red-400">
-                    <Zap className="w-4 h-4 text-red-500 animate-pulse" />
-                    <span>FLASH SALE LIMITED TIME</span>
+                <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 p-2.5 sm:p-3 mb-4 sm:mb-5 rounded-xl bg-gradient-to-r from-red-500/15 via-orange-500/10 to-primary/10 border border-red-500/25 text-[11px] sm:text-xs font-bold relative z-10">
+                  <div className="flex items-center gap-1.5 text-red-400">
+                    <Zap className="w-3.5 h-3.5 text-red-500 animate-pulse flex-shrink-0" />
+                    <span className="truncate">FLASH SALE LIMITED TIME</span>
                   </div>
-                  <div className="flex items-center gap-1 font-mono text-xs">
-                    <span className="text-[10px] text-muted-foreground mr-1">Berakhir:</span>
-                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30">
+                  <div className="flex items-center gap-1 font-mono text-[11px] sm:text-xs">
+                    <span className="text-[9.5px] text-muted-foreground mr-0.5">Berakhir:</span>
+                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30 font-bold">
                       {String(timeLeft.hours).padStart(2, '0')}h
                     </span>
                     <span className="text-red-400">:</span>
-                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30">
+                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30 font-bold">
                       {String(timeLeft.minutes).padStart(2, '0')}m
                     </span>
                     <span className="text-red-400">:</span>
-                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30">
+                    <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30 font-bold">
                       {String(timeLeft.seconds).padStart(2, '0')}s
                     </span>
                   </div>
                 </div>
 
                 {/* Denomination Category Filter Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-5 no-scrollbar relative z-10">
+                <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 mb-4 sm:mb-5 no-scrollbar relative z-10">
                   {denomCategories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => setDenomCategoryFilter(cat.id)}
                       className={cn(
-                        'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border flex-shrink-0 active:scale-95',
+                        'flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex-shrink-0 active:scale-95 cursor-pointer',
                         denomCategoryFilter === cat.id
                           ? 'bg-primary text-white border-primary shadow-[0_0_12px_rgba(255,115,0,0.35)]'
                           : 'bg-background/60 hover:bg-muted text-muted-foreground hover:text-foreground border-border/50'
@@ -798,7 +844,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                 </div>
 
                 {denomCategoryFilter === 'RECHARGE' && (
-                  <div className="p-4 mb-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-primary/10 border border-amber-500/30 text-xs relative z-10 space-y-1">
+                  <div className="p-3.5 sm:p-4 mb-4 sm:mb-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-primary/10 border border-amber-500/30 text-xs relative z-10 space-y-1">
                     <div className="flex items-center gap-2 text-amber-400 font-bold font-heading">
                       <Zap className="w-4 h-4 text-amber-400" />
                       <span>2x Recharge Bonus (Bonus Top Up Pertama)</span>
@@ -810,7 +856,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                 )}
 
                 {denomCategoryFilter === 'PASS' && (
-                  <div className="p-4 mb-5 rounded-2xl bg-gradient-to-r from-purple-500/15 via-primary/10 to-sky-500/10 border border-purple-500/30 text-xs relative z-10 space-y-2">
+                  <div className="p-3.5 sm:p-4 mb-4 sm:mb-5 rounded-2xl bg-gradient-to-r from-purple-500/15 via-primary/10 to-sky-500/10 border border-purple-500/30 text-xs relative z-10 space-y-2">
                     <div className="flex items-center gap-2 text-purple-300 font-bold font-heading">
                       <ShieldCheck className="w-4 h-4 text-purple-400" />
                       <span>Syarat & Keuntungan Pass / Bundle Limited</span>
@@ -823,92 +869,90 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5 tablet:gap-4 relative z-10">
+                <div className="grid grid-cols-2 sm:grid-cols-2 tablet:grid-cols-2 laptop:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3.5 tablet:gap-4 relative z-10">
                   {filteredDenominations.length > 0 ? (
-                    filteredDenominations.map((d: any) => {
+                    filteredDenominations.map((d: Denomination) => {
                       const isFlash = d.isFlashSale && d.flashSalePrice;
                       const displayPrice = isFlash ? d.flashSalePrice! : d.price;
                       const isSelected = selectedDenom === d.id;
+                      const finalPrice = displayPrice - Math.floor(displayPrice * (rank.discount / 100));
+
                       return (
                         <button
                           key={d.id}
                           onClick={() => handleSelectDenom(d.id)}
                           className={cn(
-                            'relative flex flex-col items-center justify-center p-4 tablet:p-5 rounded-2xl border bg-background/50 text-center transition-all duration-300 backdrop-blur-sm group',
+                            'relative flex flex-col items-center justify-between p-2.5 sm:p-4 tablet:p-5 rounded-2xl border bg-card/60 text-center transition-all duration-300 backdrop-blur-md group cursor-pointer overflow-hidden min-h-[135px] sm:min-h-[160px]',
                             isSelected
-                              ? 'border-primary bg-primary/15 shadow-[0_0_20px_rgba(249,115,22,0.25)] ring-1 ring-primary/40 z-10'
+                              ? 'border-primary bg-primary/[0.12] ring-2 ring-primary shadow-[0_0_25px_rgba(255,115,0,0.3)] z-10 scale-[1.02]'
                               : d.isPopular
-                              ? 'border-primary/40 bg-gradient-to-br from-primary/10 via-background/60 to-accent/10 shadow-md hover:border-primary hover:scale-[1.01]'
-                              : 'border-border/50 shadow-sm hover:border-primary/50 hover:bg-primary/[0.05] hover:-translate-y-1 hover:shadow-md'
+                              ? 'border-amber-500/40 bg-gradient-to-b from-amber-500/[0.06] via-card/60 to-card/90 shadow-sm hover:border-amber-500/80 hover:shadow-md hover:-translate-y-0.5'
+                              : 'border-white/10 hover:border-primary/50 hover:bg-card/90 hover:-translate-y-0.5 hover:shadow-md'
                           )}
                         >
-                          {isFlash && (
-                            <div className="absolute top-0 -translate-y-1/2 right-3 z-10">
-                              <span className="px-2 py-0.5 rounded-md bg-red-500 text-white text-[8.5px] font-black tracking-wider animate-pulse shadow-md">
-                                ⚡ FLASH SALE
+                          {/* Top Badges */}
+                          {isFlash ? (
+                            <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10">
+                              <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-500 text-white text-[7.5px] sm:text-[9px] font-black tracking-wider animate-pulse shadow-md flex items-center gap-0.5">
+                                <Zap className="w-2.5 h-2.5 fill-current" /> FLASH
                               </span>
                             </div>
-                          )}
-                          {d.isPopular && !isFlash && (
-                            <div className="absolute top-0 -translate-y-1/2 left-3 z-10">
-                              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8.5px] font-black tracking-wider shadow-md border border-amber-300/30">
+                          ) : d.isPopular ? (
+                            <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
+                              <span className="flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[7.5px] sm:text-[9px] font-black tracking-wider shadow-md border border-amber-300/30">
                                 <Star className="w-2.5 h-2.5 fill-current" />
-                                BEST VALUE
+                                BEST
                               </span>
                             </div>
-                          )}
-                          <div className="flex flex-col items-center gap-2 mb-3">
+                          ) : null}
+
+                          {/* Center: Gem Icon & Label */}
+                          <div className="flex flex-col items-center gap-1 sm:gap-1.5 w-full pt-1 sm:pt-2">
                             <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center transition-colors relative overflow-hidden",
-                              isSelected ? "bg-primary/20 shadow-[0_0_10px_rgba(255,115,0,0.3)]" : "bg-muted"
+                              "w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 relative",
+                              isSelected 
+                                ? "bg-primary text-white shadow-[0_0_15px_rgba(255,115,0,0.5)] scale-105" 
+                                : "bg-white/5 text-primary border border-white/10 group-hover:scale-105 group-hover:border-primary/30"
                             )}>
-                              <Gem className={cn(
-                                "w-5 h-5",
-                                isSelected ? "text-primary" : "text-muted-foreground"
-                              )} />
+                              <Gem className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <p className={cn(
-                              "text-xs tablet:text-sm font-bold transition-colors line-clamp-2 text-center",
-                              isSelected ? "text-primary" : "text-foreground"
+                              "text-[10px] sm:text-xs xl:text-sm font-black font-heading tracking-tight transition-colors text-center px-0.5 leading-tight break-words line-clamp-3",
+                              isSelected ? "text-primary" : "text-foreground group-hover:text-primary"
                             )}>
                               {d.label}
                             </p>
                           </div>
 
-                          <div className="flex flex-col items-center w-full mt-auto pt-2.5 border-t border-border/50">
-                            <div className="flex items-center gap-1.5 flex-wrap justify-center">
-                              <span className="text-[10px] text-muted-foreground">Dari</span>
-                              <span className={cn(
-                                'text-sm font-black',
-                                isFlash ? 'text-red-500' : (isSelected ? 'text-primary' : 'text-foreground')
-                              )}>
-                                {formatCurrency(displayPrice - Math.floor(displayPrice * (rank.discount / 100)))}
+                          {/* Bottom: Price Capsule & Strikethrough */}
+                          <div className="w-full flex flex-col items-center mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-white/5 space-y-0.5 sm:space-y-1">
+                            {/* Strikethrough Original Price if Discounted */}
+                            {(d.originalPrice || isFlash || rank.discount > 0) && (
+                              <span className="text-[9px] sm:text-[11px] text-muted-foreground/70 line-through font-mono leading-none">
+                                {formatCurrency(isFlash ? d.price : (d.originalPrice || displayPrice))}
                               </span>
+                            )}
+
+                            {/* Gleaming Price Container Pill */}
+                            <div className={cn(
+                              "w-full py-1 sm:py-1.5 px-1.5 sm:px-2.5 rounded-xl font-mono font-black text-[11px] sm:text-sm transition-all duration-300 flex items-center justify-center shadow-sm",
+                              isSelected
+                                ? "gradient-primary text-white shadow-[0_0_15px_rgba(255,115,0,0.4)]"
+                                : "bg-white/[0.04] border border-white/10 text-foreground group-hover:border-primary/40 group-hover:text-primary"
+                            )}>
+                              {formatCurrency(finalPrice)}
                             </div>
 
-                            {d.discount && d.discount > 0 && d.originalPrice ? (
-                              <div className="flex items-center gap-1 mt-1">
-                                <span className="px-1.5 py-0.2 rounded bg-red-500/20 text-red-400 text-[9px] font-bold">
-                                  -{d.discount}%
-                                </span>
-                                <span className="text-[10px] text-muted-foreground line-through">
-                                  {formatCurrency(d.originalPrice)}
-                                </span>
-                              </div>
-                            ) : (d.originalPrice || isFlash || rank.discount > 0) ? (
-                              <span className="text-[10px] text-muted-foreground line-through mt-0.5">
-                                {formatCurrency(isFlash ? d.price : (rank.discount > 0 ? displayPrice : d.originalPrice!))}
-                              </span>
-                            ) : null}
-
-                            {/* Nexa Loyalty Points Rewards Tag */}
-                            <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[9.5px] font-bold">
-                              <span>🪙 +{Math.floor(displayPrice / 200).toLocaleString('id-ID')} Nexa Points</span>
-                            </div>
+                            {/* Nexa Loyalty Points Tag */}
+                            <span className="text-[8px] sm:text-[9.5px] font-bold text-amber-400/90 font-mono">
+                              +{Math.floor(displayPrice / 200).toLocaleString('id-ID')} Pts
+                            </span>
                           </div>
+
+                          {/* Active Selected Checkmark Top-Right Badge */}
                           {isSelected && (
-                            <div className="absolute -top-1.5 -right-1.5 w-5.5 h-5.5 rounded-full bg-primary text-white flex items-center justify-center shadow-lg border-2 border-background animate-in zoom-in duration-200 z-20">
-                              <Check className="w-3 h-3 stroke-[3]" />
+                            <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full gradient-primary text-white flex items-center justify-center shadow-lg border-2 border-background animate-in zoom-in duration-200 z-20">
+                              <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                             </div>
                           )}
                         </button>
@@ -922,26 +966,27 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                 </div>
               </div>
 
+              {/* STEP 3: Payment Method Selection */}
               <div
                 ref={paymentSectionRef}
-                className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group mb-12 lg:mb-0 scroll-mt-28"
+                className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group scroll-mt-28"
               >
-                <div className="flex items-center gap-2.5 mb-4 relative z-10 pb-3 border-b border-border/40">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
+                <div className="flex items-center gap-2 sm:gap-2.5 mb-3.5 sm:mb-4 relative z-10 pb-3 border-b border-border/40">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
                     3
                   </div>
                   <CreditCard className="w-4 h-4 text-primary flex-shrink-0" />
-                  <h2 className="text-sm tablet:text-base font-bold font-heading text-foreground">Pilih Pembayaran</h2>
+                  <h2 className="text-xs sm:text-sm tablet:text-base font-bold font-heading text-foreground">Pilih Pembayaran</h2>
                 </div>
 
                 {/* Payment Category Filter Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-5 no-scrollbar relative z-10">
+                <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 mb-4 sm:mb-5 no-scrollbar relative z-10">
                   {paymentCategoryPills.map((pill) => (
                     <button
                       key={pill.id}
                       onClick={() => setPaymentCategoryFilter(pill.id)}
                       className={cn(
-                        'px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border flex-shrink-0 active:scale-95',
+                        'px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex-shrink-0 active:scale-95',
                         paymentCategoryFilter === pill.id
                           ? 'bg-primary text-white border-primary shadow-[0_0_12px_rgba(255,115,0,0.35)]'
                           : 'bg-background/60 hover:bg-muted text-muted-foreground hover:text-foreground border-border/50'
@@ -951,7 +996,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     </button>
                   ))}
                 </div>
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-4 sm:space-y-6 relative z-10">
                   {Object.entries(paymentsByCategory)
                     .filter(([category]) => {
                       if (paymentCategoryFilter === 'ALL') return true;
@@ -963,10 +1008,10 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     })
                     .map(([category, methods]) => (
                     <div key={category}>
-                      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 pl-1">
+                      <h3 className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 sm:mb-3 pl-1">
                         {category}
                       </h3>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5 sm:space-y-2">
                         {methods.map((pm) => {
                           const isPmSelected = selectedPayment === pm.id;
                           const netTotalForPm = denom ? price + pm.fee : null;
@@ -974,44 +1019,49 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                           return (
                             <button
                               key={pm.id}
+                              type="button"
                               onClick={() => setSelectedPayment(pm.id)}
                               className={cn(
-                                'w-full flex items-center gap-3 p-3 tablet:p-4 rounded-xl border bg-background/50 transition-all text-left backdrop-blur-sm',
+                                'w-full flex items-center justify-between p-2 sm:p-3 tablet:p-3.5 rounded-xl sm:rounded-2xl border transition-all duration-200 text-left group cursor-pointer backdrop-blur-sm',
                                 isPmSelected
-                                  ? 'border-primary bg-gradient-to-r from-primary/15 via-primary/5 to-transparent shadow-sm'
-                                  : 'border-border/50 hover:border-primary/30 hover:bg-muted/40'
+                                  ? 'border-primary bg-primary/10 shadow-[0_0_15px_rgba(255,115,0,0.15)] ring-1 ring-primary'
+                                  : 'border-border/60 bg-background/50 hover:border-primary/40 hover:bg-muted/40'
                               )}
                             >
-                              <div className="w-14 h-8 relative flex-shrink-0">
-                                <Image src={pm.icon} alt={pm.name} fill sizes="56px" className="object-contain" />
+                              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+                                <div className="w-10 h-7 sm:w-12 sm:h-8 rounded-lg bg-white/5 border border-white/10 p-0.5 sm:p-1 flex items-center justify-center flex-shrink-0">
+                                  <div className="relative w-full h-full">
+                                    <Image src={pm.icon} alt={pm.name} fill sizes="40px" className="object-contain" />
+                                  </div>
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className={cn("text-xs sm:text-sm font-bold truncate group-hover:text-primary transition-colors font-heading leading-tight", isPmSelected && "text-primary")}>
+                                    {pm.name}
+                                  </p>
+                                  <p className="text-[9.5px] sm:text-[10px] text-muted-foreground truncate leading-tight mt-0.5">
+                                    {pm.fee > 0 ? `+${formatCurrency(pm.fee)}` : 'Bebas Biaya'}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <p className={cn("text-sm font-bold", isPmSelected && "text-primary")}>{pm.name}</p>
-                                <p className="text-[10px] text-muted-foreground">{pm.description}</p>
-                              </div>
-                              <div className="text-right flex-shrink-0">
+
+                              <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 pl-1.5">
                                 {netTotalForPm !== null ? (
-                                  <>
-                                    <p className={cn("text-xs font-black font-mono", isPmSelected ? "text-primary" : "text-foreground")}>
-                                      {formatCurrency(netTotalForPm)}
-                                    </p>
-                                    <p className="text-[9px] text-muted-foreground">
-                                      {pm.fee > 0 ? `Inc. Fee ${formatCurrency(pm.fee)}` : 'Bebas Admin'}
-                                    </p>
-                                  </>
+                                  <span className={cn("text-[11px] sm:text-sm font-black font-heading", isPmSelected ? "text-primary" : "text-foreground")}>
+                                    {formatCurrency(netTotalForPm)}
+                                  </span>
                                 ) : (
-                                  pm.fee > 0 ? (
-                                    <p className="text-xs text-muted-foreground">+{formatCurrency(pm.fee)}</p>
-                                  ) : (
-                                    <p className="text-xs text-green-500 font-bold">Gratis</p>
-                                  )
+                                  <span className="text-[9.5px] sm:text-[10px] text-muted-foreground font-semibold">
+                                    {pm.fee > 0 ? `+${formatCurrency(pm.fee)}` : 'Gratis'}
+                                  </span>
+                                )}
+                                {isPmSelected ? (
+                                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full gradient-primary flex items-center justify-center shadow-sm flex-shrink-0">
+                                    <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white stroke-[3]" />
+                                  </div>
+                                ) : (
+                                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border border-border/80 flex-shrink-0" />
                                 )}
                               </div>
-                              {isPmSelected && (
-                                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-lg animate-in zoom-in">
-                                  <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                                </div>
-                              )}
                             </button>
                           );
                         })}
@@ -1021,42 +1071,106 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                 </div>
               </div>
 
-              {/* STEP 4: Promo Code (Mobile & Tablet Only - On Desktop, Promo is inside Sidebar) */}
-              <div className="lg:hidden">
-                <section id="step-promo">
-                  <div className="glass-card p-5 tablet:p-6 rounded-2xl relative overflow-hidden group mb-4 tablet:mb-6 lg:mb-0">
-                    <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-border/40">
-                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
-                        4
+              {/* STEP 4: WhatsApp Contact Number (for Invoice & Receipt Delivery) */}
+              <section id="step-whatsapp">
+                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-2 sm:gap-2.5 mb-3.5 pb-3 border-b border-border/40">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0">
+                      4
+                    </div>
+                    <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                    <h2 className="text-xs sm:text-sm tablet:text-base font-bold font-heading text-foreground">Nomor WhatsApp</h2>
+                  </div>
+
+                  <div className="space-y-3.5 relative z-10">
+                    <div>
+                      <label className="block text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                        No. WhatsApp / Kontak <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          placeholder="Contoh: 081234567890"
+                          className="w-full pl-3.5 pr-10 py-2.5 sm:py-3 rounded-xl bg-background/50 border border-border text-xs sm:text-sm font-semibold outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200 shadow-inner"
+                        />
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                          <MessageSquare className="w-4 h-4 text-emerald-400" />
+                        </div>
                       </div>
-                      <Zap className="w-4 h-4 text-primary flex-shrink-0" />
-                      <h2 className="text-sm tablet:text-base font-bold font-heading text-foreground">Kode Promo / Voucher (Opsional)</h2>
+                      <p className="text-[10px] text-muted-foreground mt-1.5 flex items-center gap-1 leading-relaxed">
+                        <Info className="w-3 h-3 text-primary flex-shrink-0" />
+                        Bukti pembayaran dan status transaksi otomatis dikirimkan ke WhatsApp Anda.
+                      </p>
                     </div>
 
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                        placeholder="Masukkan Kode Promo (contoh: NEXAWIN)"
-                        className="flex-1 px-4 py-3 rounded-xl bg-background/50 border border-border text-xs tablet:text-sm uppercase font-bold tracking-wider outline-none focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200"
-                      />
+                    {/* Collapsible Promo Code Toggle (Mobile only: < 768px) */}
+                    <div className="pt-2 border-t border-border/30 md:hidden">
                       <button
-                        onClick={handleApplyPromo}
-                        className="px-5 py-3 rounded-xl gradient-primary text-white text-xs tablet:text-sm font-bold shadow-md hover:shadow-neon-violet transition-all active:scale-95 flex-shrink-0"
+                        type="button"
+                        onClick={() => setShowPromoInput(!showPromoInput)}
+                        className="flex items-center justify-between w-full py-1 text-xs font-bold text-primary hover:text-primary/80 transition-colors"
                       >
-                        Gunakan
+                        <span className="flex items-center gap-1.5">
+                          <Tag className="w-3.5 h-3.5" />
+                          Punya Kode Promo / Voucher?
+                        </span>
+                        <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", showPromoInput && "rotate-180")} />
                       </button>
+
+                      <AnimatePresence>
+                        {showPromoInput && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden pt-2"
+                          >
+                            <div className="flex items-center gap-1.5 sm:gap-2">
+                              <input
+                                type="text"
+                                value={promoCode}
+                                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                                placeholder="Kode Promo (contoh: NEXAWIN)"
+                                className="flex-1 min-w-0 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-background/50 border border-border text-xs uppercase font-bold tracking-wider outline-none focus:border-primary focus:bg-background/80 transition-all placeholder:text-[11px] sm:placeholder:text-xs placeholder:text-muted-foreground/60"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleApplyPromo}
+                                className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl gradient-primary text-white text-xs font-bold whitespace-nowrap shadow-md hover:shadow-neon-violet transition-all active:scale-95 flex-shrink-0 cursor-pointer"
+                              >
+                                Gunakan
+                              </button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
-                </section>
+                </div>
+              </section>
+
+              {/* Mobile Security & Instant Process Guarantee Trust Card (Mobile only: < 768px) */}
+              <div className="md:hidden">
+                <div className="glass-card p-3.5 sm:p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center gap-3">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div className="text-[11px] sm:text-xs leading-snug">
+                    <span className="font-bold text-foreground block">Garansi Transaksi 100% Resmi</span>
+                    <span className="text-muted-foreground">Diproses otomatis dalam &lt; 30 detik melalui server partner terverifikasi.</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="hidden lg:block lg:col-span-4 relative">
-              <div className="sticky top-28 glass-card p-6 space-y-5 rounded-3xl border border-white/10 shadow-2xl">
-                <h3 className="text-lg font-bold font-heading flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-primary" />
+            {/* Right Column: Sticky Summary & Checkout Widget (Tablet & Desktop: >= 768px) */}
+            <div className="hidden md:block md:col-span-5 lg:col-span-4 sticky top-28 xl:top-32 self-start z-30">
+              <div className="glass-card p-4 sm:p-5 xl:p-6 space-y-3.5 sm:space-y-4 xl:space-y-5 rounded-3xl border border-white/10 shadow-2xl">
+                <h3 className="text-base sm:text-lg font-bold font-heading flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   Detail Pesanan
                 </h3>
                 <div className="space-y-4">
@@ -1095,22 +1209,23 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                   </div>
                 </div>
                 <div className="pt-4 border-t border-border/50">
-                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-                    Kode Promo
+                  <label className="text-[11px] font-bold font-heading uppercase tracking-wider text-muted-foreground mb-1.5 block">
+                    Punya Kode Promo / Voucher? <span className="font-normal text-[10px]">(Opsional)</span>
                   </label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       value={promoCode}
                       onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                      placeholder="KODE PROMO"
-                      className="flex-1 px-3 py-2 rounded-xl bg-background/50 border border-border text-xs uppercase focus:outline-none focus:border-primary focus:bg-background/80 transition-all duration-200"
+                      placeholder="Contoh: NEXAWIN"
+                      className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-background/60 border border-border text-xs font-mono font-bold uppercase focus:outline-none focus:border-primary transition-all placeholder:text-[11px] placeholder:text-muted-foreground/60 placeholder:normal-case placeholder:font-sans"
                     />
                     <button
+                      type="button"
                       onClick={handleApplyPromo}
-                      className="px-3 py-2 rounded-xl border border-primary/50 text-primary text-xs font-bold hover:bg-primary/10 transition-all"
+                      className="px-4 py-2.5 rounded-xl gradient-primary text-white text-xs font-bold font-heading hover:shadow-md transition-all cursor-pointer flex-shrink-0 whitespace-nowrap active:scale-95"
                     >
-                      Pakai
+                      Gunakan
                     </button>
                   </div>
                 </div>
@@ -2311,7 +2426,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     <>
                       <p>Diamonds sebanyak 5 hingga 73.100 memiliki kisaran harga terjangkau dari Rp 901 hingga Rp 9.009.009 di NexaPay:</p>
                       <div className="space-y-1 text-xs text-muted-foreground">
-                        {game.denominations.slice(0, 5).map((d: any) => (
+                        {game.denominations.slice(0, 5).map((d: Denomination) => (
                           <div key={d.id} className="flex items-center justify-between py-0.5 border-b border-border/30 last:border-0 text-[11px]">
                             <span className="font-semibold text-foreground">{d.label}</span>
                             <span className="font-mono text-primary font-bold">{formatCurrency(d.isFlashSale && d.flashSalePrice ? d.flashSalePrice : d.price)}</span>
@@ -2405,7 +2520,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                     <>
                       <p>Berikut sampel harga pilihan di NexaPay:</p>
                       <div className="space-y-1 text-xs text-muted-foreground">
-                        {game.denominations.slice(0, 5).map((d: any) => (
+                        {game.denominations.slice(0, 5).map((d: Denomination) => (
                           <div key={d.id} className="flex items-center justify-between py-0.5 border-b border-border/30 last:border-0 text-[11px]">
                             <span className="font-semibold text-foreground">{d.label}</span>
                             <span className="font-mono text-primary font-bold">{formatCurrency(d.isFlashSale && d.flashSalePrice ? d.flashSalePrice : d.price)}</span>
@@ -2423,43 +2538,55 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
         {/* Global Modern Footer */}
         <Footer />
 
-      {/* Single Unified Floating Checkout Capsule Dock (Option A) with LiquidGlass */}
-      <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden max-w-md mx-auto pointer-events-none">
-        <LiquidGlass
-          displacementScale={55}
-          blurAmount={0.15}
-          saturation={140}
-          aberrationIntensity={1.8}
-          elasticity={0.25}
-          cornerRadius={28}
-          className="pointer-events-auto w-full shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_25px_rgba(255,115,0,0.2)] py-2.5 px-4 rounded-full"
+      {/* Option A: Floating Dynamic Island Capsule Dock (Mobile phones only: < 768px - z-40) */}
+      <div 
+        className="fixed bottom-3 inset-x-2.5 sm:inset-x-4 z-40 md:hidden max-w-md mx-auto pointer-events-none"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div 
+          className="pointer-events-auto w-full shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(255,115,0,0.25)] py-2 px-3.5 sm:py-2.5 sm:px-4 rounded-full border border-white/15 bg-[#0e1017]/95 backdrop-blur-2xl flex items-center justify-between gap-2.5 sm:gap-3 h-12 sm:h-13"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between gap-3 h-10 w-full">
-            <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate leading-tight">
-                {denom ? denom.label : 'Belum pilih item'}
-              </span>
-              <span className="text-sm font-black gradient-text truncate leading-tight">
-                {denom ? formatCurrency(total) : 'Rp 0'}
-              </span>
-            </div>
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate leading-tight">
+              {denom ? denom.label : 'Pilih Item'}
+            </span>
+            <span className="text-xs sm:text-sm font-black gradient-text truncate leading-tight font-heading">
+              {denom ? formatCurrency(total) : 'Rp 0'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={isProcessing}
+              className="w-9 h-9 rounded-full bg-card/80 border border-primary/40 text-primary flex items-center justify-center hover:bg-primary/10 active:scale-95 transition-all cursor-pointer shadow-sm"
+              aria-label="Tambah ke Keranjang"
+            >
+              <ShoppingCart className="w-4 h-4" />
+            </button>
+
+            <button
+              type="button"
               onClick={handleCheckout}
-              disabled={!isFormComplete || isProcessing}
-              className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-full gradient-primary text-white font-extrabold text-xs shadow-neon-violet hover:scale-[1.03] active:scale-[0.97] disabled:opacity-50 disabled:grayscale transition-all flex-shrink-0"
+              disabled={isProcessing}
+              className="flex items-center justify-center gap-1 sm:gap-1.5 px-3.5 sm:px-4 py-2 rounded-full gradient-primary text-white font-extrabold text-[11px] sm:text-xs shadow-neon-orange hover:scale-[1.03] active:scale-[0.97] transition-all cursor-pointer font-heading"
             >
               {isProcessing ? (
-                <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Memproses...</>
+                <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Proses...</>
+              ) : !userId && !isVoucherProduct ? (
+                <><User className="w-3.5 h-3.5" /> 1. Isi Akun</>
               ) : !selectedDenom ? (
-                <><Tag className="w-3.5 h-3.5" /> Pilih Nominal</>
+                <><Tag className="w-3.5 h-3.5" /> 2. Pilih Nominal</>
               ) : !selectedPayment ? (
-                <><CreditCard className="w-3.5 h-3.5" /> Pilih Bayar</>
+                <><CreditCard className="w-3.5 h-3.5" /> 3. Pilih Bayar</>
               ) : (
                 <><Zap className="w-3.5 h-3.5 animate-pulse" /> Beli Sekarang</>
               )}
             </button>
           </div>
-        </LiquidGlass>
+        </div>
       </div>
 
       {/* Petunjuk ID Modal Popup */}

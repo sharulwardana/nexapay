@@ -21,7 +21,16 @@ export default async function WalletPage() {
   });
 
   // Fetch real transaction history related to wallet
-  let transactions: any[] = [];
+  let transactions: Array<{
+    id: string;
+    invoiceId: string;
+    productId: string | null;
+    notes: string | null;
+    amount: number;
+    totalAmount: number;
+    createdAt: Date;
+    status: string;
+  }> = [];
   try {
     transactions = await prisma.transaction.findMany({
       where: { 

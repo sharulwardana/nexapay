@@ -8,9 +8,32 @@ import {
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
-import { LOYALTY_LEVELS } from '@/lib/constants';
 import SpotlightCard from '@/components/shared/SpotlightCard';
 import DailyCheckIn from '@/components/dashboard/DailyCheckIn';
+import EmptyState from '@/components/shared/EmptyState';
+import { getLoyaltyRank } from '@/store/userStore';
+import { toast } from 'sonner';
+
+interface DashboardUser {
+  id: string;
+  name: string | null;
+  email: string | null;
+  image?: string | null;
+  role: string;
+  walletBalance: number;
+  loyaltyPoints: number;
+  referralCode: string | null;
+  createdAt: string | Date;
+}
+
+interface DashboardTransaction {
+  id: string;
+  invoiceId: string;
+  productName: string;
+  totalAmount: number;
+  status: string;
+  createdAt: string | Date;
+}
 
 const quickActions = [
   { label: 'Riwayat', href: '/dashboard/transactions', icon: Receipt, color: 'from-violet-500 to-purple-600' },
@@ -25,24 +48,13 @@ export default function DashboardClient({
   recentTransactions,
   initialHasClaimed = false 
 }: { 
-  dbUser: any; 
-  recentTransactions: any[];
+  dbUser: DashboardUser; 
+  recentTransactions: DashboardTransaction[];
   initialHasClaimed?: boolean;
 }) {
-  // Calculate dynamic loyalty tier based on dbUser.loyaltyPoints
-  let loyaltyLevelKey: keyof typeof LOYALTY_LEVELS = 'BRONZE';
+  // Use unified getLoyaltyRank() — single source of truth
   const points = dbUser.loyaltyPoints || 0;
-  if (points >= LOYALTY_LEVELS.DIAMOND.minPoints) loyaltyLevelKey = 'DIAMOND';
-  else if (points >= LOYALTY_LEVELS.PLATINUM.minPoints) loyaltyLevelKey = 'PLATINUM';
-  else if (points >= LOYALTY_LEVELS.GOLD.minPoints) loyaltyLevelKey = 'GOLD';
-  else if (points >= LOYALTY_LEVELS.SILVER.minPoints) loyaltyLevelKey = 'SILVER';
-
-  const loyalty = LOYALTY_LEVELS[loyaltyLevelKey];
-  const nextLevel = loyaltyLevelKey === 'DIAMOND' ? null :
-    Object.entries(LOYALTY_LEVELS).find(([, v]) => v.minPoints > points)?.[1];
-  const progress = nextLevel
-    ? ((points - loyalty.minPoints) / (nextLevel.minPoints - loyalty.minPoints)) * 100
-    : 100;
+  const { rank: loyalty, nextRank: nextLevel, progressPercent: progress } = getLoyaltyRank(points);
 
   const totalTransactions = recentTransactions.length;
   const totalSpent = recentTransactions.reduce((acc, curr) => acc + curr.totalAmount, 0);
@@ -69,7 +81,7 @@ export default function DashboardClient({
                         {loyalty.name}
                       </div>
                     </div>
-                    <p className="text-xs tablet:text-sm text-muted-foreground truncate">{dbUser.email}</p>
+                    <p className="text-xs tablet:text-sm text-muted-foreground break-all leading-tight">{dbUser.email}</p>
                     <p className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
                       <Shield className="w-3 h-3 text-amber-400" /> Member sejak {new Date(dbUser.createdAt).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
                     </p>
@@ -119,42 +131,42 @@ export default function DashboardClient({
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-3 tablet:gap-4 mb-6">
-            <div className="solid-card p-4 tablet:p-5 text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                <Wallet className="w-5 h-5 text-primary" />
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 tablet:gap-4 mb-6">
+            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-1.5 sm:mb-2">
+                <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </div>
-              <p className="text-base tablet:text-lg font-bold font-heading">{formatCurrency(dbUser.walletBalance || 0)}</p>
-              <p className="text-[11px] text-muted-foreground">Saldo Wallet</p>
+              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{formatCurrency(dbUser.walletBalance || 0)}</p>
+              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Saldo Wallet</p>
             </div>
-            <div className="solid-card p-4 tablet:p-5 text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center mb-2">
-                <Receipt className="w-5 h-5 text-cyan-500" />
+            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center mb-1.5 sm:mb-2">
+                <Receipt className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" />
               </div>
-              <p className="text-base tablet:text-lg font-bold font-heading">{totalTransactions}</p>
-              <p className="text-[11px] text-muted-foreground">Total Transaksi</p>
+              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{totalTransactions}</p>
+              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Total Transaksi</p>
             </div>
-            <div className="solid-card p-4 tablet:p-5 text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-green-500/10 flex items-center justify-center mb-2">
-                <TrendingUp className="w-5 h-5 text-green-500" />
+            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-green-500/10 flex items-center justify-center mb-1.5 sm:mb-2">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
               </div>
-              <p className="text-base tablet:text-lg font-bold font-heading">{formatCurrency(totalSpent)}</p>
-              <p className="text-[11px] text-muted-foreground">Total Belanja</p>
+              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{formatCurrency(totalSpent)}</p>
+              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Total Belanja</p>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-5 gap-2 tablet:gap-3 mb-6">
+          <div className="grid grid-cols-5 gap-1.5 xs:gap-2 tablet:gap-3 mb-6">
             {quickActions.map((action) => (
               <Link
                 key={action.href}
                 href={action.href}
-                className="flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-muted/30 transition-all group"
+                className="flex flex-col items-center gap-1 p-1.5 xs:p-2 tablet:p-3 rounded-2xl hover:bg-muted/30 transition-all group text-center"
               >
-                <div className={cn('w-10 h-10 tablet:w-12 tablet:h-12 rounded-xl bg-gradient-to-br flex items-center justify-center', action.color)}>
-                  <action.icon className="w-5 h-5 text-white" />
+                <div className={cn('w-9 h-9 xs:w-10 xs:h-10 tablet:w-12 tablet:h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform', action.color)}>
+                  <action.icon className="w-4 h-4 xs:w-5 xs:h-5 text-white" />
                 </div>
-                <span className="text-[10px] tablet:text-xs font-medium text-muted-foreground group-hover:text-foreground">
+                <span className="text-[8.5px] xs:text-[10px] tablet:text-xs font-semibold text-muted-foreground group-hover:text-foreground leading-tight w-full text-center tracking-tight">
                   {action.label}
                 </span>
               </Link>
@@ -172,6 +184,7 @@ export default function DashboardClient({
                     onClick={() => {
                       if (dbUser.referralCode) {
                         navigator.clipboard.writeText(dbUser.referralCode);
+                        toast.success('Kode referral berhasil disalin!');
                       }
                     }}
                     className="p-1.5 rounded-lg hover:bg-muted/50 transition-all cursor-pointer"
@@ -196,40 +209,56 @@ export default function DashboardClient({
             </div>
             <div className="divide-y divide-border">
               {recentTransactions.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground">
-                  Belum ada transaksi.
+                <div className="p-4 sm:p-6">
+                  <EmptyState
+                    icon={Receipt}
+                    title="Belum Ada Transaksi"
+                    description="Anda belum memiliki riwayat pembelian game atau produk digital."
+                    actionHref="/topup"
+                    actionLabel="Mulai Top Up Game"
+                  />
                 </div>
               ) : (
                 recentTransactions.map((tx) => (
                   <Link
                     key={tx.id}
                     href={`/payment-status/${tx.invoiceId || tx.id}`}
-                    className="flex items-center gap-3 p-4 hover:bg-muted/30 transition-colors"
+                    className="p-3.5 sm:p-4 hover:bg-muted/30 transition-colors block group"
                   >
-                    <div className={cn(
-                      'w-8 h-8 rounded-lg flex items-center justify-center',
-                      tx.status === 'COMPLETED' ? 'bg-green-500/10' : 'bg-blue-500/10'
-                    )}>
-                      {tx.status === 'COMPLETED' ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <Clock className="w-4 h-4 text-blue-500 animate-pulse" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium line-clamp-1">{tx.productName}</p>
-                      <p className="text-[10px] text-muted-foreground">{tx.id} • {new Date(tx.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <p className="text-sm font-semibold">{formatCurrency(tx.totalAmount)}</p>
-                      <p className={cn(
-                        'text-[10px] font-medium',
-                        tx.status === 'COMPLETED' ? 'text-green-500' : 
-                        tx.status === 'FAILED' ? 'text-red-500' : 'text-blue-500'
-                      )}>
-                        {tx.status === 'COMPLETED' ? 'Selesai' : 
-                         tx.status === 'FAILED' ? 'Gagal' : 'Diproses'}
-                      </p>
+                    <div className="flex items-start justify-between gap-2.5">
+                      <div className="flex items-start gap-3 min-w-0 flex-1">
+                        <div className={cn(
+                          'w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm',
+                          tx.status === 'COMPLETED' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
+                        )}>
+                          {tx.status === 'COMPLETED' ? (
+                            <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          ) : (
+                            <Clock className="w-4 h-4 text-blue-400 animate-pulse" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs sm:text-sm font-semibold leading-snug break-words text-foreground font-heading group-hover:text-primary transition-colors">
+                            {tx.productName}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground mt-0.5 font-mono">
+                            {tx.id} • {new Date(tx.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0 flex flex-col items-end">
+                        <span className="text-xs sm:text-sm font-bold font-mono text-foreground">
+                          {formatCurrency(tx.totalAmount)}
+                        </span>
+                        <span className={cn(
+                          'inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-bold mt-0.5 border',
+                          tx.status === 'COMPLETED' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 
+                          tx.status === 'FAILED' ? 'bg-red-500/15 text-red-400 border-red-500/30' : 'bg-blue-500/15 text-blue-400 border-blue-500/30'
+                        )}>
+                          {tx.status === 'COMPLETED' ? 'Selesai' : 
+                           tx.status === 'FAILED' ? 'Gagal' : 'Diproses'}
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 ))

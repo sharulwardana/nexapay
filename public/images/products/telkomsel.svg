@@ -1,1 +1,8 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#E3000F"/><text x="100" y="110" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">TELKOMSEL</text></svg>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="32" fill="#1C060B"/>
+  <circle cx="100" cy="85" r="45" fill="#ED0226" fill-opacity="0.2"/>
+  <path d="M70 70C70 53.4315 83.4315 40 100 40C116.569 40 130 53.4315 130 70C130 86.5685 116.569 100 100 100C83.4315 100 70 86.5685 70 70Z" fill="#ED0226"/>
+  <path d="M85 85C85 68.4315 98.4315 55 115 55C131.569 55 145 68.4315 145 85C145 101.569 131.569 115 115 115C98.4315 115 85 101.569 85 85Z" fill="#990011" fill-opacity="0.8"/>
+  <circle cx="100" cy="85" r="18" fill="#FFFFFF"/>
+  <text x="100" y="168" font-family="'Space Grotesk', system-ui, sans-serif" font-size="15" font-weight="900" fill="#ED0226" text-anchor="middle" letter-spacing="1.5">TELKOMSEL</text>
+</svg>

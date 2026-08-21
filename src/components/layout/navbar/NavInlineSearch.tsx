@@ -150,7 +150,7 @@ export default function NavInlineSearch() {
                           <Gamepad2 className="w-4 h-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                          <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
                             {product.name}
                           </p>
                           <p className="text-[10px] text-muted-foreground truncate">{product.publisher || product.category}</p>
@@ -211,7 +211,7 @@ export default function NavInlineSearch() {
               {/* Mobile Visual Drag Handle */}
               <div className="w-10 h-1 bg-white/20 rounded-full mx-auto mb-1 flex-shrink-0" />
 
-              <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-muted/40 border border-primary/50 shadow-[0_0_15px_rgba(255,115,0,0.15)] ring-1 ring-primary/20">
+              <div className="flex items-center gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-2xl bg-muted/40 border border-primary/50 shadow-[0_0_15px_rgba(255,115,0,0.15)] ring-1 ring-primary/20">
                 {isLoading ? (
                   <Loader2 className="w-4 h-4 text-primary animate-spin flex-shrink-0" />
                 ) : (
@@ -222,14 +222,16 @@ export default function NavInlineSearch() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Ketik nama game/produk..."
-                  className="flex-1 bg-transparent text-[16px] font-semibold outline-none text-foreground placeholder:text-muted-foreground/60 placeholder:text-xs"
+                  className="flex-1 min-w-0 bg-transparent text-sm sm:text-[15px] font-semibold outline-none text-foreground placeholder:text-muted-foreground/60 placeholder:text-xs"
                   autoFocus
                 />
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-xl bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                  className="w-7 h-7 rounded-xl bg-white/10 hover:bg-white/20 text-muted-foreground hover:text-foreground transition-all flex items-center justify-center flex-shrink-0 active:scale-90 cursor-pointer"
+                  aria-label="Tutup pencarian"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               </div>
 
@@ -255,7 +257,7 @@ export default function NavInlineSearch() {
                             <Gamepad2 className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-foreground truncate">{product.name}</p>
+                            <p className="text-xs font-bold text-foreground leading-snug">{product.name}</p>
                             <p className="text-[10px] text-muted-foreground truncate">{product.publisher || product.category}</p>
                           </div>
                           <ArrowRight className="w-4 h-4 text-muted-foreground" />

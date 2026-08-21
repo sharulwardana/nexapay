@@ -1,1 +1,6 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#00A2B9"/><text x="100" y="110" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#FFCC00" text-anchor="middle">PLN</text></svg>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="32" fill="#0B132B"/>
+  <circle cx="100" cy="85" r="45" fill="#FFE500" fill-opacity="0.15"/>
+  <path d="M106 40L68 100H98L92 140L132 80H102L106 40Z" fill="#FFCC00" stroke="#FFE600" stroke-width="2" stroke-linejoin="round"/>
+  <text x="100" y="168" font-family="'Space Grotesk', system-ui, sans-serif" font-size="16" font-weight="900" fill="#FFE500" text-anchor="middle" letter-spacing="2">PLN PREPAID</text>
+</svg>

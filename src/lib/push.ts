@@ -22,6 +22,20 @@ export interface PushNotificationPayload {
   tag?: string;
 }
 
+export interface DirectPushSubscription {
+  endpoint: string;
+  keys?: {
+    p256dh: string;
+    auth: string;
+  };
+  p256dh?: string;
+  auth?: string;
+}
+
+interface WebPushError extends Error {
+  statusCode?: number;
+}
+
 /**
  * Send a web push notification to all active devices registered by a specific User ID.
  */
@@ -58,13 +72,14 @@ export async function sendPushToUser(userId: string, payload: PushNotificationPa
       try {
         await webpush.sendNotification(pushSubscription, payloadString);
         return { id: sub.id, success: true };
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const wpError = error as WebPushError;
         // If the subscription is expired or unregistered (HTTP 410 Gone / 404 Not Found), remove from DB
-        if (error.statusCode === 410 || error.statusCode === 404) {
+        if (wpError.statusCode === 410 || wpError.statusCode === 404) {
           console.log(`[WebPush] Removing expired push subscription: ${sub.id}`);
           await prisma.pushSubscription.delete({ where: { id: sub.id } }).catch(() => {});
         } else {
-          console.error(`[WebPush] Error sending push to subscription ${sub.id}:`, error.message);
+          console.error(`[WebPush] Error sending push to subscription ${sub.id}:`, wpError.message || wpError);
         }
         return { id: sub.id, success: false };
       }
@@ -114,8 +129,9 @@ export async function broadcastPush(payload: PushNotificationPayload) {
       try {
         await webpush.sendNotification(pushSubscription, payloadString);
         return { id: sub.id, success: true };
-      } catch (error: any) {
-        if (error.statusCode === 410 || error.statusCode === 404) {
+      } catch (error: unknown) {
+        const wpError = error as WebPushError;
+        if (wpError.statusCode === 410 || wpError.statusCode === 404) {
           await prisma.pushSubscription.delete({ where: { id: sub.id } }).catch(() => {});
         }
         return { id: sub.id, success: false };
@@ -135,7 +151,7 @@ export async function broadcastPush(payload: PushNotificationPayload) {
 /**
  * Send a direct push notification to an explicit subscription object.
  */
-export async function sendDirectPush(subscription: any, payload: PushNotificationPayload) {
+export async function sendDirectPush(subscription: DirectPushSubscription, payload: PushNotificationPayload) {
   if (!vapidPublicKey || !vapidPrivateKey) return { success: false, error: 'VAPID keys not configured' };
 
   const payloadString = JSON.stringify({
@@ -147,19 +163,28 @@ export async function sendDirectPush(subscription: any, payload: PushNotificatio
     tag: payload.tag || `direct-${Date.now()}`,
   });
 
+  const p256dh = subscription.keys?.p256dh || subscription.p256dh;
+  const auth = subscription.keys?.auth || subscription.auth;
+
+  if (!subscription.endpoint || !p256dh || !auth) {
+    return { success: false, error: 'Invalid subscription object: missing endpoint or keys' };
+  }
+
   const pushSub = {
     endpoint: subscription.endpoint,
     keys: {
-      p256dh: subscription.keys?.p256dh || subscription.p256dh,
-      auth: subscription.keys?.auth || subscription.auth,
+      p256dh,
+      auth,
     },
   };
 
   try {
     await webpush.sendNotification(pushSub, payloadString);
     return { success: true };
-  } catch (error: any) {
-    console.error('[WebPush] Error in sendDirectPush:', error.message);
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown push error';
+    console.error('[WebPush] Error in sendDirectPush:', message);
+    return { success: false, error: message };
   }
 }
+

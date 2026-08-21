@@ -16,12 +16,15 @@ export default function ClientOverlays() {
   }
 
   const isDashboard = pathname.startsWith('/dashboard');
+  const isTopUpDetailPage = pathname.startsWith('/topup/') && pathname.split('/').length > 2;
+  const isProductDetailPage = pathname.startsWith('/products/') && pathname.split('/').length > 2;
+  const isDetailPage = isTopUpDetailPage || isProductDetailPage;
 
   return (
     <>
       <SearchOverlay />
-      {!isDashboard && <ScratchAndWin />}
-      <LiveChat />
+      {!isDashboard && !isDetailPage && <ScratchAndWin />}
+      {!isDetailPage && <LiveChat />}
       <PushNotificationBanner />
     </>
   );

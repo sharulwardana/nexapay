@@ -21,6 +21,8 @@ const registerSchema = z.object({
 const MAX_REFERRAL_BONUSES_PER_USER = 50;
 const REFERRAL_BONUS_AMOUNT = 10000; // Rp 10.000
 
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
   try {
     // Rate limit: max 5 registrations per IP per hour

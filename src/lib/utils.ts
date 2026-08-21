@@ -28,10 +28,12 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export function generateInvoiceId(): string {
+export function generateInvoiceId(prefix = 'NXP'): string {
   const timestamp = Date.now().toString(36).toUpperCase();
-  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `NXP-${timestamp}-${random}`;
+  const random = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID().slice(0, 6).toUpperCase()
+    : Math.random().toString(36).substring(2, 8).toUpperCase();
+  return `${prefix}-${timestamp}-${random}`;
 }
 
 export function timeAgo(date: Date): string {

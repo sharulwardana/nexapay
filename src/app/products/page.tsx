@@ -24,7 +24,6 @@ export default async function ProductsPage() {
       include: {
         denominations: {
           where: { isActive: true },
-          select: { price: true },
         },
       },
       orderBy: [

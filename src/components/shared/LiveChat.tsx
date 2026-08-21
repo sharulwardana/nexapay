@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, Minus, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -14,9 +13,6 @@ interface Message {
 }
 
 export default function LiveChat() {
-  const pathname = usePathname();
-  const isTopUpDetailPage = pathname?.startsWith('/topup/') && pathname.split('/').length > 2;
-
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);

@@ -9,12 +9,14 @@ interface AuthUser {
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
-  const isAuthPage = req.nextUrl.pathname.startsWith('/login');
-  const isApiAuthRoute = req.nextUrl.pathname.startsWith('/api/auth');
+  const { pathname } = req.nextUrl;
 
-  if (isApiAuthRoute) {
+  // Bypass API and auth routes completely
+  if (pathname.startsWith('/api')) {
     return;
   }
+
+  const isAuthPage = pathname.startsWith('/login');
 
   // Redirect to home if logged in and trying to access auth pages
   if (isLoggedIn && isAuthPage) {
@@ -22,12 +24,12 @@ export default auth((req) => {
   }
 
   // Protect /dashboard
-  if (req.nextUrl.pathname.startsWith('/dashboard') && !isLoggedIn) {
+  if (pathname.startsWith('/dashboard') && !isLoggedIn) {
     return Response.redirect(new URL('/login', req.url));
   }
 
   // Protect /admin — redirect unless role is explicitly ADMIN
-  if (req.nextUrl.pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/admin')) {
     if (!isLoggedIn) {
       return Response.redirect(new URL('/login', req.url));
     }
@@ -40,5 +42,7 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|sw.js|icons|images).*)',
+  ],
 }

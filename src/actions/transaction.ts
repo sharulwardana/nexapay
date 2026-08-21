@@ -5,12 +5,13 @@ import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth-helpers';
 import { sendPushToUser } from '@/lib/push';
 import type { TransactionStatus } from '@/types';
+import { logAdminAudit } from '@/lib/audit';
 
 const VALID_STATUSES: TransactionStatus[] = ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED', 'REFUNDED', 'PAID'];
 
 export async function updateTransactionStatus(invoiceId: string, newStatus: TransactionStatus | string) {
   try {
-    await requireAdmin();
+    const admin = await requireAdmin();
 
     if (!invoiceId || typeof invoiceId !== 'string') {
       return { success: false, error: 'Invalid invoice ID' };
@@ -62,15 +63,24 @@ export async function updateTransactionStatus(invoiceId: string, newStatus: Tran
       return updated;
     });
 
+    logAdminAudit({
+      adminId: (admin as { id?: string }).id || 'admin',
+      adminEmail: (admin as { email?: string }).email,
+      action: 'UPDATE_TRANSACTION_STATUS',
+      targetId: invoiceId,
+      targetType: 'transaction',
+      details: { newStatus: validatedStatus },
+    });
+
     revalidatePath('/admin');
     revalidatePath('/admin/transactions');
     revalidatePath(`/payment-status/${invoiceId}`);
-    return { success: true, status: result.status };
+    return { success: true, transaction: result };
   } catch (error: unknown) {
     console.error('Failed to update transaction status:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update transaction status',
+      error: error instanceof Error ? error.message : 'Failed to update transaction',
     };
   }
 }

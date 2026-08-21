@@ -45,6 +45,21 @@ export default function PromoCarousel() {
     <section ref={ref} className="pt-24 tablet:pt-28 pb-6 tablet:pb-10">
       <h1 className="sr-only">NexaPay - Platform Top Up Game Tercepat dan Termurah di Indonesia</h1>
       <div className="container-app">
+        {/* 2026 Live Activity Telemetry Badge */}
+        <div className="flex items-center justify-between gap-2 mb-3.5 flex-wrap">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/80 border border-border/60 backdrop-blur-md text-[11px] font-semibold text-foreground/90 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span><strong className="text-emerald-400">2,418</strong> Gamers Aktif Transaksi</span>
+            <span className="text-muted-foreground">•</span>
+            <span className="text-muted-foreground hidden sm:inline">Proses Instan &lt; 3 Detik ⚡</span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground font-mono">
+            <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/5">Direct Publisher API</span>
+            <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/5">100% Legal & Garansi</span>
+          </div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}

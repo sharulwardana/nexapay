@@ -271,7 +271,7 @@ export default function SettingsPage() {
                 {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} 
                 Simpan Perubahan
               </button>
-              <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted/50 transition-all">
+              <button onClick={() => signOut({ redirectTo: '/' })} className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted/50 transition-all">
                 <LogOut className="w-4 h-4" /> Keluar
               </button>
               <button className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-red-500/30 text-red-500 font-medium hover:bg-red-500/10 transition-all">

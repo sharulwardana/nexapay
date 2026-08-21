@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       game: result.game,
       source: result.source,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Check nickname error:', error);
     return NextResponse.json({
       success: false,

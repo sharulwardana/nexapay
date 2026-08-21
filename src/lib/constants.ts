@@ -24,10 +24,10 @@ export const MOBILE_NAV_LINKS = [
 export const PAYMENT_METHODS = [
   {
     id: 'NEXA_WALLET',
-    name: 'NexaPay Wallet',
+    name: 'Nexa Wallet',
     category: 'NexaPay',
     icon: '/images/payments/nexapay.svg',
-    description: 'Bayar dengan saldo NexaPay Wallet',
+    description: 'Saldo NexaPay',
     fee: 0,
   },
   {
@@ -72,7 +72,7 @@ export const PAYMENT_METHODS = [
   },
   {
     id: 'bca',
-    name: 'BCA Virtual Account',
+    name: 'BCA VA',
     category: 'Bank Transfer',
     icon: '/images/payments/bca.svg',
     description: 'Transfer via BCA',
@@ -80,7 +80,7 @@ export const PAYMENT_METHODS = [
   },
   {
     id: 'bni',
-    name: 'BNI Virtual Account',
+    name: 'BNI VA',
     category: 'Bank Transfer',
     icon: '/images/payments/bni.svg',
     description: 'Transfer via BNI',
@@ -88,7 +88,7 @@ export const PAYMENT_METHODS = [
   },
   {
     id: 'bri',
-    name: 'BRI Virtual Account',
+    name: 'BRI VA',
     category: 'Bank Transfer',
     icon: '/images/payments/bri.svg',
     description: 'Transfer via BRI',
@@ -96,7 +96,7 @@ export const PAYMENT_METHODS = [
   },
   {
     id: 'mandiri',
-    name: 'Mandiri Virtual Account',
+    name: 'Mandiri VA',
     category: 'Bank Transfer',
     icon: '/images/payments/mandiri.svg',
     description: 'Transfer via Mandiri',

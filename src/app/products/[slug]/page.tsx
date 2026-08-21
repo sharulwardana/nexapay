@@ -31,12 +31,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: 'Not Found' };
 }
 
+import type { Product } from '@/types';
+
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  let product: any = null;
+  let product: Product | null = null;
 
   try {
-    product = await prisma.product.findUnique({
+    const dbProduct = await prisma.product.findUnique({
       where: { slug: resolvedParams.slug },
       include: {
         denominations: {
@@ -45,6 +47,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         },
       },
     });
+    if (dbProduct) {
+      product = dbProduct as unknown as Product;
+    }
   } catch (e) {
     console.warn('Prisma fetch failed on product detail, using static fallback:', e);
   }
@@ -53,13 +58,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const staticProduct = digitalProducts.find(p => p.slug === resolvedParams.slug);
   if (staticProduct) {
     product = {
-      ...product,
+      ...(product || {}),
       ...staticProduct,
       denominations: staticProduct.denominations,
-    };
+    } as unknown as Product;
   }
 
-  if (!product || (product.isActive === false)) {
+  if (!product || product.isActive === false) {
     notFound();
   }
 

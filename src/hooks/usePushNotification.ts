@@ -107,9 +107,10 @@ export function usePushNotification() {
       });
 
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error';
       console.error('Failed to subscribe to push notifications:', err);
-      toast.error('Gagal mengaktifkan notifikasi: ' + (err.message || 'Error'));
+      toast.error('Gagal mengaktifkan notifikasi: ' + message);
       return false;
     } finally {
       setIsLoading(false);
@@ -139,9 +140,10 @@ export function usePushNotification() {
       setIsSubscribed(false);
       toast.info('Notifikasi Web Push Dimatikan.');
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error';
       console.error('Failed to unsubscribe from push notifications:', err);
-      toast.error('Gagal mematikan notifikasi: ' + (err.message || 'Error'));
+      toast.error('Gagal mematikan notifikasi: ' + message);
       return false;
     } finally {
       setIsLoading(false);
@@ -166,8 +168,9 @@ export function usePushNotification() {
       } else {
         toast.warning(data.message || 'Gagal mengirim notifikasi tes.');
       }
-    } catch (err: any) {
-      toast.error('Gagal mengirim notifikasi tes: ' + err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error';
+      toast.error('Gagal mengirim notifikasi tes: ' + message);
     } finally {
       setIsLoading(false);
     }

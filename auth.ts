@@ -6,25 +6,41 @@ import prisma from "@/lib/prisma"
 import authConfig from "./auth.config"
 import { isAdminEmail } from "@/lib/admin-check"
 
-// Extend the JWT type to include our custom fields
+// Extend NextAuth types to include our custom fields
 declare module "next-auth" {
+  interface User {
+    role?: string;
+    loyaltyPoints?: number;
+    walletBalance?: number;
+  }
+
+  interface Session {
+    user: {
+      id: string;
+      role?: string;
+      loyaltyPoints?: number;
+      walletBalance?: number;
+    } & import("next-auth").DefaultSession["user"];
+  }
+
   interface JWT {
     role?: string;
     loyaltyPoints?: number;
+    walletBalance?: number;
   }
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
-  ...authConfig,
   callbacks: {
     ...authConfig.callbacks,
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
-        token.role = user.role || 'USER';
-        token.loyaltyPoints = user.loyaltyPoints || 0;
+        token.role = (user as { role?: string }).role || 'USER';
+        token.loyaltyPoints = (user as { loyaltyPoints?: number }).loyaltyPoints || 0;
       }
 
       // Check admin status from centralized config
@@ -42,7 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             token.loyaltyPoints = dbUser.loyaltyPoints;
           }
         } catch (e) {
-          console.error(e);
+          console.error('[NextAuth] JWT DB refresh error:', e);
         }
       }
       return token;
@@ -61,21 +77,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string }
-        });
+        try {
+          const email = String(credentials.email).toLowerCase().trim();
+          const user = await prisma.user.findUnique({
+            where: { email }
+          });
 
-        if (!user || !user.password) {
+          if (!user || !user.password) {
+            return null;
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+
+          if (isPasswordValid) {
+            return user;
+          }
+        } catch (err) {
+          console.error('[NextAuth] Authorize DB error:', err);
           return null;
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-
-        if (isPasswordValid) {
-          return user;
         }
 
         return null;

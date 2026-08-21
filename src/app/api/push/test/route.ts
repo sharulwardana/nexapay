@@ -47,8 +47,9 @@ export async function POST(req: NextRequest) {
       success: true,
       message: `Notifikasi terkirim ke ${result.sentCount} perangkat.`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
     console.error('Test push error:', error);
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

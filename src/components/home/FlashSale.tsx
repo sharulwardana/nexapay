@@ -167,7 +167,7 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-medium text-foreground line-clamp-1 group-hover:text-red-400 transition-colors">
+                    <h3 className="text-sm font-bold text-foreground line-clamp-2 leading-tight group-hover:text-red-400 transition-colors">
                       {item.gameName}
                     </h3>
                     <p className="text-xs text-muted-foreground mb-2">{item.label}</p>

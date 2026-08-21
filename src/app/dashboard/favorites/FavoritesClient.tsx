@@ -8,6 +8,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';
+import EmptyState from '@/components/shared/EmptyState';
 
 interface FavoriteItem {
   id: string;
@@ -72,7 +73,7 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold line-clamp-1">{item.name}</h3>
+                    <h3 className="text-xs sm:text-sm font-semibold leading-snug line-clamp-2">{item.name}</h3>
                     <p className="text-[10px] text-muted-foreground">{item.publisher} • {item.category}</p>
                     <p className="text-xs font-bold text-primary mt-0.5">Mulai {formatCurrency(item.minPrice)}</p>
                   </div>
@@ -99,14 +100,13 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
           </div>
 
           {favorites.length === 0 && (
-            <div className="text-center py-16">
-              <Heart className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="text-base font-semibold mb-1">Belum ada favorit</h3>
-              <p className="text-sm text-muted-foreground mb-4">Tambahkan game atau produk ke daftar favorit kamu</p>
-              <Link href="/topup" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold">
-                <Gamepad2 className="w-4 h-4" /> Jelajahi Game
-              </Link>
-            </div>
+            <EmptyState
+              icon={Heart}
+              title="Belum Ada Game Favorit"
+              description="Simpan game dan produk digital favorit kamu agar top-up berikutnya lebih cepat dan mudah!"
+              actionHref="/topup"
+              actionLabel="Jelajahi Katalog Game"
+            />
           )}
         </div>
       </main>

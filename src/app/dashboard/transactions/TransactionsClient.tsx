@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Search, CheckCircle, Clock, XCircle, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Search, CheckCircle, Clock, XCircle, RefreshCw, Receipt } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, getStatusColor, getStatusLabel, cn } from '@/lib/utils';
+import EmptyState from '@/components/shared/EmptyState';
 
 interface TransactionHistoryItem {
   id: string;
@@ -84,32 +85,59 @@ export default function TransactionsClient({
           <div className="space-y-2 tablet:space-y-3">
             {filtered.map((tx) => (
               <div key={tx.id}>
-                <Link href={`/payment-status/${tx.invoiceId || tx.id}`} className="flex items-center gap-3 p-4 glass-card hover:border-primary/30 transition-all">
-                  <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', getStatusColor(tx.status))}>
-                    {tx.status === 'COMPLETED' && <CheckCircle className="w-5 h-5" />}
-                    {tx.status === 'PROCESSING' && <Clock className="w-5 h-5 animate-pulse" />}
-                    {tx.status === 'PENDING' && <Clock className="w-5 h-5" />}
-                    {tx.status === 'FAILED' && <XCircle className="w-5 h-5" />}
-                    {tx.status === 'REFUNDED' && <RefreshCw className="w-5 h-5" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium line-clamp-1">{tx.product}</p>
-                    <p className="text-[10px] text-muted-foreground">{tx.id} • {tx.payment} • {tx.date}</p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-bold">{formatCurrency(tx.amount)}</p>
-                    <p className={cn('text-[10px] font-medium', getStatusColor(tx.status).split(' ')[0])}>
-                      {getStatusLabel(tx.status)}
-                    </p>
+                <Link 
+                  href={`/payment-status/${tx.invoiceId || tx.id}`} 
+                  className="p-3.5 sm:p-4 glass-card hover:border-primary/30 transition-all block group rounded-2xl"
+                >
+                  <div className="flex items-start justify-between gap-2.5">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div className={cn('w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm', getStatusColor(tx.status))}>
+                        {tx.status === 'COMPLETED' && <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />}
+                        {tx.status === 'PROCESSING' && <Clock className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />}
+                        {tx.status === 'PENDING' && <Clock className="w-4 h-4 sm:w-5 sm:h-5" />}
+                        {tx.status === 'FAILED' && <XCircle className="w-4 h-4 sm:w-5 sm:h-5" />}
+                        {tx.status === 'REFUNDED' && <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground font-heading leading-snug group-hover:text-primary transition-colors break-words">
+                          {tx.product}
+                        </h4>
+                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mt-1 flex-wrap">
+                          <span className="font-mono">{tx.payment}</span>
+                          <span>•</span>
+                          <span>{tx.date}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-right flex-shrink-0 flex flex-col items-end">
+                      <span className="text-xs sm:text-sm font-bold font-mono text-foreground">
+                        {formatCurrency(tx.amount)}
+                      </span>
+                      <span className={cn(
+                        'inline-flex items-center px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold mt-1 shadow-sm border whitespace-nowrap',
+                        tx.status === 'COMPLETED' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' :
+                        tx.status === 'PENDING' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
+                        tx.status === 'PROCESSING' ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30' :
+                        tx.status === 'REFUNDED' ? 'bg-purple-500/15 text-purple-400 border-purple-500/30' :
+                        'bg-red-500/15 text-red-400 border-red-500/30'
+                      )}>
+                        {getStatusLabel(tx.status)}
+                      </span>
+                    </div>
                   </div>
                 </Link>
               </div>
             ))}
 
             {filtered.length === 0 && (
-              <div className="p-8 text-center glass-card">
-                <p className="text-muted-foreground text-sm">Tidak ada transaksi yang cocok.</p>
-              </div>
+              <EmptyState
+                icon={Receipt}
+                title="Tidak Ada Transaksi"
+                description={search ? `Tidak ditemukan transaksi dengan kata kunci "${search}".` : "Belum ada transaksi pada status filter ini."}
+                actionHref="/topup"
+                actionLabel="Mulai Top Up Game"
+              />
             )}
           </div>
         </div>

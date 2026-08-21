@@ -59,13 +59,13 @@ export const metadata: Metadata = {
     title: 'NexaPay — Level Up Instantly',
     description:
       'Platform top-up game & produk digital #1 di Indonesia. Proses instan, harga termurah, 500+ game & produk digital.',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'NexaPay' }],
+    images: [{ url: '/icons/icon-512x512.png', width: 512, height: 512, alt: 'NexaPay' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'NexaPay — Level Up Instantly',
     description: 'Platform top-up game & produk digital #1 di Indonesia.',
-    images: ['/og-image.jpg'],
+    images: ['/icons/icon-512x512.png'],
   },
   robots: {
     index: true,
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    apple: '/icons/icon-192x192.png',
   },
 };
 

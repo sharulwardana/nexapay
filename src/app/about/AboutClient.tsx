@@ -34,7 +34,14 @@ const team = [
   { name: 'Sarah Kusuma', role: 'Head of Growth & Gamer Care', initial: 'SK' },
 ];
 
-export default function AboutClient({ stats }: { stats: any[] }) {
+interface AboutStat {
+  label: string;
+  value: string | number;
+  iconName: string;
+  change?: number;
+}
+
+export default function AboutClient({ stats }: { stats: AboutStat[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -68,7 +75,7 @@ export default function AboutClient({ stats }: { stats: any[] }) {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-20"
         >
-          {stats.map((stat: any) => {
+          {stats.map((stat: AboutStat) => {
             const Icon = iconMap[stat.iconName] || Users;
             return (
               <div key={stat.label} className="p-5 rounded-2xl bg-card/50 border border-border/80 hover:border-primary/40 backdrop-blur-xl text-center shadow-lg transition-all duration-300">

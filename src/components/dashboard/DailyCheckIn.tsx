@@ -62,8 +62,8 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
       });
 
       showToast.success('Reward Harian Berhasil Diklaim!', `Selamat! +${data.points || 10} NexaPoints telah ditambahkan ke akun Anda.`);
-    } catch (error: any) {
-      const msg = error.message || 'Terjadi kesalahan saat check-in';
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : 'Terjadi kesalahan saat check-in';
       if (msg.toLowerCase().includes('sudah check-in') || msg.toLowerCase().includes('already')) {
         setHasClaimed(true);
         showToast.warning('Sudah Check-In Hari Ini', 'Anda sudah mengambil klaim harian. Kembali lagi besok untuk klaim berikutnya!');
@@ -93,8 +93,8 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="text-sm font-bold font-heading text-foreground truncate">Daily Check-in</h3>
-            <p className="text-[11px] text-muted-foreground truncate">Klaim Poin Gratis</p>
+            <h3 className="text-sm font-bold font-heading text-foreground leading-tight">Daily Check-in</h3>
+            <p className="text-[11px] text-muted-foreground leading-tight">Klaim Poin Gratis</p>
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import EmptyState from '@/components/shared/EmptyState';
 
 interface ReferralHistoryItem {
   id: string;
@@ -150,8 +151,12 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
                 ))}
               </div>
             ) : (
-              <div className="p-6 text-center text-sm text-muted-foreground">
-                Belum ada teman yang menggunakan kode referralmu.
+              <div className="p-6">
+                <EmptyState
+                  icon={Users}
+                  title="Belum Ada Teman Bergabung"
+                  description="Bagikan kode referral kamu ke teman atau grup mabar kamu untuk mulai mengumpulkan bonus saldo!"
+                />
               </div>
             )}
           </div>

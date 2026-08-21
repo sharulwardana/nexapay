@@ -10,15 +10,24 @@ import { LOYALTY_LEVELS } from '@/lib/constants';
 import { formatCurrency } from '@/lib/utils';
 import { getLiveWalletBalance } from '@/actions/wallet';
 
+import type { Session } from 'next-auth';
+
+interface LoyaltyRank {
+  name: string;
+  color: string;
+  minPoints: number;
+  discount: number;
+}
+
 interface NavUserMenuProps {
   isOpen: boolean;
   onToggle: () => void;
   closeAll: () => void;
   isLoggedIn: boolean;
-  session: any;
+  session: Session | null;
   points: number;
-  rank: any;
-  nextRank: any;
+  rank: LoyaltyRank;
+  nextRank: LoyaltyRank | null;
   progressPercent: number;
 }
 
@@ -168,7 +177,7 @@ export default function NavUserMenu({
 
                 <div className="p-2 border-t border-border bg-muted/20">
                   <button
-                    onClick={() => { playClick(); signOut({ callbackUrl: '/' }); }}
+                    onClick={() => { playClick(); signOut({ redirectTo: '/' }); }}
                     className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-red-500 hover:bg-red-500/10 transition-colors text-sm font-medium"
                   >
                     <LogOut className="w-4 h-4" />

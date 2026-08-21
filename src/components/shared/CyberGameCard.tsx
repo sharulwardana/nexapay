@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Star, Zap, ChevronRight, Gamepad2 } from 'lucide-react';
+import { Star, Zap, ChevronRight, Gamepad2, Smartphone, Gift, Tv, Wallet, CreditCard } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { getGameColor, GAME_INITIALS } from '@/lib/colors';
 import type { ProductWithDenominations } from '@/types';
@@ -27,6 +27,29 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
     : null;
 
   const gameColors = getGameColor(game.slug);
+
+  // Category-aware hover text & icon
+  const hoverTextMap: Record<string, string> = {
+    'GAME_TOPUP': 'Top Up ⚡',
+    'PULSA': 'Beli Pulsa ⚡',
+    'PLN': 'Beli Token ⚡',
+    'GIFT_CARD': 'Beli Voucher ⚡',
+    'STREAMING': 'Langganan ⚡',
+    'EWALLET_TOPUP': 'Top Up ⚡',
+    'PAKET_DATA': 'Beli Paket ⚡',
+  };
+  const hoverText = hoverTextMap[game.category] || 'Beli ⚡';
+
+  const fallbackIconMap: Record<string, React.ElementType> = {
+    'GAME_TOPUP': Gamepad2,
+    'PULSA': Smartphone,
+    'PLN': Zap,
+    'GIFT_CARD': Gift,
+    'STREAMING': Tv,
+    'EWALLET_TOPUP': Wallet,
+    'PAKET_DATA': Smartphone,
+  };
+  const FallbackIcon = fallbackIconMap[game.category] || CreditCard;
 
   return (
     <motion.div
@@ -56,7 +79,7 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
             />
           ) : (
             <div className={`absolute inset-0 bg-gradient-to-br ${gameColors.from} ${gameColors.to} flex flex-col items-center justify-center p-4 text-white`}>
-              <Gamepad2 className="w-10 h-10 mb-2 opacity-80" />
+              <FallbackIcon className="w-10 h-10 mb-2 opacity-80" />
               <span className="text-xl font-heading font-black tracking-wider text-center">
                 {GAME_INITIALS[game.slug] || game.name.split(' ')[0]}
               </span>
@@ -92,7 +115,7 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
           {/* Quick Action Pill on Hover */}
           <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-250 ease-out pointer-events-none hidden tablet:block">
             <div className="flex items-center justify-between px-3 py-1.5 rounded-xl gradient-primary text-white text-xs font-bold shadow-md">
-              <span>Top Up ⚡</span>
+              <span>{hoverText}</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
           </div>
@@ -101,11 +124,11 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
         {/* Bottom Title & Price Section */}
         <div className="p-3.5 tablet:p-4 flex flex-col justify-between flex-1 bg-card">
           <div>
-            <h3 className="font-bold text-xs tablet:text-sm text-foreground group-hover:text-primary transition-colors line-clamp-1 font-heading">
+            <h3 className="font-bold text-xs tablet:text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2 font-heading leading-tight min-h-[2rem] tablet:min-h-[2.5rem]">
               {game.name}
             </h3>
             {game.publisher && (
-              <p className="text-[11px] text-muted-foreground line-clamp-1 font-medium mt-0.5">
+              <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5">
                 {game.publisher}
               </p>
             )}

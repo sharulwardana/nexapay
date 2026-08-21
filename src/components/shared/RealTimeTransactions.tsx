@@ -116,10 +116,10 @@ export default function RealTimeTransactions() {
                     </div>
 
                     <div className="min-w-0">
-                      <h4 className="text-xs tablet:text-sm font-bold text-foreground truncate">
+                      <h4 className="text-xs tablet:text-sm font-bold text-foreground leading-snug">
                         {displayProd}
                       </h4>
-                      <p className="text-[11px] text-muted-foreground truncate">
+                      <p className="text-[11px] text-muted-foreground leading-tight">
                         {displayItem}
                       </p>
                     </div>

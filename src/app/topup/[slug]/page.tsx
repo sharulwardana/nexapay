@@ -16,13 +16,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 import { digitalProducts } from '@/data/products';
+import type { Product } from '@/types';
 
 export default async function TopUpDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  let game: any = null;
+  let game: Product | null = null;
 
   try {
-    game = await prisma.product.findUnique({
+    const dbGame = await prisma.product.findUnique({
       where: { slug: resolvedParams.slug },
       include: {
         denominations: {
@@ -31,6 +32,9 @@ export default async function TopUpDetailPage({ params }: { params: Promise<{ sl
         }
       }
     });
+    if (dbGame) {
+      game = dbGame as unknown as Product;
+    }
   } catch (e) {
     console.error('Error fetching game from DB:', e);
   }
@@ -39,13 +43,13 @@ export default async function TopUpDetailPage({ params }: { params: Promise<{ sl
   const staticGame = digitalProducts.find(p => p.slug === resolvedParams.slug);
   if (staticGame) {
     game = {
-      ...game,
+      ...(game || {}),
       ...staticGame,
       denominations: staticGame.denominations,
-    };
+    } as unknown as Product;
   }
 
-  if (!game || (game.isActive === false)) {
+  if (!game || game.isActive === false) {
     notFound();
   }
 

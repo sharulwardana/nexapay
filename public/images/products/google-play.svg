@@ -1,1 +1,28 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#FFFFFF"/><text x="100" y="110" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#4285F4" text-anchor="middle">Google Play</text></svg>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="32" fill="#0B132B"/>
+  <defs>
+    <linearGradient id="gp_blue" x1="45" y1="40" x2="115" y2="105" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00A0FF"/>
+      <stop offset="1" stop-color="#0072FF"/>
+    </linearGradient>
+    <linearGradient id="gp_green" x1="120" y1="95" x2="60" y2="155" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00E676"/>
+      <stop offset="1" stop-color="#00B0FF"/>
+    </linearGradient>
+    <linearGradient id="gp_red" x1="60" y1="45" x2="140" y2="115" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF3D00"/>
+      <stop offset="1" stop-color="#DD2C00"/>
+    </linearGradient>
+    <linearGradient id="gp_yellow" x1="110" y1="95" x2="155" y2="105" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD600"/>
+      <stop offset="1" stop-color="#FFAB00"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(20, 15) scale(0.8)">
+    <path d="M48.5 28.2C46.8 30.1 45.8 33 45.8 36.8V163.2C45.8 167 46.8 169.9 48.5 171.8L49.2 172.4L114.8 106.8V105.2L49.2 39.6L48.5 28.2Z" fill="url(#gp_blue)"/>
+    <path d="M136.5 128.6L114.8 106.8V105.2L136.5 83.4L137.2 83.8L162.8 98.4C170.1 102.5 170.1 109.4 162.8 113.6L137.2 128.2L136.5 128.6Z" fill="url(#gp_yellow)"/>
+    <path d="M114.8 106L48.5 172.3C50.9 174.8 55 175.2 59.8 172.4L136.5 128.6L114.8 106Z" fill="url(#gp_green)"/>
+    <path d="M114.8 106L136.5 83.4L59.8 39.6C55 36.8 50.9 37.2 48.5 39.7L114.8 106Z" fill="url(#gp_red)"/>
+  </g>
+  <text x="100" y="174" font-family="'Space Grotesk', system-ui, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">GOOGLE PLAY</text>
+</svg>

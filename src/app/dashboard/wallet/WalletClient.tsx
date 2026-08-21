@@ -261,24 +261,32 @@ export default function WalletClient({
             </div>
             <div className="divide-y divide-border">
               {filtered.map((item) => (
-                <div key={item.id} className="flex items-center gap-3 p-4">
-                  <div className={cn(
-                    'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
-                    item.amount > 0 ? 'bg-green-500/10' : 'bg-red-500/10'
-                  )}>
-                    {item.amount > 0 ? (
-                      <ArrowDownLeft className="w-5 h-5 text-green-500" />
-                    ) : (
-                      <ArrowUpRight className="w-5 h-5 text-red-500" />
-                    )}
+                <div key={item.id} className="p-3.5 sm:p-4 hover:bg-muted/20 transition-colors">
+                  <div className="flex items-start justify-between gap-2.5">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div className={cn(
+                        'w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm',
+                        item.amount > 0 ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/15 text-red-400 border border-red-500/30'
+                      )}>
+                        {item.amount > 0 ? (
+                          <ArrowDownLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                        ) : (
+                          <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs sm:text-sm font-semibold leading-snug break-words text-foreground font-heading">
+                          {item.description}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(item.date).toLocaleString('id-ID')}</p>
+                      </div>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <span className={cn('text-xs sm:text-sm font-bold font-mono', item.amount > 0 ? 'text-emerald-400' : 'text-red-400')}>
+                        {item.amount > 0 ? '+' : ''}{formatCurrency(Math.abs(item.amount))}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium line-clamp-1">{item.description}</p>
-                    <p className="text-[10px] text-muted-foreground">{new Date(item.date).toLocaleString('id-ID')}</p>
-                  </div>
-                  <span className={cn('text-sm font-bold flex-shrink-0', item.amount > 0 ? 'text-green-500' : 'text-red-500')}>
-                    {item.amount > 0 ? '+' : ''}{formatCurrency(Math.abs(item.amount))}
-                  </span>
                 </div>
               ))}
 

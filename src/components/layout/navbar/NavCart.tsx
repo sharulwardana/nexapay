@@ -94,7 +94,7 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
                   cartItems.map((item) => (
                     <div key={item.denominationId} className="flex gap-3 p-2.5 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors border border-border/40 items-center">
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-bold truncate">{item.productName}</h4>
+                        <h4 className="text-xs font-bold leading-snug">{item.productName}</h4>
                         <p className="text-[11px] text-muted-foreground">{item.quantity}x {item.gameUserId || item.phoneNumber}</p>
                         <p className="text-xs font-bold text-primary mt-0.5">{formatCurrency(item.price * item.quantity)}</p>
                       </div>

@@ -3,6 +3,8 @@ import Discord from "next-auth/providers/discord"
 import type { NextAuthConfig } from "next-auth"
 
 export default {
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -30,10 +32,6 @@ export default {
       }
       return session;
     },
-    // NOTE: JWT callback is intentionally NOT defined here.
-    // The full JWT callback (with DB lookups) lives in auth.ts only,
-    // which overrides this config. Keeping JWT logic in one place
-    // prevents dead code and confusion about which callback runs.
   },
   pages: {
     signIn: "/login",

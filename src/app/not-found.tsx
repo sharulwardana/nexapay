@@ -2,14 +2,17 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Home, ArrowLeft, Search, Gamepad2 } from 'lucide-react';
+import { Home, Gamepad2 } from 'lucide-react';
+import Navbar from '@/components/layout/Navbar';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 gradient-hero" />
-      <div className="absolute inset-0 grid-pattern opacity-30" />
+    <>
+      <Navbar />
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        {/* Background */}
+        <div className="absolute inset-0 gradient-hero" />
+        <div className="absolute inset-0 grid-pattern opacity-30" />
 
 
       <motion.div
@@ -48,8 +51,9 @@ export default function NotFound() {
             <Gamepad2 className="w-4 h-4" />
             Top Up Game
           </Link>
-        </div>
-      </motion.div>
-    </div>
+          </div>
+        </motion.div>
+      </div>
+    </>
   );
 }

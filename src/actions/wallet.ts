@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';
 import { sendPushToUser } from '@/lib/push';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, generateInvoiceId } from '@/lib/utils';
 
 // Rate limiters for wallet operations
 const topUpLimiter = rateLimit({ interval: 60000, uniqueTokenPerInterval: 500 });
@@ -59,8 +59,8 @@ export async function topUpWallet(amount: number) {
     }
     const validatedAmount = parsed.data.amount;
 
-    // Use crypto-safe invoice ID
-    const invoiceId = `NEXA-TOPUP-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+    // Use standardized crypto-safe invoice ID
+    const invoiceId = generateInvoiceId('NEXA-TOPUP');
 
     // SECURITY: Create transaction as PENDING — do NOT increment balance directly.
     // In production, balance should only be incremented after payment gateway

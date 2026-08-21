@@ -77,10 +77,10 @@ export default function MobileNav() {
             ? 'w-[80%] max-w-[305px] xs:max-w-[335px] sm:max-w-[365px] h-[48px] sm:h-[50px]' // Shrunk large compact
             : 'w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] h-[62px] sm:h-[66px]', // Expanded Large Stadium Pill
           'rounded-full overflow-hidden p-[3px]', // Exact uniform margin
-          // Crystal Clear Translucent Liquid Glass (NO opaque black, uniform across all pages)
-          'bg-slate-900/55 dark:bg-black/40 backdrop-blur-2xl backdrop-saturate-150',
+          // Pure Crystal Translucent Liquid Glass (Zero Black Shadow on ANY page)
+          'bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150',
           'border border-white/20 dark:border-white/15',
-          'shadow-[0_8px_24px_rgba(0,0,0,0.2),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1.5px_rgba(255,255,255,0.35)]'
+          'shadow-[0_0_20px_rgba(249,115,22,0.12),inset_0_1px_1.5px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.1)]'
         )}
       >
         {/* Top Edge Specular Reflex */}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, User, Mail, Lock, Shield, Save, LogOut, Trash2, Loader2, X, Bell, Sparkles } from 'lucide-react';
 import Footer from '@/components/layout/Footer';
@@ -102,7 +103,7 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-4 mb-4">
                   {session?.user?.image ? (
-                    <img src={session.user.image} alt="Avatar" className="w-16 h-16 rounded-2xl border-2 border-border object-cover" />
+                    <Image src={session.user.image} alt="Avatar" width={64} height={64} className="w-16 h-16 rounded-2xl border-2 border-border object-cover" />
                   ) : (
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl font-bold text-white">
                       {name ? name.charAt(0).toUpperCase() : 'U'}

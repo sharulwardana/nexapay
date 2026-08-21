@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -78,7 +79,7 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
                     <div className="flex items-center justify-between p-3 rounded-2xl bg-gradient-to-br from-card to-muted/60 border border-border shadow-sm">
                       <div className="flex items-center gap-3">
                         {session?.user?.image ? (
-                          <img src={session.user.image} alt="Profile" className="w-10 h-10 rounded-full border border-primary/30" />
+                          <Image src={session.user.image} alt="Profile" width={40} height={40} className="w-10 h-10 rounded-full border border-primary/30 object-cover" />
                         ) : (
                           <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-sm shadow-md">
                             {session?.user?.name?.charAt(0) || session?.user?.email?.charAt(0) || 'U'}

@@ -66,21 +66,21 @@ export default function MobileNav() {
         bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* 2026 Wide Horizontal Stadium Capsule (Buttery Smooth 120 FPS Morphing, Zero Vibration) */}
+      {/* 2026 Proportional Enlarged Stadium Capsule (Bigger, Bolder, Identical Aspect Ratio across Mobile S, M, L) */}
       <div
         className={cn(
           'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation backface-hidden',
-          // Ultra-smooth 120 FPS hardware-accelerated CSS transition synchronized with inner elements
+          // Ultra-smooth 120 FPS hardware-accelerated CSS transition
           'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          // 2D Morphing
+          // Proportional Enlarged 2D Morphing
           isShrunk
-            ? 'w-[76%] max-w-[260px] xs:max-w-[285px] sm:max-w-[310px] h-[38px] sm:h-[40px]' // Shrunk compact
-            : 'w-[96%] max-w-[365px] xs:max-w-[400px] sm:max-w-[445px] h-[48px] sm:h-[50px]', // Expanded Wide Stadium Pill
-          'rounded-full overflow-hidden p-[2.5px]', // Exact uniform margin
+            ? 'w-[78%] max-w-[285px] xs:max-w-[315px] sm:max-w-[345px] h-[44px] sm:h-[46px]' // Shrunk enlarged compact
+            : 'w-[96%] max-w-[390px] xs:max-w-[430px] sm:max-w-[475px] h-[56px] sm:h-[59px]', // Expanded Enlarged Stadium Pill
+          'rounded-full overflow-hidden p-[3px]', // Exact uniform margin
           // Dark Translucent Liquid Glass Container
           'bg-[#141620]/95 dark:bg-[#0c0e14]/95 backdrop-blur-2xl backdrop-saturate-150',
           'border border-white/15 dark:border-white/10',
-          'shadow-[0_10px_32px_rgba(0,0,0,0.5),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)]'
+          'shadow-[0_12px_36px_rgba(0,0,0,0.5),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)]'
         )}
       >
         {/* Top Edge Specular Reflex */}
@@ -88,7 +88,7 @@ export default function MobileNav() {
 
         {/* 5 Strictly Equal 20% Columns Grid */}
         <div className="relative grid grid-cols-5 items-center h-full w-full">
-          {/* Active Tab Bubble — Synchronized Smooth Horizontal Glide */}
+          {/* Active Tab Bubble — Proportional Enlarged Stadium Capsule (Identical Shape) */}
           {activeIndex !== -1 && (
             <div
               className={cn(
@@ -121,14 +121,14 @@ export default function MobileNav() {
                   isActive ? 'text-primary font-bold' : 'text-zinc-400 hover:text-white'
                 )}
               >
-                {/* Fixed-Position Icon Container (Immune to any vertical jumps or vibration) */}
+                {/* Fixed-Position Icon Container (Enlarged & Immune to any vertical jumps) */}
                 <div className="relative flex items-center justify-center w-full">
                   <Icon
                     className={cn(
                       'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                       isShrunk
-                        ? 'w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] scale-100'
-                        : 'w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] scale-100',
+                        ? 'w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]'
+                        : 'w-[19px] h-[19px] sm:w-[21px] sm:h-[21px]',
                       isActive
                         ? 'stroke-[2.5] text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
                         : 'stroke-[1.8] opacity-75 hover:opacity-100 text-zinc-300'
@@ -136,7 +136,7 @@ export default function MobileNav() {
                   />
                 </div>
 
-                {/* Sub-grid CSS Smooth Height Collapse for Label (Zero Layout Reflow Jumps) */}
+                {/* Sub-grid CSS Smooth Height Collapse for Label (Enlarged Crisp Typography) */}
                 <div
                   className={cn(
                     'grid transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden',
@@ -146,7 +146,7 @@ export default function MobileNav() {
                   <span
                     className={cn(
                       'font-heading tracking-tight leading-none text-center min-h-0 overflow-hidden pb-0.5',
-                      'text-[9px] xs:text-[9.5px] sm:text-[10px]',
+                      'text-[9.5px] xs:text-[10px] sm:text-[10.5px]',
                       isActive
                         ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
                         : 'font-medium text-zinc-300'

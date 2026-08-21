@@ -680,8 +680,8 @@
   inherits: false;
 }
 
-/* Prevent iOS / Safari / Mobile viewport auto-zoom on input focus */
-@media screen and (max-width: 768px) {
+/* Prevent iOS / Safari / Android viewport auto-zoom on input focus for Mobile & Tablets */
+@media screen and (max-width: 1024px), (pointer: coarse) {
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
   select,
   textarea {

@@ -41,12 +41,7 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
 
         <div className="container-app relative z-10">
           {/* Page Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ease: [0.33, 1, 0.68, 1] }}
-            className="mb-8 tablet:mb-10 text-center tablet:text-left"
-          >
+          <div className="mb-8 tablet:mb-10 text-center tablet:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md mb-4 shadow-sm mx-auto tablet:mx-0">
               <Gamepad2 className="w-3.5 h-3.5 text-primary" />
               <span className="text-[11px] font-bold tracking-widest text-primary uppercase font-heading">Nexa Game Center</span>
@@ -57,15 +52,10 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
             <p className="body-default max-w-xl text-muted-foreground mx-auto tablet:mx-0">
               Injeksi diamond dan game items instan dalam hitungan detik. Harga termurah dengan garansi masuk 100%.
             </p>
-          </motion.div>
+          </div>
 
           {/* Search & Filter */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="flex flex-col tablet:flex-row gap-4 mb-8"
-          >
+          <div className="flex flex-col tablet:flex-row gap-4 mb-8">
             {/* Cyber Search */}
             <div className="relative flex-1 group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors z-10 pointer-events-none" />
@@ -105,7 +95,7 @@ export default function TopUpClient({ games }: { games: ProductWithActiveDenomin
                 );
               })}
             </div>
-          </motion.div>
+          </div>
 
           {/* Results count */}
           <p className="text-xs text-muted-foreground mb-4">

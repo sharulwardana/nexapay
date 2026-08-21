@@ -160,6 +160,7 @@ export default function DashboardClient({
               <Link
                 key={action.href}
                 href={action.href}
+                prefetch={true}
                 className="flex flex-col items-center gap-1 p-1.5 xs:p-2 tablet:p-3 rounded-2xl hover:bg-muted/30 transition-all group text-center"
               >
                 <div className={cn('w-9 h-9 xs:w-10 xs:h-10 tablet:w-12 tablet:h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform', action.color)}>

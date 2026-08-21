@@ -47,7 +47,7 @@ export default function ContactClient() {
             {/* Direct Telemetry Badges */}
             <div className="space-y-4">
               {/* Telemetry Status Card */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="p-5 rounded-2xl bg-card/60 border border-border backdrop-blur-xl shadow-lg relative overflow-hidden">
+              <div className="p-5 rounded-2xl bg-card/60 border border-border backdrop-blur-xl shadow-lg relative overflow-hidden">
                 <div className="flex items-center justify-between mb-3 pb-3 border-b border-border/50">
                   <div className="flex items-center gap-2">
                     <Signal className="w-4 h-4 text-emerald-400 animate-pulse" />
@@ -65,19 +65,16 @@ export default function ContactClient() {
                     <p className="text-sm font-bold text-cyan-400 font-heading">🎯 99.8%</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {[
                 { icon: MessageCircle, title: 'Live Priority Chat', info: 'Respon Kilat CS', subtitle: 'Rata-rata balasan < 1 menit', color: 'from-emerald-500 to-teal-600', badge: 'Tercepat' },
                 { icon: Mail, title: 'Official Email', info: 'support@nexapay.id', subtitle: 'Penyelesaian masalah teknis & refund', color: 'from-cyan-500 to-blue-600' },
                 { icon: Phone, title: 'Call Center Hotline', info: '0800-123-4567', subtitle: 'Bebas pulsa 24 jam nonstop', color: 'from-violet-500 to-purple-600' },
                 { icon: MapPin, title: 'Headquarter', info: 'Nexa Tower Cyber Hub', subtitle: 'Jakarta Selatan, Indonesia', color: 'from-amber-500 to-orange-600' },
-              ].map((contact, i) => (
-                <motion.div
+              ].map((contact) => (
+                <div
                   key={contact.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.08 }}
                   className="p-4 rounded-2xl bg-card/40 border border-border/80 hover:border-primary/50 backdrop-blur-md transition-all duration-300 flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3.5">
@@ -95,17 +92,12 @@ export default function ContactClient() {
                       <p className="text-[10px] text-muted-foreground">{contact.subtitle}</p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
             {/* Cyber Terminal Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:col-span-2"
-            >
+            <div className="lg:col-span-2">
               <form onSubmit={handleSubmit} className="p-6 tablet:p-8 rounded-3xl bg-card/60 border border-border/80 backdrop-blur-2xl shadow-2xl relative space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                   <div>
@@ -182,7 +174,7 @@ export default function ContactClient() {
                   )}
                 </button>
               </form>
-            </motion.div>
+            </div>
           </div>
         </div>
       </main>

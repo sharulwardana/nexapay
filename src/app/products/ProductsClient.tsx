@@ -56,12 +56,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
 
         <div className="container-app relative z-10">
           {/* Cyber Page Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: 16 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ ease: [0.33, 1, 0.68, 1] }}
-            className="mb-8 tablet:mb-10 text-center tablet:text-left"
-          >
+          <div className="mb-8 tablet:mb-10 text-center tablet:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md mb-4 shadow-sm mx-auto tablet:mx-0">
               <Cpu className="w-3.5 h-3.5 text-primary" />
               <span className="text-[11px] font-bold tracking-widest text-primary uppercase font-heading">Nexa Digital Market</span>
@@ -72,15 +67,10 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
             <p className="body-default max-w-xl text-muted-foreground mx-auto tablet:mx-0">
               Akses instan ke ribuan voucher, pulsa, token listrik, dan paket langganan streaming dengan harga distributor terbaik.
             </p>
-          </motion.div>
+          </div>
 
           {/* Search & Category Filter */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.1 }} 
-            className="mb-8"
-          >
+          <div className="mb-8">
             <div className="relative mb-6 group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors z-10 pointer-events-none" />
               <input
@@ -123,7 +113,7 @@ export default function ProductsClient({ products }: { products: ProductWithDeno
                 );
               })}
             </div>
-          </motion.div>
+          </div>
 
           <p className="text-xs font-semibold text-muted-foreground font-heading uppercase tracking-wider mb-4">
             Menampilkan {filteredProducts.length} Produk Digital

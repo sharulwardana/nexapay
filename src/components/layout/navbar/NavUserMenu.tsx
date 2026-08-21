@@ -89,16 +89,17 @@ export default function NavUserMenu({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               onClick={onToggle}
-              className="tablet:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[45]"
+              className="tablet:hidden fixed inset-0 bg-black/60 z-[45]"
             />
 
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.96 }}
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.96 }}
-              transition={{ duration: 0.2 }}
-              className="fixed top-16 right-3 w-[calc(100vw-24px)] max-w-sm tablet:absolute tablet:top-full tablet:right-0 tablet:left-auto tablet:w-72 tablet:mt-2 glass-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 max-h-[70vh] flex flex-col"
+              exit={{ opacity: 0, y: -6, scale: 0.98 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              className="fixed top-16 right-3 w-[calc(100vw-24px)] max-w-sm tablet:absolute tablet:top-full tablet:right-0 tablet:left-auto tablet:w-72 tablet:mt-2 bg-card/95 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 max-h-[70vh] flex flex-col"
             >
             {isLoggedIn ? (
               <>

@@ -42,20 +42,21 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 onToggle();
               }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[90] pointer-events-auto cursor-pointer"
+              className="fixed inset-0 bg-black/60 z-[90] pointer-events-auto cursor-pointer"
             />
 
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-16 right-3 w-[calc(100vw-24px)] max-w-sm tablet:absolute tablet:top-full tablet:right-0 tablet:left-auto tablet:w-80 tablet:mt-2 glass-card border border-white/15 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.8)] overflow-hidden z-[100] max-h-[70vh] flex flex-col"
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.98 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              className="fixed top-16 right-3 w-[calc(100vw-24px)] max-w-sm tablet:absolute tablet:top-full tablet:right-0 tablet:left-auto tablet:w-80 tablet:mt-2 bg-card/95 border border-white/15 rounded-2xl shadow-2xl overflow-hidden z-[100] max-h-[70vh] flex flex-col"
             >
               {/* Mobile Visual Drag Handle */}
               <div className="tablet:hidden w-10 h-1 bg-white/25 rounded-full mx-auto mt-2.5 flex-shrink-0" />

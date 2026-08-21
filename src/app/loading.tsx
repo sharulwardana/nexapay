@@ -1,18 +1,7 @@
-import React from 'react';
-
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="flex flex-col items-center gap-4">
-        {/* Animated spinner inspired by Vercel/Linear */}
-        <div className="relative flex w-12 h-12">
-          <i className="absolute inset-0 rounded-full border-[3px] border-border" />
-          <i className="absolute inset-0 rounded-full border-[3px] border-primary border-t-transparent animate-spin" />
-        </div>
-        <p className="text-sm font-medium text-muted-foreground animate-pulse">
-          Memuat halaman...
-        </p>
-      </div>
+    <div className="fixed top-0 left-0 right-0 z-[100] h-[2.5px] overflow-hidden bg-primary/10 pointer-events-none">
+      <div className="h-full bg-gradient-to-r from-primary via-accent to-primary animate-pulse w-full" />
     </div>
   );
 }

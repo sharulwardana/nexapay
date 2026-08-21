@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ShieldCheck, FileText, CheckCircle2, Lock, AlertTriangle, HelpCircle } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 export const metadata = {
@@ -44,7 +43,6 @@ const termsSections = [
 export default function TermsPage() {
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden">
         {/* Glow ambient background */}
         <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />

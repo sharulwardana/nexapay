@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
 import ProductsClient from './ProductsClient';
-import Navbar from '@/components/layout/Navbar';
 
 export const metadata = {
   title: 'Produk Digital | NexaPay',
@@ -40,11 +39,8 @@ export default async function ProductsPage() {
   }
 
   return (
-    <>
-      <Navbar />
-      <Suspense fallback={<div className="min-h-screen pt-28 text-center text-sm text-muted-foreground">Memuat katalog...</div>}>
-        <ProductsClient products={products} />
-      </Suspense>
-    </>
+    <Suspense fallback={<div className="min-h-screen pt-28 text-center text-sm text-muted-foreground">Memuat katalog...</div>}>
+      <ProductsClient products={products} />
+    </Suspense>
   );
 }

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import PaymentStatusClient from './PaymentStatusClient';
-import Navbar from '@/components/layout/Navbar';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -32,9 +31,7 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <>
-      <Navbar />
-      <PaymentStatusClient
+    <PaymentStatusClient
         txId={txId}
         productName={transaction.product?.name || transaction.productName || 'Produk NexaPay'}
         denomLabel={transaction.denomination?.label || 'Paket Top Up'}
@@ -45,7 +42,6 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
         status={transaction.status}
         expiresAt={transaction.expiresAt?.toISOString() || null}
       />
-    </>
   );
 }
 

@@ -24,7 +24,9 @@ export default function NavLinks() {
   return (
     <nav className="hidden lg:flex items-center gap-0.5 laptop-l:gap-1 flex-shrink-0">
       {NAV_LINKS.map((link) => {
-        const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
+        const isActive = link.href === '/'
+          ? pathname === '/'
+          : pathname === link.href || pathname.startsWith(link.href + '/');
         if (link.label === 'Produk Digital') {
           return (
             <div
@@ -35,9 +37,10 @@ export default function NavLinks() {
             >
               <Link
                 href={link.href}
+                onClick={() => setIsProductDropdownOpen(false)}
                 className={cn(
                   'flex items-center gap-1 px-2 laptop-l:px-3 py-1.5 rounded-lg text-xs laptop-l:text-[13px] font-medium transition-colors whitespace-nowrap',
-                  isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 {link.label}
@@ -47,16 +50,17 @@ export default function NavLinks() {
               <AnimatePresence>
                 {isProductDropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.1 }}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-1 w-56 p-1.5 rounded-xl bg-card/95 backdrop-blur-xl border border-border shadow-xl z-50"
                   >
                     {productCategories.map((cat) => (
                       <Link
                         key={cat.href}
                         href={cat.href}
+                        onClick={() => setIsProductDropdownOpen(false)}
                         className="group flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors"
                       >
                         <cat.icon className="w-4 h-4 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -75,7 +79,7 @@ export default function NavLinks() {
             href={link.href}
             className={cn(
               'px-2 laptop-l:px-3 py-1.5 rounded-lg text-xs laptop-l:text-[13px] font-medium transition-colors whitespace-nowrap',
-              isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+              isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {link.label}

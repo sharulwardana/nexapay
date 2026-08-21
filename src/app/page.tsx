@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PromoCarousel from '@/components/home/PromoCarousel';
 import PopularGames from '@/components/home/PopularGames';
@@ -87,7 +86,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Navbar />
       <main id="main-content" className="min-h-screen pb-24 aurora-bg w-full max-w-full overflow-x-hidden">
         {/* Aurora decorative orbs */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">

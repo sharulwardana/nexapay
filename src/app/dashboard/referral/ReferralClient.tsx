@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Gift, Copy, Share2, Users, TrendingUp, DollarSign, ChevronRight } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -46,7 +45,6 @@ export default function ReferralClient({ code, totalEarned, totalReferrals, hist
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
           <div className="flex items-center gap-3 mb-6">

@@ -7,7 +7,6 @@ import {
   ArrowLeft, Wallet, Plus, ArrowUpRight, ArrowDownLeft, Clock, X, Loader2, 
   Send, CheckCircle2, QrCode, Building2, Copy, Check, Zap, Sparkles 
 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -152,7 +151,6 @@ export default function WalletClient({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
         <div className="container-app max-w-2xl">
           {/* Header */}

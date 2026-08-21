@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, User, Mail, Lock, Shield, Save, LogOut, Trash2, Loader2, X, Bell, Sparkles } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -87,7 +86,6 @@ export default function SettingsPage() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
           <div className="flex items-center gap-3 mb-6">

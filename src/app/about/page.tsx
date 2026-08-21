@@ -1,4 +1,3 @@
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import prisma from '@/lib/prisma';
 import AboutClient from './AboutClient';
@@ -30,7 +29,6 @@ export default async function AboutPage() {
 
   return (
     <>
-      <Navbar />
       <AboutClient stats={realStats} />
       <Footer />
     </>

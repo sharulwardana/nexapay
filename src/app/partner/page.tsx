@@ -3,7 +3,6 @@ import {
   ArrowLeft, Handshake, ShieldCheck, Zap, Server, BarChart3,
   CheckCircle2, Sparkles, Send, Code2, Headphones, Award, Layers
 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 
@@ -92,7 +91,6 @@ const tiers = [
 export default function PartnerPage() {
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden aurora-bg">
         {/* Ambient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none" />

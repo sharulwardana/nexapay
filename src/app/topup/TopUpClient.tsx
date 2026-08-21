@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Search, Gamepad2, Filter, Star, TrendingUp } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import { getGameColor, GAME_INITIALS } from '@/lib/colors';

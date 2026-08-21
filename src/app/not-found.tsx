@@ -3,13 +3,10 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Home, Gamepad2 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 
 export default function NotFound() {
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
         {/* Background */}
         <div className="absolute inset-0 gradient-hero" />
         <div className="absolute inset-0 grid-pattern opacity-30" />
@@ -54,6 +51,5 @@ export default function NotFound() {
           </div>
         </motion.div>
       </div>
-    </>
   );
 }

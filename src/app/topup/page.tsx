@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
 import TopUpClient from './TopUpClient';
-import Navbar from '@/components/layout/Navbar';
 
 export const metadata = {
   title: 'Top Up Game Termurah | NexaPay',
@@ -54,10 +53,5 @@ export default async function TopUpPage() {
     console.warn('Prisma fetch failed on /topup, using static fallback:', error);
   }
 
-  return (
-    <>
-      <Navbar />
-      <TopUpClient games={games} />
-    </>
-  );
+  return <TopUpClient games={games} />;
 }

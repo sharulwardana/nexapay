@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { AlertCircle, RefreshCw, Home, Wallet } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 
 export default function DashboardError({
   error,
@@ -18,7 +17,6 @@ export default function DashboardError({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg flex items-center justify-center">
         <div className="container-app max-w-lg text-center">
           <div className="glass-card p-8 border border-red-500/20 shadow-2xl">

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Search, Receipt, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import RealTimeTransactions from '@/components/shared/RealTimeTransactions';
@@ -24,7 +23,6 @@ export default function TrackClient() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-36 pb-24">
         <div className="container-app max-w-xl">
           <div className="text-center mb-8">

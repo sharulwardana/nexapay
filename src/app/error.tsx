@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Home, RefreshCw, Gamepad2, ShieldAlert } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 
 export default function Error({
   error,
@@ -18,9 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background pt-20">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background pt-20">
       {/* Background Ambience */}
       <div className="absolute inset-0 gradient-hero opacity-60" />
       <div className="absolute inset-0 grid-pattern opacity-20" />
@@ -84,6 +81,5 @@ export default function Error({
         )}
       </motion.div>
     </div>
-    </>
   );
 }

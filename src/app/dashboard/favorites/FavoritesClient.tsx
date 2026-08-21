@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Heart, Trash2, ShoppingCart, Gamepad2, Loader2 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -46,7 +45,6 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
           <div className="flex items-center gap-3 mb-6">

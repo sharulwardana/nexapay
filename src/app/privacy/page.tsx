@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Lock, ShieldAlert, Eye, KeyRound, Database, UserCheck } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 export const metadata = {
@@ -38,7 +37,6 @@ const privacySections = [
 export default function PrivacyPage() {
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden">
         {/* Ambient background */}
         <div className="absolute top-1/4 right-1/3 w-80 h-80 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />

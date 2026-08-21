@@ -5,7 +5,6 @@ import {
   User, Wallet, Receipt, Heart, Gift, Star, Settings, Copy, ChevronRight,
   TrendingUp, Clock, CheckCircle, Crown, Shield
 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, cn } from '@/lib/utils';
 import SpotlightCard from '@/components/shared/SpotlightCard';
@@ -19,10 +18,11 @@ interface DashboardUser {
   name: string | null;
   email: string | null;
   image?: string | null;
-  role: string;
+  role?: string;
   walletBalance: number;
   loyaltyPoints: number;
   referralCode: string | null;
+  lastCheckIn?: Date | string | null;
   createdAt: string | Date;
 }
 
@@ -61,7 +61,6 @@ export default function DashboardClient({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
         <div className="container-app max-w-5xl">
           {/* Top Section Grid */}

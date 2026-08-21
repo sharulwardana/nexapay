@@ -95,6 +95,7 @@ export const viewport: Viewport = {
 };
 
 import MobileNav from '@/components/layout/MobileNav';
+import Navbar from '@/components/layout/Navbar';
 
 export default function RootLayout({
   children,
@@ -123,7 +124,7 @@ export default function RootLayout({
             >
               Lewati ke konten utama
             </a>
-            {/* Navbar is imported on individual pages to avoid double rendering */}
+            <Navbar />
             {children}
             <ClientOverlays />
             <MobileNav />

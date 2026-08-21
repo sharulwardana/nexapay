@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
 import ProductDetailClient from './ProductDetailClient';
-import Navbar from '@/components/layout/Navbar';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -68,10 +67,5 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
-  return (
-    <>
-      <Navbar />
-      <ProductDetailClient product={product} />
-    </>
-  );
+  return <ProductDetailClient product={product} />;
 }

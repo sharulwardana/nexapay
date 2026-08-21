@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { Tag, Clock, Copy, ArrowRight } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { promotions } from '@/data/testimonials';
 import { cn } from '@/lib/utils';
@@ -11,7 +10,6 @@ import { toast } from 'sonner';
 export default function PromoClient() {
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
         <div className="container-app">
           <div className="mb-8">

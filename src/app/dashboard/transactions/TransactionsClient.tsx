@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Search, CheckCircle, Clock, XCircle, RefreshCw, Receipt } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatCurrency, getStatusColor, getStatusLabel, cn } from '@/lib/utils';
 import EmptyState from '@/components/shared/EmptyState';
@@ -39,7 +38,6 @@ export default function TransactionsClient({
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
         <div className="container-app max-w-3xl">
           {/* Header */}

@@ -6,7 +6,6 @@ import {
   Search, ChevronDown, MessageCircle, Mail, Phone,
   HelpCircle, CreditCard, Gamepad2, Cpu,
 } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 
@@ -50,7 +49,6 @@ export default function HelpClient() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden">
         {/* Glow ambient */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />

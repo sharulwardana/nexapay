@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ArrowLeft, Briefcase, Sparkles, Rocket, Terminal, Shield, Zap, Flame, Users, Send } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 export const metadata = {
@@ -18,7 +17,6 @@ const perks = [
 export default function CareersPage() {
   return (
     <>
-      <Navbar />
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden">
         {/* Ambient Glow */}
         <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-violet-500/10 rounded-full blur-[100px] pointer-events-none" />

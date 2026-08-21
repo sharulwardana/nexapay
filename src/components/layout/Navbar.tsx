@@ -43,10 +43,11 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    closeAllMenus();
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/admin') || pathname === '/login') {
     return null;
   }
 
@@ -94,34 +95,28 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <NavInlineSearch />
 
-              {mounted && (
-                <>
-                  <NavNotifications 
-                    isOpen={isNotifOpen} 
-                    onToggle={() => { setIsNotifOpen(!isNotifOpen); setIsProfileOpen(false); setIsCartOpen(false); }} 
-                  />
-                  <NavCart 
-                    isOpen={isCartOpen} 
-                    onToggle={() => { setIsCartOpen(!isCartOpen); setIsNotifOpen(false); setIsProfileOpen(false); }}
-                    closeAll={closeAllMenus}
-                  />
-                </>
-              )}
+              <NavNotifications 
+                isOpen={isNotifOpen} 
+                onToggle={() => { setIsNotifOpen(!isNotifOpen); setIsProfileOpen(false); setIsCartOpen(false); }} 
+              />
+              <NavCart 
+                isOpen={isCartOpen} 
+                onToggle={() => { setIsCartOpen(!isCartOpen); setIsNotifOpen(false); setIsProfileOpen(false); }}
+                closeAll={closeAllMenus}
+              />
 
               <div className="hidden lg:block ml-2">
-                {mounted && (
-                  <NavUserMenu 
-                    isOpen={isProfileOpen}
-                    onToggle={() => { setIsProfileOpen(!isProfileOpen); setIsNotifOpen(false); setIsCartOpen(false); }}
-                    closeAll={closeAllMenus}
-                    isLoggedIn={isLoggedIn}
-                    session={session}
-                    points={points}
-                    rank={rank}
-                    nextRank={nextRank}
-                    progressPercent={progressPercent}
-                  />
-                )}
+                <NavUserMenu 
+                  isOpen={isProfileOpen}
+                  onToggle={() => { setIsProfileOpen(!isProfileOpen); setIsNotifOpen(false); setIsCartOpen(false); }}
+                  closeAll={closeAllMenus}
+                  isLoggedIn={isLoggedIn}
+                  session={session}
+                  points={points}
+                  rank={rank}
+                  nextRank={nextRank}
+                  progressPercent={progressPercent}
+                />
               </div>
 
               {/* Mobile Menu Toggle */}

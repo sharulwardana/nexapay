@@ -9,6 +9,8 @@ import PwaRegistry from '@/components/providers/PwaRegistry';
 import AuthProvider from '@/components/providers/AuthProvider';
 import JsonLd from '@/components/shared/JsonLd';
 import ClientOverlays from '@/components/shared/ClientOverlays';
+import MobileNav from '@/components/layout/MobileNav';
+import Navbar from '@/components/layout/Navbar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -93,9 +95,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
 };
-
-import MobileNav from '@/components/layout/MobileNav';
-import Navbar from '@/components/layout/Navbar';
 
 export default function RootLayout({
   children,

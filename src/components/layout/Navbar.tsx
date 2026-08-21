@@ -38,6 +38,12 @@ export default function Navbar() {
   const points = session?.user?.loyaltyPoints || 0;
   const { rank, nextRank, progressPercent } = getLoyaltyRank(points);
 
+  const closeAllMenus = () => {
+    setIsProfileOpen(false);
+    setIsNotifOpen(false);
+    setIsCartOpen(false);
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -50,12 +56,6 @@ export default function Navbar() {
   if (pathname.startsWith('/admin') || pathname === '/login') {
     return null;
   }
-
-  const closeAllMenus = () => {
-    setIsProfileOpen(false);
-    setIsNotifOpen(false);
-    setIsCartOpen(false);
-  };
 
   return (
     <>

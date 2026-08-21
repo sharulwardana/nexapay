@@ -35,6 +35,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const accountSectionRef = useRef<HTMLDivElement>(null);
   const denomSectionRef = useRef<HTMLDivElement>(null);
   const paymentSectionRef = useRef<HTMLDivElement>(null);
 
@@ -203,12 +204,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <div className="container-app max-w-7xl 4k:max-w-[1600px] relative z-10">
 
           {/* Top Hero Banner Header — Streamlined 2026 Digital Service Grade */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ease: [0.33, 1, 0.68, 1] }}
-            className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-5 sm:mb-8 border border-border/60 glass-card shadow-2xl"
-          >
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-5 sm:mb-8 border border-border/60 glass-card shadow-2xl">
             <div className="relative min-h-[120px] sm:min-h-[150px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-3.5 sm:p-6">
               {/* Dynamic Ambient Glow */}
               <div className={cn('absolute -right-16 -top-16 w-64 h-64 rounded-full blur-[90px] opacity-25 bg-gradient-to-br', productColors.from, productColors.to)} />
@@ -261,8 +257,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 </div>
               </div>
             </div>
-          </motion.div>
-
+          </div>
           {/* Main 12-Column Layout — 2 Columns on Tablet & Desktop (>= 768px) with sticky tracking */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 tablet:gap-6 lg:gap-8 items-start">
 
@@ -270,12 +265,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             <div className="md:col-span-7 lg:col-span-8 space-y-5 sm:space-y-6 lg:space-y-8">
 
               {/* STEP 1: Account Identification / Data Tujuan */}
-              <section id="step-account">
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl"
-                >
+              <section ref={accountSectionRef} id="step-account">
+                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -316,17 +307,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       <span>{inputHelper}</span>
                     </p>
                   </div>
-                </motion.div>
+                </div>
               </section>
 
               {/* STEP 2: Select Denomination / Pilih Nominal */}
               <section ref={denomSectionRef} id="step-denom">
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28"
-                >
+                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -449,17 +435,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       );
                     })}
                   </div>
-                </motion.div>
+                </div>
               </section>
 
               {/* STEP 3: Payment Method / Pilih Pembayaran */}
               <section ref={paymentSectionRef} id="step-payment">
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28"
-                >
+                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -542,17 +523,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               </section>
 
               {/* STEP 4: Optional Promo Code / Voucher Box in Main Flow (Mobile only: < 768px) */}
               <section id="step-promo" className="md:hidden">
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
-                  className="glass-card p-4 sm:p-5 rounded-2xl border border-border/80 relative z-10 shadow-lg"
-                >
+                <div className="glass-card p-4 sm:p-5 rounded-2xl border border-border/80 relative z-10 shadow-lg">
                   <div className="flex items-center gap-2 mb-3">
                     <Ticket className="w-4 h-4 text-primary" />
                     <h3 className="text-xs sm:text-sm font-bold font-heading text-foreground">
@@ -581,7 +557,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       <span>-{formatCurrency(promoDiscount)}</span>
                     </div>
                   )}
-                </motion.div>
+                </div>
               </section>
             </div>
 

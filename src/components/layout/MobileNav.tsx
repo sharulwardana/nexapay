@@ -66,7 +66,7 @@ export default function MobileNav() {
         bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* 2026 Proportional Enlarged Stadium Capsule (Bigger, Bolder, Identical Aspect Ratio across Mobile S, M, L) */}
+      {/* 2026 Crystal Liquid Glass Capsule (Crystal Clear, Zero Black Shadow on ALL pages) */}
       <div
         className={cn(
           'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation backface-hidden',
@@ -77,14 +77,14 @@ export default function MobileNav() {
             ? 'w-[78%] max-w-[285px] xs:max-w-[315px] sm:max-w-[345px] h-[44px] sm:h-[46px]' // Shrunk enlarged compact
             : 'w-[96%] max-w-[390px] xs:max-w-[430px] sm:max-w-[475px] h-[56px] sm:h-[59px]', // Expanded Enlarged Stadium Pill
           'rounded-full overflow-hidden p-[3px]', // Exact uniform margin
-          // Dark Translucent Liquid Glass Container
-          'bg-[#141620]/95 dark:bg-[#0c0e14]/95 backdrop-blur-2xl backdrop-saturate-150',
-          'border border-white/15 dark:border-white/10',
-          'shadow-[0_12px_36px_rgba(0,0,0,0.5),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)]'
+          // Crystal Clear Translucent Liquid Glass (NO opaque black, perfectly uniform on Top Up, Katalog, Promo, Akun, Beranda)
+          'bg-slate-900/55 dark:bg-black/40 backdrop-blur-2xl backdrop-saturate-150',
+          'border border-white/20 dark:border-white/15',
+          'shadow-[0_8px_24px_rgba(0,0,0,0.2),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1.5px_rgba(255,255,255,0.35)]'
         )}
       >
         {/* Top Edge Specular Reflex */}
-        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
 
         {/* 5 Strictly Equal 20% Columns Grid */}
         <div className="relative grid grid-cols-5 items-center h-full w-full">

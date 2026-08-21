@@ -25,9 +25,7 @@ export default function EmptyState({
   glowColor = 'from-primary/20 to-accent/20',
 }: EmptyStateProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className={cn(
         'relative overflow-hidden p-8 sm:p-12 text-center rounded-3xl glass-card border border-border/50',
         className
@@ -58,6 +56,6 @@ export default function EmptyState({
           </Link>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

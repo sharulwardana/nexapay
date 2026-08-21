@@ -78,7 +78,7 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
                 {/* Actions */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Link
-                    href={`/topup/${item.slug}`}
+                    href={item.category === 'GAME_TOPUP' ? `/topup/${item.slug}` : `/products/${item.slug}`}
                     className="p-2 rounded-lg gradient-primary text-white hover:shadow-neon-violet transition-all"
                   >
                     <ShoppingCart className="w-4 h-4" />

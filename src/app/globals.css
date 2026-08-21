@@ -679,3 +679,12 @@
   initial-value: 0deg;
   inherits: false;
 }
+
+/* Prevent iOS / Safari / Mobile viewport auto-zoom on input focus */
+@media screen and (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

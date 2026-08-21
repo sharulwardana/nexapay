@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import { Zap, ShieldCheck, Clock, Headphones } from 'lucide-react';
 
 const features = [
@@ -46,26 +46,32 @@ const features = [
 function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, margin: '50px' });
   const isFloat = target % 1 !== 0;
 
   useEffect(() => {
     if (!isInView) return;
-    const duration = 2000;
+    const duration = 1200;
     const start = Date.now();
+    let animFrame: number;
     const step = () => {
       const elapsed = Date.now() - start;
       const progress = Math.min(elapsed / duration, 1);
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(isFloat ? Number((eased * target).toFixed(1)) : Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) {
+        animFrame = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
     };
-    requestAnimationFrame(step);
+    animFrame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animFrame);
   }, [isInView, target, isFloat]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="tabular-nums font-mono">
       {isFloat ? count.toFixed(1) : count.toLocaleString('id-ID')}
       {suffix}
     </span>
@@ -80,61 +86,42 @@ const stats = [
 ];
 
 export default function StatsCounter() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden">
+    <section className="section-padding relative overflow-hidden">
       {/* Background mesh */}
       <div className="absolute inset-0 pointer-events-none mesh-gradient opacity-50" />
 
       <div className="container-app relative z-10">
         {/* Stats Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 tablet:gap-6 mb-12 tablet:mb-16"
-        >
-          {stats.map((stat, i) => (
-            <motion.div
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 tablet:gap-6 mb-12 tablet:mb-16">
+          {stats.map((stat) => (
+            <div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="text-center p-5 tablet:p-6 rounded-2xl glass-card border border-white/10 hover:border-primary/40 transition-all duration-300 shadow-sm hover:shadow-neon-violet"
+              className="text-center p-4 sm:p-5 tablet:p-6 rounded-2xl glass-card border border-white/10 hover:border-primary/40 transition-all duration-300 shadow-sm hover:shadow-neon-violet group"
             >
-              <div className="text-2xl tablet:text-3xl lg:text-4xl font-bold font-heading gradient-text mb-1.5 tracking-tight">
+              <div className="text-xl sm:text-2xl tablet:text-3xl lg:text-4xl font-bold font-heading gradient-text mb-1.5 tracking-tight tabular-nums">
                 <AnimatedCounter target={stat.value} suffix={stat.suffix} />
               </div>
-              <p className="text-xs tablet:text-sm text-muted-foreground font-semibold tracking-wide">{stat.label}</p>
-            </motion.div>
+              <p className="text-[11px] sm:text-xs tablet:text-sm text-muted-foreground font-semibold tracking-wide leading-snug">{stat.label}</p>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.3 }}
-          className="text-center mb-10"
-        >
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-md mb-4 shadow-sm">
             <Zap className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-primary font-heading">SYSTEM PERFORMANCE TELEMETRY</span>
           </div>
           <h2 className="heading-3">Kecepatan Eksekusi & Keamanan Tingkat Tinggi</h2>
           <p className="body-default mt-2 max-w-lg mx-auto text-muted-foreground font-medium">Disokong infrastruktur cloud berkecepatan tinggi dengan garansi otomatisasi 24/7.</p>
-        </motion.div>
+        </div>
 
         {/* Feature Cards */}
         <div className="grid grid-cols-1 tablet:grid-cols-2 lg:grid-cols-4 gap-4 tablet:gap-5">
-          {features.map((feature, i) => (
-            <motion.div
+          {features.map((feature) => (
+            <div
               key={feature.title}
-              initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.4 + i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="group text-center p-6 rounded-2xl border border-white/10 bg-card/60 backdrop-blur-md hover:border-primary/40 transition-all duration-300 hover:shadow-neon-violet relative overflow-hidden hover:-translate-y-1"
             >
               {/* Hover glow */}
@@ -150,7 +137,7 @@ export default function StatsCounter() {
                 <h3 className="text-sm font-bold text-foreground mb-2 group-hover:text-primary transition-colors font-heading tracking-tight">{feature.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed font-medium">{feature.description}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -60,43 +60,41 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
           </div>
 
           <div className="space-y-3">
-            <AnimatePresence>
-              {favorites.map((item) => (
-                <div
-                  key={item.id}
-                  className="glass-card p-4 flex items-center gap-3"
-                >
-                  {/* Icon */}
-                  <div className="w-12 h-12 tablet:w-14 tablet:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-                    <Gamepad2 className="w-6 h-6 text-primary/60" />
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-semibold leading-snug line-clamp-2">{item.name}</h3>
-                    <p className="text-[10px] text-muted-foreground">{item.publisher} • {item.category}</p>
-                    <p className="text-xs font-bold text-primary mt-0.5">Mulai {formatCurrency(item.minPrice)}</p>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Link
-                      href={`/topup/${item.slug}`}
-                      className="p-2 rounded-lg gradient-primary text-white hover:shadow-neon-violet transition-all"
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                    </Link>
-                    <button
-                      onClick={() => removeFavorite(item.productId, item.name)}
-                      disabled={loadingId === item.productId}
-                      className="p-2 rounded-lg border border-border text-muted-foreground hover:text-red-500 hover:border-red-500/30 transition-all disabled:opacity-50"
-                    >
-                      {loadingId === item.productId ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                    </button>
-                  </div>
+            {favorites.map((item) => (
+              <div
+                key={item.id}
+                className="glass-card p-4 flex items-center gap-3"
+              >
+                {/* Icon */}
+                <div className="w-12 h-12 tablet:w-14 tablet:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
+                  <Gamepad2 className="w-6 h-6 text-primary/60" />
                 </div>
-              ))}
-            </AnimatePresence>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xs sm:text-sm font-semibold leading-snug line-clamp-2">{item.name}</h3>
+                  <p className="text-[10px] text-muted-foreground">{item.publisher} • {item.category}</p>
+                  <p className="text-xs font-bold text-primary mt-0.5">Mulai {formatCurrency(item.minPrice)}</p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Link
+                    href={`/topup/${item.slug}`}
+                    className="p-2 rounded-lg gradient-primary text-white hover:shadow-neon-violet transition-all"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                  </Link>
+                  <button
+                    onClick={() => removeFavorite(item.productId, item.name)}
+                    disabled={loadingId === item.productId}
+                    className="p-2 rounded-lg border border-border text-muted-foreground hover:text-red-500 hover:border-red-500/30 transition-all disabled:opacity-50"
+                  >
+                    {loadingId === item.productId ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
           {favorites.length === 0 && (

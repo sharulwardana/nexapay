@@ -31,7 +31,7 @@ export default function ContactClient() {
 
         <div className="container-app max-w-5xl relative z-10">
           {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10 tablet:mb-14">
+          <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="text-center mb-10 tablet:mb-14">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 backdrop-blur-md mb-4 shadow-sm">
               <Cpu className="w-3.5 h-3.5 text-cyan-400" />
               <span className="text-[11px] font-bold tracking-widest text-cyan-400 uppercase font-heading">Nexa Command Center 24/7</span>

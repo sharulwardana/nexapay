@@ -18,17 +18,6 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
   const { playHover, playClick } = useSoundEffect();
   const { items: cartItems, getItemCount, getTotal, removeItem } = useCartStore();
 
-  useEffect(() => {
-    if (isOpen && window.innerWidth < 768) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
   return (
     <div className="relative">
       <button
@@ -51,7 +40,7 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Mobile Dark Backdrop - High Z-Index & Event Shielding */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -61,15 +50,14 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
                 e.stopPropagation();
                 onToggle();
               }}
-              onTouchStart={(e) => e.stopPropagation()}
-              className="tablet:hidden fixed inset-0 bg-black/85 backdrop-blur-xl z-[90] pointer-events-auto touch-none select-none cursor-pointer"
+              className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[90] pointer-events-auto cursor-pointer"
             />
 
             <motion.div
-              initial={{ opacity: 0, y: -12, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.96 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="fixed top-16 right-3 w-[calc(100vw-24px)] max-w-sm tablet:absolute tablet:top-full tablet:right-0 tablet:left-auto tablet:w-[360px] tablet:mt-2 glass-card border border-white/15 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.8)] overflow-hidden z-[100] max-h-[70vh] flex flex-col"
             >
               {/* Mobile Visual Drag Handle */}

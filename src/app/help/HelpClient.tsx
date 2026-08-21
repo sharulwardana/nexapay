@@ -57,7 +57,7 @@ export default function HelpClient() {
 
         <div className="container-app max-w-4xl relative z-10">
           {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10 tablet:mb-12">
+          <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="text-center mb-10 tablet:mb-12">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-md mb-4 shadow-sm">
               <Cpu className="w-3.5 h-3.5 text-amber-400" />
               <span className="text-[11px] font-bold tracking-widest text-amber-400 uppercase font-heading">Nexa Knowledge Engine</span>
@@ -70,15 +70,24 @@ export default function HelpClient() {
             </p>
 
             {/* Smart Search */}
-            <div className="relative max-w-lg mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <div className="relative max-w-lg mx-auto flex items-center">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400 pointer-events-none z-20" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Cari kata kunci kendala (contoh: MLBB, pending, refund)..."
-                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-card/60 border border-border/80 text-xs tablet:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 backdrop-blur-xl shadow-lg transition-all"
+                className="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-card/80 border border-border/80 text-xs tablet:text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 backdrop-blur-xl shadow-lg transition-all"
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch('')}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors z-20"
+                >
+                  <span className="text-xs font-bold">✕</span>
+                </button>
+              )}
             </div>
           </motion.div>
 
@@ -88,13 +97,13 @@ export default function HelpClient() {
               { icon: MessageCircle, title: 'Live Priority CS', desc: 'Sesi chat langsung dengan tim teknisi', action: 'Mulai Chat CS', color: 'from-emerald-500 to-teal-600', link: '/contact' },
               { icon: Mail, title: 'Dispatch Email', desc: 'Respon cepat untuk kendala invoice', action: 'Kirim Email', color: 'from-cyan-500 to-blue-600', link: 'mailto:support@nexapay.id' },
               { icon: Phone, title: 'Hotline 24/7', desc: 'Bebas pulsa bantuan telepon', action: '0800-123-4567', color: 'from-amber-500 to-orange-600', link: 'tel:08001234567' },
-            ].map((contact, i) => (
+            ].map((contact) => (
               <motion.a
                 key={contact.title}
                 href={contact.link}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                initial={false}
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
                 className="p-5 rounded-2xl bg-card/40 border border-border/80 hover:border-primary/40 backdrop-blur-md text-center group transition-all duration-300 shadow-md"
               >
                 <div className={cn('w-11 h-11 rounded-xl bg-gradient-to-br mx-auto mb-3 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform', contact.color)}>

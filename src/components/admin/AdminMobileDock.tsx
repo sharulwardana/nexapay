@@ -28,25 +28,7 @@ export default function AdminMobileDock({ adminUser }: {
   adminUser?: { name?: string | null; email?: string | null; image?: string | null }
 }) {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
-
-  // Smart Hide-on-Scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 60) {
-        setIsVisible(false); // Hide when scrolling down
-      } else {
-        setIsVisible(true);  // Show when scrolling up
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   // Close sheet on route change
   useEffect(() => {
@@ -64,14 +46,11 @@ export default function AdminMobileDock({ adminUser }: {
 
   return (
     <>
-      {/* Floating Bottom Dock (Mobile Only) */}
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: isVisible ? 0 : 100, opacity: isVisible ? 1 : 0 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] inset-x-0 mx-auto z-40 lg:hidden w-[calc(100%-2rem)] max-w-[380px] pointer-events-auto"
+      {/* Floating Bottom Dock (Mobile Only - Rock Solid Z-50) */}
+      <div
+        className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] inset-x-0 mx-auto z-50 lg:hidden w-[calc(100%-2rem)] max-w-[380px] pointer-events-auto"
       >
-        <div className="relative p-1.5 rounded-full bg-[#0b0c13]/92 backdrop-blur-2xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.95),0_0_24px_rgba(139,92,246,0.18)] grid grid-cols-5 items-center gap-0.5">
+        <div className="relative p-1.5 rounded-full bg-[#0b0c13]/96 backdrop-blur-2xl border border-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.95),0_0_24px_rgba(139,92,246,0.2)] grid grid-cols-5 items-center gap-0.5">
           {primaryTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = pathname === tab.href || (tab.href !== '/admin' && pathname.startsWith(tab.href));
@@ -125,7 +104,7 @@ export default function AdminMobileDock({ adminUser }: {
             </span>
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Secondary Items Slide-Up Drawer */}
       <AnimatePresence>

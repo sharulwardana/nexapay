@@ -127,9 +127,13 @@ export default function AboutClient({ stats }: { stats: AboutStat[] }) {
         <div className="mb-16">
           <h2 className="heading-2 text-center mb-10">Tim Di Balik NexaPay</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {team.map((member, i) => (
-              <motion.div key={member.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className="p-5 rounded-2xl bg-card/40 border border-border/80 backdrop-blur-md text-center hover:border-primary/40 transition-all duration-300"
+            {team.map((member) => (
+              <motion.div 
+                key={member.name} 
+                initial={false}
+                whileHover={{ y: -4 }} 
+                transition={{ duration: 0.2 }}
+                className="p-5 rounded-2xl bg-card/40 border border-border/80 backdrop-blur-md text-center hover:border-primary/40 transition-all duration-300 shadow-md"
               >
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-3 text-lg font-bold font-heading text-white shadow-md">
                   {member.initial}

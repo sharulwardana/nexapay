@@ -129,11 +129,8 @@ export default function TransactionsClient({ transactions, stats }: {
         </header>
 
         {/* Content */}
-        <motion.main
-          initial={{ opacity: 0, scale: 0.985 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 p-6 space-y-6 overflow-y-auto"
+        <main
+          className="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto"
         >
           {/* Stats Cards */}
           <div className="grid grid-cols-1 mobile-l:grid-cols-2 laptop-l:grid-cols-4 gap-3 sm:gap-4">
@@ -142,19 +139,16 @@ export default function TransactionsClient({ transactions, stats }: {
               { label: 'Total Transaksi', value: stats.totalAll.toString(), icon: Receipt, color: 'from-blue-500 to-cyan-500' },
               { label: 'Selesai', value: stats.totalCompleted.toString(), icon: CheckCircle, color: 'from-emerald-400 to-teal-500' },
               { label: 'Menunggu', value: stats.totalPending.toString(), icon: Clock, color: 'from-yellow-400 to-orange-500' },
-            ].map((stat, i) => (
-              <motion.div
+            ].map((stat) => (
+              <div
                 key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
                 className="relative rounded-2xl border border-white/5 bg-white/[0.02] p-4 sm:p-5 overflow-hidden group hover:border-white/10 transition-all min-w-0"
               >
                 <div className={cn('absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-20 bg-gradient-to-br', stat.color)} />
                 <stat.icon className="w-5 h-5 text-white/30 mb-3" />
                 <p className="text-lg mobile-m:text-xl tablet:text-2xl laptop-l:text-3xl font-black truncate">{stat.value}</p>
                 <p className="text-xs text-white/40 mt-1 truncate">{stat.label}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
 
@@ -312,7 +306,7 @@ export default function TransactionsClient({ transactions, stats }: {
               </div>
             </div>
           )}
-        </motion.main>
+        </main>
     </>
   );
 }

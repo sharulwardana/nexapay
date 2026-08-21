@@ -66,18 +66,18 @@ export default function MobileNav() {
         bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* 2026 Crystal Liquid Glass Capsule (Crystal Clear, Zero Black Shadow on ALL pages) */}
+      {/* 2026 Proportional Large Stadium Capsule (Enlarged across Mobile S, M, L with 100% Identical Precise Aspect Ratio) */}
       <div
         className={cn(
           'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation backface-hidden',
           // Ultra-smooth 120 FPS hardware-accelerated CSS transition
           'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          // Proportional Enlarged 2D Morphing
+          // Proportionally Enlarged 2D Morphing
           isShrunk
-            ? 'w-[78%] max-w-[285px] xs:max-w-[315px] sm:max-w-[345px] h-[44px] sm:h-[46px]' // Shrunk enlarged compact
-            : 'w-[96%] max-w-[390px] xs:max-w-[430px] sm:max-w-[475px] h-[56px] sm:h-[59px]', // Expanded Enlarged Stadium Pill
+            ? 'w-[80%] max-w-[305px] xs:max-w-[335px] sm:max-w-[365px] h-[48px] sm:h-[50px]' // Shrunk large compact
+            : 'w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] h-[62px] sm:h-[66px]', // Expanded Large Stadium Pill
           'rounded-full overflow-hidden p-[3px]', // Exact uniform margin
-          // Crystal Clear Translucent Liquid Glass (NO opaque black, perfectly uniform on Top Up, Katalog, Promo, Akun, Beranda)
+          // Crystal Clear Translucent Liquid Glass (NO opaque black, uniform across all pages)
           'bg-slate-900/55 dark:bg-black/40 backdrop-blur-2xl backdrop-saturate-150',
           'border border-white/20 dark:border-white/15',
           'shadow-[0_8px_24px_rgba(0,0,0,0.2),0_0_15px_rgba(249,115,22,0.1),inset_0_1px_1.5px_rgba(255,255,255,0.35)]'
@@ -88,7 +88,7 @@ export default function MobileNav() {
 
         {/* 5 Strictly Equal 20% Columns Grid */}
         <div className="relative grid grid-cols-5 items-center h-full w-full">
-          {/* Active Tab Bubble — Proportional Enlarged Stadium Capsule (Identical Shape) */}
+          {/* Active Tab Bubble — Large Proportional Stadium Capsule (Identical Shape) */}
           {activeIndex !== -1 && (
             <div
               className={cn(
@@ -127,8 +127,8 @@ export default function MobileNav() {
                     className={cn(
                       'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                       isShrunk
-                        ? 'w-[18px] h-[18px] sm:w-[19px] sm:h-[19px]'
-                        : 'w-[19px] h-[19px] sm:w-[21px] sm:h-[21px]',
+                        ? 'w-[19px] h-[19px] sm:w-[20px] sm:h-[20px]'
+                        : 'w-[21px] h-[21px] sm:w-[23px] sm:h-[23px]',
                       isActive
                         ? 'stroke-[2.5] text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
                         : 'stroke-[1.8] opacity-75 hover:opacity-100 text-zinc-300'
@@ -140,13 +140,13 @@ export default function MobileNav() {
                 <div
                   className={cn(
                     'grid transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden',
-                    isShrunk ? 'grid-rows-[0fr] opacity-0 mt-0' : 'grid-rows-[1fr] opacity-100 mt-0.5'
+                    isShrunk ? 'grid-rows-[0fr] opacity-0 mt-0' : 'grid-rows-[1fr] opacity-100 mt-1'
                   )}
                 >
                   <span
                     className={cn(
                       'font-heading tracking-tight leading-none text-center min-h-0 overflow-hidden pb-0.5',
-                      'text-[9.5px] xs:text-[10px] sm:text-[10.5px]',
+                      'text-[10px] xs:text-[10.5px] sm:text-[11px]',
                       isActive
                         ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
                         : 'font-medium text-zinc-300'

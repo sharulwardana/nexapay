@@ -736,7 +736,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto w-full shadow-[0_0_20px_rgba(255,115,0,0.15),inset_0_1px_1.5px_rgba(255,255,255,0.35)] py-2 px-3.5 sm:py-2.5 sm:px-4 rounded-full border border-white/20 bg-slate-900/60 dark:bg-black/45 backdrop-blur-2xl flex items-center justify-between gap-2.5 sm:gap-3 h-12 sm:h-13"
+          className="pointer-events-auto w-full py-2 px-3.5 sm:py-2.5 sm:px-4 rounded-full border border-white/20 bg-slate-900/90 dark:bg-black/90 backdrop-blur-2xl flex items-center justify-between gap-2.5 sm:gap-3 h-12 sm:h-13 shadow-none"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex-1 min-w-0 flex flex-col justify-center">

@@ -57,10 +57,10 @@ export default function RealTimeTransactions() {
                 <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 animate-pulse" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-heading font-bold text-xs sm:text-sm tablet:text-base text-foreground truncate">
+                <h3 className="font-heading font-bold text-xs sm:text-sm tablet:text-base text-foreground">
                   Aktivitas Transaksi Real-Time
                 </h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight mt-0.5">
                   Pantau pesanan yang baru saja berhasil diproses
                 </p>
               </div>

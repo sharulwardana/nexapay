@@ -203,7 +203,7 @@ export default function DashboardClient({
           <div className="glass-card overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <h2 className="text-sm font-semibold">Transaksi Terakhir</h2>
-              <Link href="/dashboard/transactions" className="text-xs text-primary hover:underline flex items-center gap-1">
+              <Link href="/dashboard/transactions" className="text-xs text-primary hover:text-primary-hover font-bold flex items-center gap-1 hover:translate-x-0.5 transition-all">
                 Lihat Semua <ChevronRight className="w-3 h-3" />
               </Link>
             </div>

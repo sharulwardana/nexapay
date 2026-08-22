@@ -121,9 +121,9 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
                   {unreadCount > 0 && (
                     <button
                       onClick={() => { playClick(); handleMarkAllAsRead(); }}
-                      className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-xl transition-colors"
+                      className="text-[11px] font-bold text-primary flex items-center gap-1 bg-primary/15 hover:bg-primary/25 active:scale-95 px-2.5 py-1 rounded-xl transition-all cursor-pointer border border-primary/25"
                     >
-                      <Check className="w-3 h-3" /> Dibaca
+                      <Check className="w-3 h-3" /> Tandai Dibaca
                     </button>
                   )}
                   {/* Explicit Close X Button */}

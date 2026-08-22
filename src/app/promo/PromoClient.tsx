@@ -84,7 +84,7 @@ export default function PromoClient({ dbPromos = [] }: { dbPromos?: PromoItem[] 
                     <Clock className="w-3.5 h-3.5 text-primary" />
                     <span suppressHydrationWarning>Berlaku s/d {new Date(promo.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                   </div>
-                  <Link href="/topup" className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline group-hover:translate-x-0.5 transition-transform">
+                  <Link href="/topup" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-xs font-bold text-primary active:scale-95 transition-all group-hover:translate-x-0.5">
                     <span>Gunakan</span>
                     <ArrowRight className="w-3 h-3" />
                   </Link>

@@ -46,7 +46,7 @@ export default function NewsClient({ dbArticles = [] }: { dbArticles?: NewsArtic
                         {displayArticles[0].badge}
                       </span>
                     </div>
-                    <h2 className="text-xl tablet:text-2xl lg:text-3xl font-bold font-heading text-white mb-3 group-hover:underline decoration-2 underline-offset-4">
+                    <h2 className="text-xl tablet:text-2xl lg:text-3xl font-bold font-heading text-white mb-3 group-hover:text-amber-200 transition-colors">
                       {displayArticles[0].title}
                     </h2>
                     <p className="text-xs tablet:text-sm text-white/85 line-clamp-2 mb-6 leading-relaxed">

@@ -109,7 +109,10 @@ export default function HelpClient() {
                 </div>
                 <h3 className="text-sm font-bold font-heading mb-0.5">{contact.title}</h3>
                 <p className="text-xs text-muted-foreground mb-2">{contact.desc}</p>
-                <span className="text-xs font-bold text-primary font-heading group-hover:underline">{contact.action} &rarr;</span>
+                <span className="text-xs font-bold text-primary font-heading flex items-center justify-center gap-1 group-hover:text-primary-hover transition-colors">
+                  <span>{contact.action}</span>
+                  <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </span>
               </motion.a>
             ))}
           </div>

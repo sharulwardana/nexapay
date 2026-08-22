@@ -2553,59 +2553,69 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
         {/* Global Modern Footer */}
         <Footer />
 
-      {/* Modern Large Stadium Liquid Glass Floating Dock (Mobile S, M, L & Tablet: lg:hidden) */}
+      {/* Futuristic Cyber HUD Floating Dock (Zero Dark Shadow, Pure Modern Glass, Adaptive Mobile S, M, L & Tablet) */}
       <div 
-        className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-2.5 sm:px-4"
+        className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-3 sm:px-4"
         style={{
           bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto relative w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] tablet:max-w-[560px] h-[64px] sm:h-[68px] rounded-full overflow-hidden p-1.5 sm:p-2 bg-white/[0.08] dark:bg-[#0B0D1A]/90 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 dark:border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_24px_rgba(249,115,22,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.35)] flex items-center justify-between gap-2.5 sm:gap-3.5 transition-all duration-300"
+          className="pointer-events-auto relative w-full max-w-[430px] xs:max-w-[470px] sm:max-w-[520px] tablet:max-w-[580px] rounded-2xl xs:rounded-3xl p-2.5 sm:p-3 bg-[#0a0d18]/95 dark:bg-[#070913]/95 backdrop-blur-2xl border border-white/[0.12] dark:border-white/[0.1] shadow-none flex items-center justify-between gap-3 transition-all"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Top Edge Specular Reflex */}
-          <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+          {/* Top Accent Cyber Glow Line */}
+          <div className="absolute top-0 inset-x-6 h-[1.5px] bg-gradient-to-r from-transparent via-primary/80 to-transparent pointer-events-none" />
 
-          {/* Left Info: Nominal & Price */}
-          <div className="flex-1 min-w-0 pl-2.5 sm:pl-3 flex flex-col justify-center">
-            <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate leading-tight">
-              {denom ? denom.label : 'Pilih Nominal'}
-            </span>
-            <span className="text-sm sm:text-base tablet:text-lg font-black gradient-text truncate leading-tight font-heading mt-0.5">
-              {denom ? formatCurrency(total) : 'Rp 0'}
-            </span>
+          {/* Left Info: Game Badge, Item Title & Real Price */}
+          <div className="flex-1 min-w-0 pl-1.5 flex flex-col justify-center">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[9px] xs:text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate font-mono">
+                {denom ? denom.label : 'Pilih Item Top Up'}
+              </span>
+            </div>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-sm xs:text-base sm:text-lg tablet:text-xl font-black text-foreground font-heading tracking-tight leading-none">
+                {denom ? formatCurrency(total) : 'Rp 0'}
+              </span>
+              {denom && (
+                <span className="text-[9px] text-emerald-400 font-bold hidden xs:inline">
+                  Instant ⚡
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* Right Actions: Cart & Checkout */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 pr-1">
+          {/* Right Actions: Cart Squircle & Cyber Checkout Button */}
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={isProcessing}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 dark:bg-white/5 border border-primary/40 text-primary flex items-center justify-center hover:bg-primary/20 active:scale-90 transition-all cursor-pointer shadow-md"
+              className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-white/[0.05] border border-white/[0.12] hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none"
               aria-label="Tambah ke Keranjang"
             >
-              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ShoppingCart className="w-4 h-4 xs:w-5 xs:h-5" />
             </button>
 
             <button
               type="button"
               onClick={handleCheckout}
               disabled={isProcessing}
-              className="h-10 sm:h-11 px-4 sm:px-5 tablet:px-6 rounded-full gradient-primary text-white font-black text-xs sm:text-sm font-heading shadow-neon-orange hover:scale-[1.03] active:scale-[0.97] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap"
+              className="h-10 xs:h-11 sm:h-12 px-4 xs:px-5 sm:px-6 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-xs xs:text-sm font-heading shadow-none hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 xs:gap-2 whitespace-nowrap"
             >
               {isProcessing ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Proses...</>
               ) : !userId && !isVoucherProduct ? (
-                <><User className="w-4 h-4" /> 1. Akun</>
+                <><User className="w-4 h-4 text-white/80" /> Isi Akun</>
               ) : !selectedDenom ? (
-                <><Tag className="w-4 h-4" /> 2. Nominal</>
+                <><Tag className="w-4 h-4 text-white/80" /> Pilih Item</>
               ) : !selectedPayment ? (
-                <><CreditCard className="w-4 h-4" /> 3. Bayar</>
+                <><CreditCard className="w-4 h-4 text-white/80" /> Pembayaran</>
               ) : (
-                <><Zap className="w-4 h-4 animate-pulse text-amber-300 fill-amber-300" /> Beli Sekarang</>
+                <><Zap className="w-4 h-4 text-amber-200 fill-amber-200 animate-pulse" /> Bayar Sekarang</>
               )}
             </button>
           </div>

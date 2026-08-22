@@ -7,7 +7,19 @@ import { promotions } from '@/data/testimonials';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
-export default function PromoClient() {
+interface PromoItem {
+  id: string;
+  code: string;
+  title: string;
+  subtitle: string;
+  discount: string;
+  type: string;
+  endDate: string;
+}
+
+export default function PromoClient({ dbPromos = [] }: { dbPromos?: PromoItem[] }) {
+  const displayPromos = dbPromos.length > 0 ? dbPromos : promotions;
+
   return (
     <>
       <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
@@ -18,7 +30,7 @@ export default function PromoClient() {
           </div>
 
           <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4 tablet:gap-6">
-            {promotions.map((promo, i) => (
+            {displayPromos.map((promo, i) => (
               <div
                 key={promo.id}
                 className="glass-card overflow-hidden group hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 shadow-xl hover:shadow-[0_15px_35px_rgba(249,115,22,0.15)] rounded-3xl flex flex-col justify-between relative"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Clock, Activity, Zap } from 'lucide-react';
+import { CheckCircle2, Clock, Activity, Zap, ShoppingBag } from 'lucide-react';
 import { useCurrencyStore } from '@/store/currencyStore';
 
 interface TransactionItem {
@@ -16,49 +16,6 @@ interface TransactionItem {
   status: string;
   timeAgo: string;
 }
-
-const FALLBACK_TRANSACTIONS: TransactionItem[] = [
-  {
-    id: 'live-1',
-    invoiceMasked: 'INV-MLBB-92***',
-    productName: 'Mobile Legends',
-    itemLabel: '86 Diamonds (78 + 8 Bonus)',
-    price: 21500,
-    paymentMethod: 'QRIS',
-    status: 'COMPLETED',
-    timeAgo: 'baru saja',
-  },
-  {
-    id: 'live-2',
-    invoiceMasked: 'INV-FF-48***',
-    productName: 'Free Fire',
-    itemLabel: '140 Diamonds',
-    price: 19800,
-    paymentMethod: 'DANA',
-    status: 'COMPLETED',
-    timeAgo: '1 menit lalu',
-  },
-  {
-    id: 'live-3',
-    invoiceMasked: 'INV-VAL-11***',
-    productName: 'Valorant',
-    itemLabel: '1,000 Points',
-    price: 115000,
-    paymentMethod: 'GOPAY',
-    status: 'COMPLETED',
-    timeAgo: '2 menit lalu',
-  },
-  {
-    id: 'live-4',
-    invoiceMasked: 'INV-GEN-77***',
-    productName: 'Genshin Impact',
-    itemLabel: 'Blessing of the Welkin Moon',
-    price: 79000,
-    paymentMethod: 'BCA',
-    status: 'COMPLETED',
-    timeAgo: '4 menit lalu',
-  },
-];
 
 export default function RealTimeTransactions({ compact = false }: { compact?: boolean }) {
   const [transactions, setTransactions] = useState<TransactionItem[]>([]);
@@ -74,13 +31,13 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
         return;
       }
       const data = await res.json();
-      if (data.transactions && Array.isArray(data.transactions) && data.transactions.length > 0) {
+      if (data.transactions && Array.isArray(data.transactions)) {
         setTransactions(data.transactions);
       } else {
-        setTransactions(FALLBACK_TRANSACTIONS);
+        setTransactions([]);
       }
     } catch {
-      setTransactions(FALLBACK_TRANSACTIONS);
+      setTransactions([]);
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +68,7 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
     };
   }, []);
 
-  const displayList = transactions.length > 0 ? transactions.slice(0, 5) : FALLBACK_TRANSACTIONS;
+  const displayList = transactions.slice(0, 5);
 
   const content = (
     <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
@@ -147,7 +104,7 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
           <div className="h-11 bg-white/5 rounded-xl animate-pulse" />
           <div className="h-11 bg-white/5 rounded-xl animate-pulse" />
         </div>
-      ) : (
+      ) : displayList.length > 0 ? (
         <div className="divide-y divide-border/40">
           <AnimatePresence initial={false}>
             {displayList.map((tx) => {
@@ -225,6 +182,16 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
             })}
           </AnimatePresence>
         </div>
+      ) : (
+        <div className="p-8 text-center text-muted-foreground flex flex-col items-center justify-center space-y-2">
+          <div className="w-10 h-10 rounded-2xl bg-muted/40 flex items-center justify-center">
+            <ShoppingBag className="w-5 h-5 text-muted-foreground/50" />
+          </div>
+          <p className="text-xs font-semibold text-foreground">Belum Ada Transaksi Terbaru</p>
+          <p className="text-[11px] text-muted-foreground max-w-xs">
+            Transaksi yang berhasil diselesaikan di sistem akan langsung muncul di sini secara otomatis.
+          </p>
+        </div>
       )}
     </div>
   );
@@ -239,4 +206,3 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
     </section>
   );
 }
-

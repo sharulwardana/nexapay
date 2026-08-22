@@ -150,6 +150,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       }
 
       toast.success('Pesanan berhasil dibuat!');
+
+      if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+        try {
+          const channel = new BroadcastChannel('nexapay_live_transactions');
+          channel.postMessage({ type: 'NEW_TRANSACTION' });
+          channel.close();
+        } catch {
+          // ignore
+        }
+      }
+
       router.push(`/payment-status/${data.transactionId}`);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Gagal memproses pesanan';

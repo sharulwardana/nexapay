@@ -11,14 +11,33 @@ export default function ContactClient() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name || !form.email || !form.subject || !form.message) {
+      toast.error('Harap lengkapi semua kolom formulir');
+      return;
+    }
+
     setIsSending(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message || 'Tiket respon telah dibuat! Tim kami akan segera menghubungi Anda.');
+        setForm({ name: '', email: '', subject: '', message: '' });
+      } else {
+        toast.error(data.message || 'Gagal mengirim pesan');
+      }
+    } catch {
+      toast.error('Terjadi gangguan koneksi');
+    } finally {
       setIsSending(false);
-      toast.success('Dispatched to Nexa Support Team! Tiket respon telah dibuat.');
-      setForm({ name: '', email: '', subject: '', message: '' });
-    }, 1200);
+    }
   };
 
   return (

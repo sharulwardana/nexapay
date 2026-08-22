@@ -497,6 +497,16 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
       }
 
       toast.success('Pesanan berhasil dibuat!');
+
+      if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+        try {
+          const channel = new BroadcastChannel('nexapay_live_transactions');
+          channel.postMessage({ type: 'NEW_TRANSACTION' });
+          channel.close();
+        } catch {
+          // ignore
+        }
+      }
       
       if (data.paymentUrl) {
         window.location.href = data.paymentUrl;

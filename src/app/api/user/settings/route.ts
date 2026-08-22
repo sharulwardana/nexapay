@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 const settingsSchema = z.object({
   name: z.string().min(2).max(50).optional(),
+  image: z.string().optional(),
   currentPassword: z.string().optional(),
   newPassword: z.string().min(8, 'Password baru minimal 8 karakter').max(100).optional(),
 });
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const { name, currentPassword, newPassword } = parsed.data;
+    const { name, image, currentPassword, newPassword } = parsed.data;
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -41,6 +42,10 @@ export async function POST(req: NextRequest) {
 
     if (name && name !== user.name) {
       updateData.name = name;
+    }
+
+    if (image && image !== user.image) {
+      updateData.image = image;
     }
 
     // If attempting to change password

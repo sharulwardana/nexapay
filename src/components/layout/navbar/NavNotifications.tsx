@@ -15,6 +15,55 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
   const { playHover, playClick } = useSoundEffect();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore();
 
+  // Fetch real notifications from database
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch('/api/user/notifications');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.notifications && Array.isArray(data.notifications) && data.notifications.length > 0) {
+          useNotificationStore.setState({
+            notifications: data.notifications,
+            unreadCount: data.unreadCount ?? data.notifications.filter((n: { isRead: boolean }) => !n.isRead).length,
+          });
+        }
+      } catch {
+        // Fallback to initial store
+      }
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 15000); // Polling every 15s for live notifications
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleMarkAsRead = async (id: string) => {
+    markAsRead(id);
+    try {
+      await fetch('/api/user/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificationId: id }),
+      });
+    } catch {
+      // Quiet catch
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    markAllAsRead();
+    try {
+      await fetch('/api/user/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ markAll: true }),
+      });
+    } catch {
+      // Quiet catch
+    }
+  };
+
   return (
     <div className="relative">
       <button
@@ -71,7 +120,7 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
                 <div className="flex items-center gap-2">
                   {unreadCount > 0 && (
                     <button
-                      onClick={() => { playClick(); markAllAsRead(); }}
+                      onClick={() => { playClick(); handleMarkAllAsRead(); }}
                       className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-xl transition-colors"
                     >
                       <Check className="w-3 h-3" /> Dibaca
@@ -96,7 +145,7 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
                       onClick={() => {
                         if (!notif.isRead) {
                           playClick();
-                          markAsRead(notif.id);
+                          handleMarkAsRead(notif.id);
                         }
                       }}
                       className={`p-3 rounded-xl border border-border/40 transition-all cursor-pointer flex gap-2.5 items-start ${

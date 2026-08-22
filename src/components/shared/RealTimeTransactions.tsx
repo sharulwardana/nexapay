@@ -88,8 +88,27 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
 
   useEffect(() => {
     fetchDbTransactions();
-    const interval = setInterval(fetchDbTransactions, 10000); // 10 seconds polling
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchDbTransactions, 8000); // 8 seconds polling
+
+    // Listen for live transaction events across browser tabs
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      try {
+        channel = new BroadcastChannel('nexapay_live_transactions');
+        channel.onmessage = (event) => {
+          if (event.data?.type === 'NEW_TRANSACTION') {
+            fetchDbTransactions();
+          }
+        };
+      } catch {
+        // Fallback to polling
+      }
+    }
+
+    return () => {
+      clearInterval(interval);
+      if (channel) channel.close();
+    };
   }, []);
 
   const displayList = transactions.length > 0 ? transactions.slice(0, 5) : FALLBACK_TRANSACTIONS;

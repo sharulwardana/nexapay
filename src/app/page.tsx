@@ -12,7 +12,6 @@ import PaymentPartners from '@/components/home/PaymentPartners';
 
 // Lazy load heavy / below-fold components to reduce initial JS bundle
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'));
-const RealTimeTransactions = dynamic(() => import('@/components/shared/RealTimeTransactions'));
 
 function SectionSkeleton() {
   return (
@@ -26,9 +25,31 @@ export const revalidate = 60; // ISR: revalidate home page every 60s
 
 export default async function HomePage() {
   let games: import('@/types').ProductWithDenominations[] = [];
+  let banners: Array<{ id: string; title: string; subtitle?: string | null; image?: string | null; link?: string | null }> = [];
+  let stats = { products: 50, users: 1250, transactions: 3500 };
 
   try {
-    // Aggregate real-time completed transaction counts per game product (excluding wallet deposits)
+    // 1. Fetch DB Banners
+    banners = await prisma.banner.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      select: { id: true, title: true, subtitle: true, image: true, link: true },
+    });
+
+    // 2. Fetch real database statistics
+    const [pCount, uCount, txCount] = await Promise.all([
+      prisma.product.count({ where: { isActive: true } }),
+      prisma.user.count(),
+      prisma.transaction.count({ where: { status: { in: ['COMPLETED', 'PAID'] } } }),
+    ]);
+
+    stats = {
+      products: pCount,
+      users: uCount,
+      transactions: txCount,
+    };
+
+    // 3. Aggregate real-time completed transaction counts per game product
     const topSalesRaw = await prisma.transaction.groupBy({
       by: ['productId'],
       where: {
@@ -77,7 +98,7 @@ export default async function HomePage() {
       }) as unknown as import('@/types').ProductWithDenominations[];
     }
   } catch (error) {
-    console.warn('Prisma fetch failed on homepage during prerender, falling back to static products:', error);
+    console.warn('Prisma fetch failed on homepage during prerender, falling back to defaults:', error);
   }
 
   // Fallback to static products if DB failed or empty
@@ -95,16 +116,13 @@ export default async function HomePage() {
           <div className="floating-orb w-[400px] h-[400px] bottom-[10%] left-[20%] bg-orange-500/[0.04]" style={{ animationDelay: '6s' }} />
         </div>
 
-        {/* Content (relative to be above orbs) */}
+        {/* Content (Clean & Simple Layout) */}
         <div className="relative z-10">
-          <PromoCarousel />
+          <PromoCarousel banners={banners} />
           <PopularGames games={games} />
           <FlashSale games={games} />
           <TrendingProducts games={games} />
-          <Suspense fallback={<SectionSkeleton />}>
-            <RealTimeTransactions />
-          </Suspense>
-          <StatsCounter />
+          <StatsCounter stats={stats} />
           <Suspense fallback={<SectionSkeleton />}>
             <Testimonials />
           </Suspense>
@@ -115,4 +133,3 @@ export default async function HomePage() {
     </>
   );
 }
-

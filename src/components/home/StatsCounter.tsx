@@ -57,7 +57,6 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
     const step = () => {
       const elapsed = Date.now() - start;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(isFloat ? Number((eased * target).toFixed(1)) : Math.floor(eased * target));
       if (progress < 1) {
@@ -78,14 +77,26 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
   );
 }
 
-const stats = [
-  { value: 500, suffix: '+', label: 'Game & Digital Catalog' },
-  { value: 125000, suffix: '+', label: 'Active Cyber Gamers' },
-  { value: 99.9, suffix: '%', label: 'API Gateway Uptime' },
-  { value: 3, suffix: ' Detik', label: 'Avg Injection Speed' },
-];
+interface StatsCounterProps {
+  stats?: {
+    products?: number;
+    users?: number;
+    transactions?: number;
+  };
+}
 
-export default function StatsCounter() {
+export default function StatsCounter({ stats }: StatsCounterProps) {
+  const productCount = stats?.products && stats.products > 0 ? stats.products : 50;
+  const userCount = stats?.users && stats.users > 0 ? stats.users : 1250;
+  const txCount = stats?.transactions && stats.transactions > 0 ? stats.transactions : 3500;
+
+  const displayStats = [
+    { value: productCount, suffix: '+ Game', label: 'Katalog Produk Aktif' },
+    { value: userCount, suffix: '+ User', label: 'Member Terdaftar' },
+    { value: txCount, suffix: '+', label: 'Transaksi Terproses' },
+    { value: 99.9, suffix: '%', label: 'SLA API Gateway Uptime' },
+  ];
+
   return (
     <section className="section-padding relative overflow-hidden">
       {/* Background mesh */}
@@ -94,7 +105,7 @@ export default function StatsCounter() {
       <div className="container-app relative z-10">
         {/* Stats Row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 tablet:gap-6 mb-12 tablet:mb-16">
-          {stats.map((stat) => (
+          {displayStats.map((stat) => (
             <div
               key={stat.label}
               className="text-center p-4 sm:p-5 tablet:p-6 rounded-2xl glass-card border border-white/10 hover:border-primary/40 transition-all duration-300 shadow-sm hover:shadow-neon-violet group"

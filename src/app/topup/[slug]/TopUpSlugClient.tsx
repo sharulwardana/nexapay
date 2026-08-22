@@ -2553,7 +2553,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
         {/* Global Modern Footer */}
         <Footer />
 
-      {/* Futuristic Cyber HUD Floating Dock (Zero Dark Shadow, Pure Modern Glass, Adaptive Mobile S, M, L & Tablet) */}
+      {/* Pinnacle 2026 Cyber HUD Action Console (Level Mentok UI/UX: Zero Shadow, Translucent Frost Glass, Adaptive Mobile S, M, L & Tablet) */}
       <div 
         className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-3 sm:px-4"
         style={{
@@ -2562,16 +2562,19 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto relative w-full max-w-[430px] xs:max-w-[470px] sm:max-w-[520px] tablet:max-w-[580px] rounded-2xl xs:rounded-3xl p-2.5 sm:p-3 bg-[#0a0d18]/95 dark:bg-[#070913]/95 backdrop-blur-2xl border border-white/[0.12] dark:border-white/[0.1] shadow-none flex items-center justify-between gap-3 transition-all"
+          className="pointer-events-auto relative w-full max-w-[430px] xs:max-w-[470px] sm:max-w-[520px] tablet:max-w-[580px] h-[64px] sm:h-[68px] rounded-2xl xs:rounded-3xl p-2 sm:p-2.5 bg-[#0B0E1B]/92 dark:bg-[#070914]/94 backdrop-blur-2xl backdrop-saturate-200 border border-white/[0.14] dark:border-white/[0.12] shadow-none flex items-center justify-between gap-3 transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Top Accent Cyber Glow Line */}
-          <div className="absolute top-0 inset-x-6 h-[1.5px] bg-gradient-to-r from-transparent via-primary/80 to-transparent pointer-events-none" />
+          {/* Laser-cut Cyber Neon Top Reflex Line */}
+          <div className="absolute top-0 inset-x-6 h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent pointer-events-none z-20" />
 
-          {/* Left Info: Game Badge, Item Title & Real Price */}
-          <div className="flex-1 min-w-0 pl-1.5 flex flex-col justify-center">
+          {/* Left Info: Game Item + Live Price & Telemetry */}
+          <div className="flex-1 min-w-0 pl-2 sm:pl-3 flex flex-col justify-center">
             <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="relative flex h-2 w-2 flex-shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               <span className="text-[9px] xs:text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate font-mono">
                 {denom ? denom.label : 'Pilih Item Top Up'}
               </span>
@@ -2581,20 +2584,20 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                 {denom ? formatCurrency(total) : 'Rp 0'}
               </span>
               {denom && (
-                <span className="text-[9px] text-emerald-400 font-bold hidden xs:inline">
-                  Instant ⚡
+                <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider hidden xs:inline font-mono">
+                  Direct API ⚡
                 </span>
               )}
             </div>
           </div>
 
-          {/* Right Actions: Cart Squircle & Cyber Checkout Button */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+          {/* Right Actions: Cyber Squircle Cart & Glowing Checkout Button */}
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 pr-0.5">
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={isProcessing}
-              className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-white/[0.05] border border-white/[0.12] hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none"
+              className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-white/[0.06] border border-white/15 hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none"
               aria-label="Tambah ke Keranjang"
             >
               <ShoppingCart className="w-4 h-4 xs:w-5 xs:h-5" />
@@ -2604,16 +2607,16 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
               type="button"
               onClick={handleCheckout}
               disabled={isProcessing}
-              className="h-10 xs:h-11 sm:h-12 px-4 xs:px-5 sm:px-6 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-xs xs:text-sm font-heading shadow-none hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 xs:gap-2 whitespace-nowrap"
+              className="h-10 xs:h-11 sm:h-12 px-4 xs:px-5 sm:px-6 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-xs xs:text-sm font-heading shadow-[0_0_18px_rgba(249,115,22,0.3)] hover:shadow-[0_0_26px_rgba(249,115,22,0.5)] hover:scale-[1.02] active:scale-[0.96] transition-all cursor-pointer flex items-center justify-center gap-1.5 xs:gap-2 whitespace-nowrap"
             >
               {isProcessing ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Proses...</>
               ) : !userId && !isVoucherProduct ? (
-                <><User className="w-4 h-4 text-white/80" /> Isi Akun</>
+                <><User className="w-4 h-4 text-white/90" /> 1. Isi Akun</>
               ) : !selectedDenom ? (
-                <><Tag className="w-4 h-4 text-white/80" /> Pilih Item</>
+                <><Tag className="w-4 h-4 text-white/90" /> 2. Pilih Item</>
               ) : !selectedPayment ? (
-                <><CreditCard className="w-4 h-4 text-white/80" /> Pembayaran</>
+                <><CreditCard className="w-4 h-4 text-white/90" /> 3. Bayar</>
               ) : (
                 <><Zap className="w-4 h-4 text-amber-200 fill-amber-200 animate-pulse" /> Bayar Sekarang</>
               )}

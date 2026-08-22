@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Star, Zap, ChevronRight, Gamepad2, Smartphone, Gift, Tv, Wallet, CreditCard } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
+import { useCurrencyStore } from '@/store/currencyStore';
 import { getGameColor, GAME_INITIALS } from '@/lib/colors';
 import type { ProductWithDenominations } from '@/types';
 
@@ -50,6 +50,8 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
     'PAKET_DATA': Smartphone,
   };
   const FallbackIcon = fallbackIconMap[game.category] || CreditCard;
+
+  const { formatPrice } = useCurrencyStore();
 
   return (
     <motion.div
@@ -138,11 +140,12 @@ export default function CyberGameCard({ game, priorityImage = false }: CyberGame
           <div className="mt-3 pt-2.5 border-t border-border/40 flex items-center justify-between">
             <span className="text-[10px] font-semibold text-muted-foreground">Mulai</span>
             <span className="text-xs font-extrabold text-primary gradient-text">
-              {minPrice ? formatCurrency(minPrice) : 'Tersedia'}
+              {minPrice ? formatPrice(minPrice) : 'Tersedia'}
             </span>
           </div>
         </div>
       </Link>
     </motion.div>
   );
+
 }

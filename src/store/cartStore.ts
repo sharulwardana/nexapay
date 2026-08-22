@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface CartItem {
+  id?: string;
   productId: string;
   productName: string;
   productImage: string;
@@ -17,11 +18,16 @@ export interface CartItem {
 interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (denominationId: string) => void;
+  removeItem: (itemKey: string) => void;
   clearCart: () => void;
   getTotal: () => number;
   getItemCount: () => number;
 }
+
+const getItemKey = (item: { denominationId: string; gameUserId?: string; gameServerId?: string; id?: string }) => {
+  if (item.id) return item.id;
+  return `${item.denominationId}-${item.gameUserId || ''}-${item.gameServerId || ''}`;
+};
 
 export const useCartStore = create<CartStore>()(
   persist(
@@ -29,23 +35,30 @@ export const useCartStore = create<CartStore>()(
       items: [],
       addItem: (item) =>
         set((state) => {
-          const existing = state.items.find(
-            (i) => i.denominationId === item.denominationId
-          );
+          const itemKey = getItemKey(item);
+          const existing = state.items.find((i) => getItemKey(i) === itemKey);
+
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.denominationId === item.denominationId
-                  ? { ...i, quantity: i.quantity + 1 }
+                getItemKey(i) === itemKey
+                  ? { ...i, quantity: i.quantity + (item.quantity || 1) }
                   : i
               ),
             };
           }
-          return { items: [...state.items, { ...item, quantity: 1 }] };
+
+          const newItem: CartItem = {
+            ...item,
+            id: item.id || `cart-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            quantity: item.quantity || 1,
+          };
+
+          return { items: [...state.items, newItem] };
         }),
-      removeItem: (denominationId) =>
+      removeItem: (itemKey) =>
         set((state) => ({
-          items: state.items.filter((i) => i.denominationId !== denominationId),
+          items: state.items.filter((i) => i.id !== itemKey && getItemKey(i) !== itemKey && i.denominationId !== itemKey),
         })),
       clearCart: () => set({ items: [] }),
       getTotal: () =>

@@ -4,13 +4,21 @@ import TopUpSlugClient from './TopUpSlugClient';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const game = await prisma.product.findUnique({
-    where: { slug: resolvedParams.slug }
-  });
-  if (!game) return { title: 'Not Found' };
+  let gameName = resolvedParams.slug;
+  try {
+    const game = await prisma.product.findUnique({
+      where: { slug: resolvedParams.slug }
+    });
+    if (game) gameName = game.name;
+  } catch {
+    // fallback
+  }
+  const staticGame = digitalProducts.find(p => p.slug === resolvedParams.slug);
+  if (staticGame) gameName = staticGame.name;
+
   return {
-    title: `Top Up ${game.name} Termurah | NexaPay`,
-    description: game.description || `Top up ${game.name} dengan mudah dan cepat.`,
+    title: `Top Up ${gameName} Termurah | NexaPay`,
+    description: `Top up ${gameName} dengan mudah, aman, dan instan di NexaPay.`,
   };
 }
 

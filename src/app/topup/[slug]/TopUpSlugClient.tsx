@@ -17,7 +17,6 @@ import { getLoyaltyRank } from '@/store/userStore';
 import { useCartStore } from '@/store/cartStore';
 import { useNotificationStore } from '@/store/globalStore';
 import { useSession } from 'next-auth/react';
-import LiquidGlass from '@/components/shared/LiquidGlass';
 import Footer from '@/components/layout/Footer';
 import type { ProductWithDenominations, Denomination } from '@/types';
 
@@ -27,20 +26,21 @@ import type { ProductWithDenominations, Denomination } from '@/types';
  */
 function getGameBgTint(slug: string): string {
   const colorMap: Record<string, string> = {
-    'mobile-legends': 'rgba(234, 179, 8, 0.15)',
-    'free-fire': 'rgba(249, 115, 22, 0.15)',
-    'valorant': 'rgba(239, 68, 68, 0.15)',
-    'genshin-impact': 'rgba(56, 189, 248, 0.15)',
-    'pubg-mobile': 'rgba(250, 204, 21, 0.15)',
-    'honkai-star-rail': 'rgba(139, 92, 246, 0.15)',
-    'call-of-duty-mobile': 'rgba(16, 185, 129, 0.15)',
-    'roblox': 'rgba(239, 68, 68, 0.15)',
-    'steam-wallet': 'rgba(100, 116, 139, 0.15)',
-    'wild-rift': 'rgba(6, 182, 212, 0.15)',
-    'arena-of-valor': 'rgba(168, 85, 247, 0.15)',
-    'zenless-zone-zero': 'rgba(161, 161, 170, 0.15)',
+    'mobile-legends': 'rgba(234, 179, 8, 0.22)',
+    'free-fire': 'rgba(249, 115, 22, 0.22)',
+    'free-fire-max': 'rgba(249, 115, 22, 0.22)',
+    'valorant': 'rgba(244, 63, 94, 0.22)',
+    'genshin-impact': 'rgba(6, 182, 212, 0.22)',
+    'pubg-mobile': 'rgba(245, 158, 11, 0.22)',
+    'honkai-star-rail': 'rgba(168, 85, 247, 0.22)',
+    'call-of-duty-mobile': 'rgba(16, 185, 129, 0.22)',
+    'roblox': 'rgba(239, 68, 68, 0.22)',
+    'steam-wallet': 'rgba(59, 130, 246, 0.22)',
+    'wild-rift': 'rgba(6, 182, 212, 0.22)',
+    'arena-of-valor': 'rgba(168, 85, 247, 0.22)',
+    'zenless-zone-zero': 'rgba(234, 179, 8, 0.22)',
   };
-  return colorMap[slug] || 'rgba(255, 115, 0, 0.12)';
+  return colorMap[slug] || 'rgba(255, 115, 0, 0.18)';
 }
 
 function FaqAccordionSection({
@@ -523,8 +523,13 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
 
   return (
     <>
-      {/* Background Decorative Glow */}
-      <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 blur-[140px] pointer-events-none rounded-full z-0" />
+      {/* Dynamic Game-Themed Ambient Glow */}
+      <div
+        className="fixed top-1/6 left-1/2 -translate-x-1/2 w-[90vw] max-w-[1000px] h-[450px] blur-[140px] pointer-events-none rounded-full z-0 opacity-80 transition-all duration-700"
+        style={{
+          background: `radial-gradient(circle, ${gameColor} 0%, rgba(249,115,22,0.06) 50%, transparent 80%)`,
+        }}
+      />
 
       <div className="container-app pt-28 pb-4 tablet:pt-36 tablet:pb-12 relative z-10">
 

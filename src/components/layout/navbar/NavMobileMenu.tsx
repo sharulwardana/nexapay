@@ -10,6 +10,7 @@ import { X, LogIn, LogOut, User, Wallet, Gamepad2, Gift, Smartphone, Zap, Tv, Sh
 import { cn, formatCurrency } from '@/lib/utils';
 import { getLiveWalletBalance } from '@/actions/wallet';
 import { NAV_LINKS } from '@/lib/constants';
+import CurrencySwitcher from '@/components/shared/CurrencySwitcher';
 
 import type { Session } from 'next-auth';
 
@@ -129,7 +130,11 @@ export default function NavMobileMenu({ isOpen, onClose, isLoggedIn, session }: 
                 )}
               </div>
 
-              <div className="h-px w-full bg-border/40 mb-4" />
+              {/* Currency Selector Row */}
+              <div className="mb-4 flex items-center justify-between p-2.5 rounded-xl bg-card/60 border border-border">
+                <span className="text-xs font-semibold text-muted-foreground">Mata Uang</span>
+                <CurrencySwitcher compact />
+              </div>
 
               <nav className="space-y-0.5 mb-6">
                 {NAV_LINKS.map((link) => (

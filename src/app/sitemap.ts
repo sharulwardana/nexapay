@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import prisma from '@/lib/prisma';
 import { digitalProducts } from '@/data/products';
+import { articles } from '@/data/news';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://nexapay.id';
@@ -20,6 +21,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
+
+  // News articles routes
+  const newsRoutes: MetadataRoute.Sitemap = articles.map((art) => ({
+    url: `${baseUrl}/news/${art.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.75,
+  }));
 
   // Dynamic Product routes from DB or static fallback
   let productRoutes: MetadataRoute.Sitemap = [];
@@ -45,5 +54,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
   }
 
-  return [...staticRoutes, ...productRoutes];
+  return [...staticRoutes, ...newsRoutes, ...productRoutes];
 }

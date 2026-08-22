@@ -31,15 +31,17 @@ export default async function FavoritesPage() {
     orderBy: { createdAt: 'desc' }
   });
 
-  const favorites = favoriteRecords.map(f => ({
-    id: f.id,
-    productId: f.productId,
-    name: f.product.name,
-    slug: f.product.slug,
-    category: f.product.category,
-    publisher: f.product.publisher || 'Unknown',
-    minPrice: f.product.denominations[0]?.price || 0,
-  }));
+  const favorites = favoriteRecords
+    .filter(f => f.product)
+    .map(f => ({
+      id: f.id,
+      productId: f.productId,
+      name: f.product.name,
+      slug: f.product.slug,
+      category: f.product.category,
+      publisher: f.product.publisher || 'Unknown',
+      minPrice: f.product.denominations[0]?.price || 0,
+    }));
 
   return <FavoritesClient initialFavorites={favorites} />;
 }

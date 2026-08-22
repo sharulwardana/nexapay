@@ -19,6 +19,7 @@ import NavNotifications from './navbar/NavNotifications';
 import NavCart from './navbar/NavCart';
 import NavUserMenu from './navbar/NavUserMenu';
 import NavMobileMenu from './navbar/NavMobileMenu';
+import CurrencySwitcher from '@/components/shared/CurrencySwitcher';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -91,9 +92,13 @@ export default function Navbar() {
             {/* Desktop Links */}
             <NavLinks />
 
-            {/* Actions (Search, Notif, Cart, Profile, Mobile Menu) */}
+            {/* Actions (Search, Currency, Notif, Cart, Profile, Mobile Menu) */}
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <NavInlineSearch />
+
+              <div className="hidden tablet:block">
+                <CurrencySwitcher compact />
+              </div>
 
               <NavNotifications 
                 isOpen={isNotifOpen} 

@@ -6,50 +6,7 @@ import { Calendar, User, Clock, Terminal } from 'lucide-react';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 
-const articles = [
-  {
-    id: '1', slug: 'nexapay-partnership-moonton', category: 'Official Partnership',
-    title: 'NexaPay Engine Direct API Integration dengan Moonton Official',
-    excerpt: 'Kerjasama integrasi langsung ke server Moonton untuk pengisian Diamond Mobile Legends dalam hitungan milidetik tanpa hambatan.',
-    author: 'Nexa Engineering', date: '25 Mei 2026', readTime: '3 min read',
-    color: 'from-violet-600 to-indigo-700', badge: 'Major Milestone',
-  },
-  {
-    id: '2', slug: 'flash-sale-anniversary', category: 'Cyber Boost',
-    title: 'Nexa Cyber Anniversary Boost — Diskon Up To 50% & Exclusive Cashback',
-    excerpt: 'Event tahunan terbesar NexaPay! Dapatkan potongan harga otomatis dan double poin loyalti untuk semua game top-up.',
-    author: 'Growth Team', date: '23 Mei 2026', readTime: '2 min read',
-    color: 'from-orange-500 to-amber-600', badge: 'Hot Event',
-  },
-  {
-    id: '3', slug: 'fitur-baru-crypto-payment', category: 'System Upgrade',
-    title: 'Deployment System v2.6: Web3 Crypto Payment Engine (USDT/BTC)',
-    excerpt: 'Dukungan pembayaran aset digital terenkripsi dengan konversi kurs otomatis tanpa biaya tersembunyi.',
-    author: 'Fintech Core', date: '20 Mei 2026', readTime: '4 min read',
-    color: 'from-cyan-500 to-blue-600', badge: 'New Feature',
-  },
-  {
-    id: '4', slug: 'tips-hemat-top-up', category: 'Pro Guide',
-    title: 'Optimalisasi Diamond Rate: 7 Strategi Maximize Top-Up Value',
-    excerpt: 'Panduan lengkap memaksimalkan setiap rupiah nominal transaksi kamu menggunakan jam promo dan loyalty tier.',
-    author: 'Gamer Care', date: '18 Mei 2026', readTime: '5 min read',
-    color: 'from-emerald-500 to-teal-600', badge: 'Guide',
-  },
-  {
-    id: '5', slug: 'genshin-50-update', category: 'Patch Intelligence',
-    title: 'Genshin Impact v5.0 Natlan Release & Bonus Welkin Drop Rate',
-    excerpt: 'Rangkuman lengkap update Natlan beserta jaminan bonus pengisian Welkin Moon di Nexa Ecosystem.',
-    author: 'Game Intelligence', date: '15 Mei 2026', readTime: '6 min read',
-    color: 'from-purple-500 to-rose-600', badge: 'Patch Notes',
-  },
-  {
-    id: '6', slug: 'referral-program-launch', category: 'Community',
-    title: 'Nexa Squad Referral Protocol: Dapatkan Rp 10.000 Per Active Friend',
-    excerpt: 'Bagikan referral ID kamu kepada teman seperjuangan gaming dan nikmati cashback pasif yang masuk ke wallet.',
-    author: 'Community Hub', date: '12 Mei 2026', readTime: '2 min read',
-    color: 'from-pink-500 to-rose-600', badge: 'Rewards',
-  },
-];
+import { articles } from '@/data/news';
 
 export default function NewsClient() {
   return (

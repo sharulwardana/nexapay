@@ -80,21 +80,25 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
 
               <div className="overflow-y-auto no-scrollbar p-3 space-y-2 flex-1 min-h-0">
                 {cartItems.length > 0 ? (
-                  cartItems.map((item) => (
-                    <div key={item.denominationId} className="flex gap-3 p-2.5 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors border border-border/40 items-center">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-bold leading-snug">{item.productName}</h4>
-                        <p className="text-[11px] text-muted-foreground">{item.quantity}x {item.gameUserId || item.phoneNumber}</p>
-                        <p className="text-xs font-bold text-primary mt-0.5">{formatCurrency(item.price * item.quantity)}</p>
+                  cartItems.map((item, idx) => {
+                    const itemKey = item.id || `${item.denominationId}-${idx}`;
+                    return (
+                      <div key={itemKey} className="flex gap-3 p-2.5 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors border border-border/40 items-center">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-xs font-bold leading-snug">{item.productName}</h4>
+                          <p className="text-[11px] text-muted-foreground truncate">{item.denominationLabel} • {item.gameUserId || item.phoneNumber}</p>
+                          <p className="text-xs font-bold text-primary mt-0.5">{formatCurrency(item.price * item.quantity)}</p>
+                        </div>
+                        <button
+                          onClick={() => { playClick(); removeItem(itemKey); }}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors flex-shrink-0"
+                          aria-label="Hapus Item"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => { playClick(); removeItem(item.denominationId); }}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="py-8 text-center flex flex-col items-center justify-center">
                     <div className="w-12 h-12 rounded-full bg-muted/40 flex items-center justify-center mb-2">

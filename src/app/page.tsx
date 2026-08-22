@@ -12,6 +12,7 @@ import PaymentPartners from '@/components/home/PaymentPartners';
 
 // Lazy load heavy / below-fold components to reduce initial JS bundle
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'));
+const RealTimeTransactions = dynamic(() => import('@/components/shared/RealTimeTransactions'));
 
 function SectionSkeleton() {
   return (
@@ -100,6 +101,9 @@ export default async function HomePage() {
           <PopularGames games={games} />
           <FlashSale games={games} />
           <TrendingProducts games={games} />
+          <Suspense fallback={<SectionSkeleton />}>
+            <RealTimeTransactions />
+          </Suspense>
           <StatsCounter />
           <Suspense fallback={<SectionSkeleton />}>
             <Testimonials />
@@ -111,3 +115,4 @@ export default async function HomePage() {
     </>
   );
 }
+

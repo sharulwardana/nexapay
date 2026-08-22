@@ -1,13 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Search, Gamepad2, Filter, Star, TrendingUp } from 'lucide-react';
+import { Search, Gamepad2 } from 'lucide-react';
 import Footer from '@/components/layout/Footer';
-import { formatCurrency, cn } from '@/lib/utils';
-import { getGameColor, GAME_INITIALS } from '@/lib/colors';
+import { cn } from '@/lib/utils';
 import type { ProductWithActiveDenominations } from '@/types';
 import CyberGameCard from '@/components/shared/CyberGameCard';
 

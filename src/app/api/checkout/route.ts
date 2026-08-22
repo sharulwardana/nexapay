@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { auth } from '@/../auth';
 import { PAYMENT_METHODS, getLoyaltyDiscount } from '@/lib/constants';
 import { sendPushToUser } from '@/lib/push';
+import { generateInvoiceId } from '@/lib/utils';
 import { z } from 'zod';
 import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';
@@ -167,7 +168,7 @@ export async function POST(req: NextRequest) {
           totalAmount,
           status: transactionStatus,
           expiresAt,
-          invoiceId: `INV-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+          invoiceId: generateInvoiceId('INV'),
         }
       });
 

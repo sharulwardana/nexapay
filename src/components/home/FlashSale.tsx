@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Clock, Zap, ArrowRight, Flame } from 'lucide-react';
-import { formatCurrency, cn } from '@/lib/utils';
+import { useCurrencyStore } from '@/store/currencyStore';
+import { cn } from '@/lib/utils';
 import { getGameColor, GAME_INITIALS } from '@/lib/colors';
 import type { ProductWithDenominations } from '@/types';
 
@@ -81,6 +82,8 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
         gameImage: game.image,
       }))
   );
+
+  const { formatPrice } = useCurrencyStore();
 
   if (flashSaleItems.length === 0) return null;
   const rawEnd = flashSaleItems[0]?.flashSaleEnd;
@@ -173,10 +176,10 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
                     <p className="text-xs text-muted-foreground mb-2">{item.label}</p>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-bold text-red-500">
-                        {formatCurrency(item.flashSalePrice!)}
+                        {formatPrice(item.flashSalePrice!)}
                       </span>
                       <span className="text-[11px] text-muted-foreground line-through">
-                        {formatCurrency(item.price)}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                   </div>
@@ -190,4 +193,5 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
       </div>
     </section>
   );
+
 }

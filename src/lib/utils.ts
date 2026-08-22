@@ -1,17 +1,33 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useCurrencyStore, CURRENCIES, type CurrencyCode } from '@/store/currencyStore';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: number, currency: string = 'IDR'): string {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+export function formatCurrency(amount: number, customCurrency?: string): string {
+  if (typeof window !== 'undefined') {
+    try {
+      const activeCode = (customCurrency as CurrencyCode) || useCurrencyStore.getState().currency || 'IDR';
+      const config = CURRENCIES[activeCode] || CURRENCIES.IDR;
+      const converted = amount * config.rateFromIdr;
+
+      if (config.code === 'IDR') {
+        return `Rp ${Math.round(converted).toLocaleString('id-ID')}`;
+      }
+
+      return `${config.symbol} ${converted.toLocaleString('en-US', {
+        minimumFractionDigits: config.decimals,
+        maximumFractionDigits: config.decimals,
+      })}`;
+    } catch {
+      // Fallback if store is not yet initialized
+    }
+  }
+
+  // Fallback / SSR default (IDR)
+  return `Rp ${Math.round(amount).toLocaleString('id-ID')}`;
 }
 
 export function formatNumber(num: number): string {

@@ -55,7 +55,7 @@ export default async function ReferralPage() {
 
   const history = referrals.map(r => ({
     id: r.id,
-    name: r.referee.name || r.referee.email || 'Teman',
+    name: r.referee?.name || r.referee?.email || 'Teman',
     date: r.createdAt.toISOString(),
     bonus: r.bonus,
     status: r.status,

@@ -8,10 +8,17 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  // Fetch real stats from database
-  const totalUsers = await prisma.user.count();
-  const totalTransactions = await prisma.transaction.count();
-  const totalProducts = await prisma.product.count();
+  let totalUsers = 0;
+  let totalTransactions = 0;
+  let totalProducts = 0;
+
+  try {
+    totalUsers = await prisma.user.count();
+    totalTransactions = await prisma.transaction.count();
+    totalProducts = await prisma.product.count();
+  } catch (err) {
+    console.warn('Database fallback in AboutPage:', err);
+  }
 
   // Format stats
   const formatStat = (num: number) => {

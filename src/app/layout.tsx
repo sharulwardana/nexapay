@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import dynamic from 'next/dynamic';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
@@ -11,24 +10,6 @@ import JsonLd from '@/components/shared/JsonLd';
 import ClientOverlays from '@/components/shared/ClientOverlays';
 import MobileNav from '@/components/layout/MobileNav';
 import Navbar from '@/components/layout/Navbar';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -105,7 +86,7 @@ export default function RootLayout({
   return (
     <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen`}
+        className="font-sans antialiased min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary"
         suppressHydrationWarning
       >
         <JsonLd />

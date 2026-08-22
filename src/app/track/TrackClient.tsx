@@ -100,7 +100,7 @@ export default function TrackClient() {
           </div>
 
           {/* Real-Time Incoming Transactions Feed */}
-          <RealTimeTransactions />
+          <RealTimeTransactions compact />
         </div>
       </main>
       <Footer />

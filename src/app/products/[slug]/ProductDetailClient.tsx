@@ -741,72 +741,72 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       </main>
       <Footer />
 
-      {/* Pinnacle 2026 Cyber HUD Action Console (Level Mentok UI/UX: Zero Shadow, Translucent Frost Glass, Adaptive Mobile S, M, L & Tablet) */}
+      {/* Pinnacle 2026 Cyber HUD Action Console (Mobile Phones Only: md:hidden — Tablet uses 2-column interface) */}
       <div 
-        className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-3 sm:px-4"
+        className="fixed inset-x-0 z-50 md:hidden pointer-events-none flex justify-center px-2 xs:px-3 sm:px-4"
         style={{
-          bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
+          bottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto relative w-full max-w-[430px] xs:max-w-[470px] sm:max-w-[520px] tablet:max-w-[580px] h-[64px] sm:h-[68px] rounded-2xl xs:rounded-3xl p-2 sm:p-2.5 bg-[#0B0E1B]/92 dark:bg-[#070914]/94 backdrop-blur-2xl backdrop-saturate-200 border border-white/[0.14] dark:border-white/[0.12] shadow-none flex items-center justify-between gap-3 transition-all duration-300"
+          className="pointer-events-auto relative w-full max-w-[390px] xs:max-w-[440px] sm:max-w-[490px] h-[58px] xs:h-[62px] sm:h-[66px] rounded-2xl xs:rounded-3xl p-1.5 xs:p-2 sm:p-2.5 bg-[#0B0E1B]/95 dark:bg-[#070914]/95 backdrop-blur-2xl backdrop-saturate-200 border border-white/[0.14] dark:border-white/[0.12] shadow-none flex items-center justify-between gap-1.5 xs:gap-2.5 sm:gap-3 transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Laser-cut Cyber Neon Top Reflex Line */}
           <div className="absolute top-0 inset-x-6 h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent pointer-events-none z-20" />
 
-          {/* Left Info: Product Item + Live Price & Telemetry */}
-          <div className="flex-1 min-w-0 pl-2 sm:pl-3 flex flex-col justify-center">
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="relative flex h-2 w-2 flex-shrink-0">
+          {/* Left Info: Product Item + Live Price (Zero Wrap on Mobile S, M, L) */}
+          <div className="flex-1 min-w-0 pl-1.5 xs:pl-2 sm:pl-3 flex flex-col justify-center">
+            <div className="flex items-center gap-1 mb-0.5">
+              <span className="relative flex h-1.5 w-1.5 xs:h-2 xs:w-2 flex-shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 xs:h-2 xs:w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[9px] xs:text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate font-mono">
+              <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wider truncate font-mono max-w-[100px] xs:max-w-[130px] sm:max-w-[180px]">
                 {denom ? denom.label : 'Pilih Nominal'}
               </span>
             </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-sm xs:text-base sm:text-lg tablet:text-xl font-black text-foreground font-heading tracking-tight leading-none">
+            <div className="flex items-baseline gap-1">
+              <span className="text-xs xs:text-sm sm:text-base font-black text-foreground font-heading tracking-tight leading-none truncate">
                 {denom ? formatCurrency(total) : 'Rp 0'}
               </span>
               {denom && (
-                <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider hidden xs:inline font-mono">
-                  Direct API ⚡
+                <span className="text-[8px] xs:text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider hidden sm:inline font-mono">
+                  ⚡ Direct
                 </span>
               )}
             </div>
           </div>
 
-          {/* Right Actions: Cyber Squircle Cart & Glowing Checkout Button */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 pr-0.5">
+          {/* Right Actions: Compact Cart & CTA Button */}
+          <div className="flex items-center gap-1.5 xs:gap-2 flex-shrink-0 pr-0.5">
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={isProcessing}
-              className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-white/[0.06] border border-white/15 hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none"
+              className="w-9 h-9 xs:w-10 xs:h-10 sm:w-11 sm:h-11 rounded-xl xs:rounded-2xl bg-white/[0.06] border border-white/15 hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none flex-shrink-0"
               aria-label="Tambah ke Keranjang"
             >
-              <ShoppingCart className="w-4 h-4 xs:w-5 xs:h-5" />
+              <ShoppingCart className="w-4 h-4 xs:w-4.5 xs:h-4.5" />
             </button>
 
             <button
               type="button"
               onClick={handleCheckout}
               disabled={isProcessing}
-              className="h-10 xs:h-11 sm:h-12 px-4 xs:px-5 sm:px-6 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-xs xs:text-sm font-heading shadow-[0_0_18px_rgba(249,115,22,0.3)] hover:shadow-[0_0_26px_rgba(249,115,22,0.5)] hover:scale-[1.02] active:scale-[0.96] transition-all cursor-pointer flex items-center justify-center gap-1.5 xs:gap-2 whitespace-nowrap"
+              className="h-9 xs:h-10 sm:h-11 px-3 xs:px-4 sm:px-5 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-[11px] xs:text-xs sm:text-sm font-heading shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_22px_rgba(249,115,22,0.45)] hover:scale-[1.02] active:scale-[0.96] transition-all cursor-pointer flex items-center justify-center gap-1 xs:gap-1.5 whitespace-nowrap"
             >
               {isProcessing ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Proses...</>
+                <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Proses</>
               ) : !accountInput.trim() ? (
-                <><Smartphone className="w-4 h-4 text-white/90" /> 1. Isi Nomor</>
+                <><Smartphone className="w-3.5 h-3.5 text-white/90" /> 1. Nomor</>
               ) : !selectedDenom ? (
-                <><Tag className="w-4 h-4 text-white/90" /> 2. Pilih Item</>
+                <><Tag className="w-3.5 h-3.5 text-white/90" /> 2. Item</>
               ) : !selectedPayment ? (
-                <><CreditCard className="w-4 h-4 text-white/90" /> 3. Bayar</>
+                <><CreditCard className="w-3.5 h-3.5 text-white/90" /> 3. Bayar</>
               ) : (
-                <><Zap className="w-4 h-4 text-amber-200 fill-amber-200 animate-pulse" /> Bayar Sekarang</>
+                <><Zap className="w-3.5 h-3.5 text-amber-200 fill-amber-200 animate-pulse" /> Beli Sekarang</>
               )}
             </button>
           </div>

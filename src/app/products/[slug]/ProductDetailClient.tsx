@@ -741,51 +741,59 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       </main>
       <Footer />
 
-      {/* Option A: Floating Dynamic Island Capsule Dock (Mobile phones only: < 768px - z-40) */}
+      {/* Modern Large Stadium Liquid Glass Floating Dock (Mobile S, M, L & Tablet: lg:hidden) */}
       <div 
-        className="fixed bottom-3 inset-x-2.5 sm:inset-x-4 z-40 md:hidden max-w-md mx-auto pointer-events-none"
+        className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-2.5 sm:px-4"
+        style={{
+          bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto w-full py-2 px-3.5 sm:py-2.5 sm:px-4 rounded-full border border-white/20 bg-slate-900/90 dark:bg-black/90 backdrop-blur-2xl flex items-center justify-between gap-2.5 sm:gap-3 h-12 sm:h-13 shadow-none"
+          className="pointer-events-auto relative w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] tablet:max-w-[560px] h-[64px] sm:h-[68px] rounded-full overflow-hidden p-1.5 sm:p-2 bg-white/[0.08] dark:bg-[#0B0D1A]/90 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 dark:border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_24px_rgba(249,115,22,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.35)] flex items-center justify-between gap-2.5 sm:gap-3.5 transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate leading-tight">
+          {/* Top Edge Specular Reflex */}
+          <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+
+          {/* Left Info: Nominal & Price */}
+          <div className="flex-1 min-w-0 pl-2.5 sm:pl-3 flex flex-col justify-center">
+            <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate leading-tight">
               {denom ? denom.label : 'Pilih Nominal'}
             </span>
-            <span className="text-xs sm:text-sm font-black gradient-text truncate leading-tight font-heading">
+            <span className="text-sm sm:text-base tablet:text-lg font-black gradient-text truncate leading-tight font-heading mt-0.5">
               {denom ? formatCurrency(total) : 'Rp 0'}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          {/* Right Actions: Cart & Checkout */}
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 pr-1">
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={isProcessing}
-              className="w-9 h-9 rounded-full bg-card/80 border border-primary/40 text-primary flex items-center justify-center hover:bg-primary/10 active:scale-95 transition-all cursor-pointer shadow-sm"
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 dark:bg-white/5 border border-primary/40 text-primary flex items-center justify-center hover:bg-primary/20 active:scale-90 transition-all cursor-pointer shadow-md"
               aria-label="Tambah ke Keranjang"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
             <button
               type="button"
               onClick={handleCheckout}
               disabled={isProcessing}
-              className="flex items-center justify-center gap-1 sm:gap-1.5 px-3.5 sm:px-4 py-2 rounded-full gradient-primary text-white font-extrabold text-[11px] sm:text-xs shadow-neon-orange hover:scale-[1.03] active:scale-[0.97] transition-all cursor-pointer font-heading"
+              className="h-10 sm:h-11 px-4 sm:px-5 tablet:px-6 rounded-full gradient-primary text-white font-black text-xs sm:text-sm font-heading shadow-neon-orange hover:scale-[1.03] active:scale-[0.97] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap"
             >
               {isProcessing ? (
-                <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Proses...</>
+                <><Loader2 className="w-4 h-4 animate-spin" /> Proses...</>
               ) : !accountInput.trim() ? (
-                <><Smartphone className="w-3.5 h-3.5" /> 1. Isi Nomor</>
+                <><Smartphone className="w-4 h-4" /> 1. Nomor</>
               ) : !selectedDenom ? (
-                <><Tag className="w-3.5 h-3.5" /> 2. Pilih Nominal</>
+                <><Tag className="w-4 h-4" /> 2. Nominal</>
               ) : !selectedPayment ? (
-                <><CreditCard className="w-3.5 h-3.5" /> 3. Pilih Bayar</>
+                <><CreditCard className="w-4 h-4" /> 3. Bayar</>
               ) : (
-                <><Zap className="w-3.5 h-3.5 animate-pulse" /> Beli Sekarang</>
+                <><Zap className="w-4 h-4 animate-pulse text-amber-300 fill-amber-300" /> Beli Sekarang</>
               )}
             </button>
           </div>

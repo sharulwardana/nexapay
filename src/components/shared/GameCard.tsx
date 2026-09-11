@@ -55,7 +55,7 @@ export default function GameCard({ game, priorityImage = false }: GameCardProps)
     <div className="group relative w-full h-full">
       <Link
         href={game.category === 'GAME_TOPUP' ? `/topup/${game.slug}` : `/products/${game.slug}`}
-        className="relative flex flex-col h-full rounded-2xl bg-[#121620] border border-white/10 group-hover:border-[#FF7300]/50 overflow-hidden shadow-md group-hover:shadow-[0_8px_24px_-4px_rgba(255,115,0,0.2)] transition-all duration-200 group-hover:-translate-y-1.5"
+        className="relative flex flex-col h-full rounded-2xl bg-[#121620] border border-white/10 group-hover:border-[#FF7300]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7300] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E14] overflow-hidden shadow-md group-hover:shadow-[0_8px_24px_-4px_rgba(255,115,0,0.2)] transition-all duration-200 group-hover:-translate-y-1.5"
       >
         {/* Top Image Container — 1:1 Square */}
         <div className="relative w-full aspect-square overflow-hidden bg-slate-950">

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import type { ProductWithActiveDenominations } from '@/types';
 import GameCard from '@/components/shared/GameCard';
 
-const subcategories = ['Semua', 'MOBA', 'Battle Royale', 'RPG', 'FPS', 'Sandbox'];
+const subcategories = ['Semua', 'MOBA', 'Battle Royale', 'RPG', 'FPS', 'Sandbox', 'PC Store'];
 
 export default function TopUpClient({ games }: { games: ProductWithActiveDenominations[] }) {
   const [search, setSearch] = useState('');

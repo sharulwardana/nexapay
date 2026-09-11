@@ -32,17 +32,22 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
       : games.filter((p) => p.category === activeCategory).slice(0, 12);
 
   return (
-    <section ref={ref} className="section-padding surface">
-      <div className="container-app">
+    <section ref={ref} className="py-6 tablet:py-10 relative">
+      <div className="container-app relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="flex flex-col tablet:flex-row tablet:items-end tablet:justify-between gap-3 mb-8"
+          className="flex flex-col tablet:flex-row tablet:items-end tablet:justify-between gap-3 mb-6 tablet:mb-8"
         >
           <div>
-            <p className="label mb-2">Trending</p>
-            <h2 className="heading-3">Produk Trending</h2>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#161D2C] border border-[#FF7300]/40 text-[#FF851A] text-xs font-extrabold uppercase tracking-wider mb-2 shadow-sm">
+              <span>Rekomendasi Terbaik</span>
+            </div>
+            <h2 className="heading-section">Produk Trending &amp; Terlaris</h2>
+            <p className="body-base mt-1 text-slate-400">
+              Voucher game, pulsa, dan produk digital dengan potongan harga spesial
+            </p>
           </div>
           <Link
             href={activeCategory === 'GAME_TOPUP' ? '/topup' : activeCategory === 'ALL' ? '/topup' : `/products?category=${activeCategory}`}

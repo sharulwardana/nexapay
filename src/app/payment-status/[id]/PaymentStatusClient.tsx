@@ -234,8 +234,8 @@ export default function PaymentStatusClient({
           className="group relative mb-8"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* Holographic glowing edge */}
-          <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-primary/50 via-cyan-500/50 to-purple-500/50 opacity-50 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-500" />
+          {/* Specular canonical glowing edge */}
+          <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-[#FF7300]/40 via-amber-500/25 to-[#FF7300]/40 opacity-50 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-500" />
           
           {/* Ticket Body */}
           <div className="relative bg-card/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
@@ -407,7 +407,7 @@ export default function PaymentStatusClient({
           </Link>
           <Link
             href="/dashboard/transactions"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-primary text-white text-sm font-medium hover:shadow-neon-violet transition-all"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl btn-primary text-white text-sm font-semibold transition-all"
           >
             <Receipt className="w-4 h-4" />
             Lihat Riwayat

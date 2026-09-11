@@ -400,7 +400,7 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
             <div className="absolute inset-0 bg-gradient-to-r from-[#121620] via-[#121620]/90 to-transparent" />
 
             <div className="relative z-10 flex items-center gap-3.5 sm:gap-6 tablet:gap-8 w-full">
-              <div className="relative w-14 h-14 xs:w-16 xs:h-16 sm:w-24 sm:h-24 tablet:w-28 tablet:h-28 rounded-2xl overflow-hidden border-2 border-[#FF7300]/40 shadow-lg shadow-[#FF7300]/20 flex-shrink-0 bg-slate-900">
+              <div className="relative w-14 h-14 xs:w-16 xs:h-16 sm:w-24 sm:h-24 tablet:w-28 tablet:h-28 rounded-2xl overflow-hidden border-2 border-[#FF7300]/40 shadow-lg shadow-[#FF7300]/20 flex-shrink-0 bg-[#121620]">
                 <Image
                   src={game.image}
                   alt={game.name}
@@ -409,9 +409,9 @@ export default function TopUpSlugClient({ game }: { game: ProductWithDenominatio
                   // @ts-ignore
                   fetchPriority="high"
                   loading="eager"
-                  quality={80}
+                  quality={85}
                   sizes="(max-width: 640px) 64px, (max-width: 768px) 96px, 112px"
-                  className="object-cover"
+                  className="object-cover scale-[1.08]"
                 />
               </div>
 

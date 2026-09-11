@@ -55,9 +55,9 @@ export default function TopUpOrderSummary({
 
       {/* Game Overview */}
       <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#0B0E14] border border-white/8">
-        <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0 bg-slate-900 border border-white/10">
+        <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0 bg-[#121620] border border-white/10">
           {game.image ? (
-            <Image src={game.image} alt={game.name} fill priority sizes="48px" className="object-cover" />
+            <Image src={game.image} alt={game.name} fill priority sizes="48px" className="object-cover scale-[1.08]" />
           ) : (
             <Gamepad2 className="w-6 h-6 text-slate-500 m-auto" />
           )}

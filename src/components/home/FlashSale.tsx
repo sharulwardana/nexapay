@@ -131,14 +131,14 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
                   )}
 
                   {/* Game thumb */}
-                  <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden relative bg-slate-900 border border-white/10">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden relative bg-[#121620] border border-white/10">
                     {item.gameImage ? (
                       <Image
                         src={item.gameImage}
                         alt={item.gameName}
                         fill
                         sizes="64px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                        className="object-cover scale-[1.08] group-hover:scale-115 transition-transform duration-200"
                       />
                     ) : (
                       <div className={cn('w-full h-full bg-gradient-to-br flex items-center justify-center', gc.from, gc.to)}>

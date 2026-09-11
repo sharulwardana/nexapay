@@ -58,18 +58,18 @@ export default function GameCard({ game, priorityImage = false }: GameCardProps)
         className="relative flex flex-col h-full rounded-2xl bg-[#121620] border border-white/10 group-hover:border-[#FF7300]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7300] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E14] overflow-hidden shadow-md group-hover:shadow-[0_8px_24px_-4px_rgba(255,115,0,0.2)] transition-all duration-200 group-hover:-translate-y-1.5"
       >
         {/* Top Image Container — 1:1 Square */}
-        <div className="relative w-full aspect-square overflow-hidden bg-slate-950">
+        <div className="relative w-full aspect-square overflow-hidden bg-[#121620]">
           {game.image && !imageError ? (
             <Image
               src={game.image}
               alt={game.name}
               fill
-              quality={75}
+              quality={80}
               priority={priorityImage}
               loading={priorityImage ? 'eager' : 'lazy'}
               onError={() => setImageError(true)}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 180px"
-              className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+              className="object-cover scale-[1.08] transition-transform duration-300 ease-out group-hover:scale-115"
             />
           ) : (
             <div className={`absolute inset-0 bg-gradient-to-br ${gameColors.from} ${gameColors.to} flex flex-col items-center justify-center p-4 text-white`}>
@@ -79,9 +79,6 @@ export default function GameCard({ game, priorityImage = false }: GameCardProps)
               </span>
             </div>
           )}
-
-          {/* Subtle Bottom Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#121620] via-black/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity pointer-events-none" />
 
           {/* Badges */}
           <div className="absolute top-2 left-2 right-2 flex items-center justify-between pointer-events-none z-10">

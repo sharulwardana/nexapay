@@ -3,6 +3,7 @@ import Discord from "next-auth/providers/discord"
 import type { NextAuthConfig } from "next-auth"
 
 export default {
+  basePath: "/api/auth",
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   trustHost: true,
   providers: [

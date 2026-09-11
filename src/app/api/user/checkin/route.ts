@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
+import { auth } from '@/auth';
 import rateLimit from '@/lib/rateLimit';
 
 const limiter = rateLimit({

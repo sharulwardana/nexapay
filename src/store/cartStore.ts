@@ -10,6 +10,8 @@ export interface CartItem {
   denominationLabel: string;
   price: number;
   quantity: number;
+  productSlug?: string;
+  category?: string;
   gameUserId?: string;
   gameServerId?: string;
   phoneNumber?: string;

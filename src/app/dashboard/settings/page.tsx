@@ -182,10 +182,10 @@ export default function SettingsPage() {
 
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 bg-background">
         <div className="container-app max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
-            <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+            <Link href="/dashboard" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-lg tablet:text-xl font-bold font-heading">Pengaturan Akun</h1>
@@ -193,9 +193,9 @@ export default function SettingsPage() {
 
           <div className="space-y-6">
             {/* Profile Section */}
-            <div className="glass-card p-5 sm:p-6">
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h2 className="text-sm font-bold font-heading mb-4 flex items-center gap-2">
-                <User className="w-4 h-4 text-primary" /> Profil Pengguna
+                <User className="w-4 h-4 text-brand-500" /> Profil Pengguna
               </h2>
 
               <input 
@@ -207,7 +207,7 @@ export default function SettingsPage() {
               />
 
               <div className="space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-2xl bg-muted/20 border border-border/60">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-2xl bg-[#181E2B] border border-white/5">
                   <div className="relative group flex-shrink-0 mx-auto sm:mx-0">
                     {avatar ? (
                       <Image 
@@ -215,11 +215,11 @@ export default function SettingsPage() {
                         alt="Avatar" 
                         width={80} 
                         height={80} 
-                        className="w-20 h-20 rounded-2xl border-2 border-primary/40 object-cover shadow-lg" 
+                        className="w-20 h-20 rounded-2xl border-2 border-brand-500/40 object-cover shadow-lg" 
                         unoptimized
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-3xl font-bold text-white shadow-lg">
+                      <div className="w-20 h-20 rounded-2xl bg-brand-500 flex items-center justify-center text-3xl font-bold text-white shadow-brand font-heading">
                         {name ? name.charAt(0).toUpperCase() : 'U'}
                       </div>
                     )}
@@ -290,10 +290,10 @@ export default function SettingsPage() {
             </div>
 
             {/* Push Notifications Section */}
-            <div className="glass-card p-5 sm:p-6">
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm font-bold font-heading flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-primary" /> Notifikasi Pop-up (Web Push)
+                  <Bell className="w-4 h-4 text-brand-500" /> Notifikasi Pop-up (Web Push)
                 </h2>
                 <span className={cn(
                   "px-2.5 py-0.5 rounded-full text-[10px] font-bold border",
@@ -342,7 +342,7 @@ export default function SettingsPage() {
                       type="button"
                       onClick={subscribe}
                       disabled={pushLoading}
-                      className="px-4 py-2 rounded-xl gradient-primary text-white text-xs font-bold shadow-sm shadow-primary/25 hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                      className="px-4 py-2 rounded-xl btn-primary text-white text-xs font-bold shadow-brand hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       {pushLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Bell className="w-3.5 h-3.5" />}
                       <span>Aktifkan Notifikasi Web Push</span>
@@ -353,9 +353,9 @@ export default function SettingsPage() {
             </div>
 
             {/* Security */}
-            <div className="glass-card p-5 sm:p-6">
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h2 className="text-sm font-bold font-heading mb-4 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-primary" /> Keamanan Akun
+                <Shield className="w-4 h-4 text-brand-500" /> Keamanan Akun
               </h2>
               <div className="space-y-3">
                 {!isChangingPassword ? (
@@ -459,7 +459,7 @@ export default function SettingsPage() {
                 type="button"
                 onClick={handleSave} 
                 disabled={isSaving}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl gradient-primary text-white font-bold font-heading hover:shadow-neon-orange transition-all disabled:opacity-50 active:scale-95"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl btn-primary text-white font-bold font-heading shadow-brand transition-all disabled:opacity-50 active:scale-95 cursor-pointer"
               >
                 {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} 
                 Simpan Perubahan
@@ -493,7 +493,7 @@ export default function SettingsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-card max-w-md w-full p-6 border-red-500/30 shadow-2xl relative"
+              className="bg-[#121620] max-w-md w-full p-6 border border-red-500/30 rounded-2xl shadow-2xl relative"
             >
               <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400 mb-4">
                 <AlertTriangle className="w-6 h-6" />

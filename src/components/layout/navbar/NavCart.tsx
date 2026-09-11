@@ -27,7 +27,7 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
         }}
         onMouseEnter={playHover}
         className="relative flex items-center px-2 py-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-        aria-label="Cart"
+        aria-label={getItemCount() > 0 ? `${getItemCount()} item di Keranjang` : 'Keranjang Belanja'}
       >
         <ShoppingCart className="w-4 h-4" />
         {getItemCount() > 0 && (
@@ -109,7 +109,7 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
                     <Link
                       href="/topup"
                       onClick={() => { playClick(); closeAll(); }}
-                      className="px-4 py-2 rounded-xl gradient-primary text-white text-xs font-bold shadow-neon-violet"
+                      className="px-4 py-2 rounded-xl btn-primary text-white text-xs font-bold shadow-brand"
                     >
                       Mulai Belanja
                     </Link>
@@ -124,9 +124,19 @@ export default function NavCart({ isOpen, onToggle, closeAll }: NavCartProps) {
                     <span className="font-bold text-base gradient-text">{formatCurrency(getTotal())}</span>
                   </div>
                   <Link
-                    href={cartItems[0]?.productId ? (['game-mlbb', 'game-ff', 'game-val', 'game-genshin', 'game-pubgm', 'game-hsr', 'game-codm', 'game-roblox', 'game-steam', 'game-wr', 'game-aov', 'game-zzz'].includes(cartItems[0].productId) || cartItems[0].productId.startsWith('game-') ? `/topup/${cartItems[0].productId.replace('game-mlbb', 'mobile-legends').replace('game-ff', 'free-fire').replace('game-val', 'valorant').replace('game-genshin', 'genshin-impact').replace('game-pubgm', 'pubg-mobile').replace('game-hsr', 'honkai-star-rail').replace('game-codm', 'call-of-duty-mobile').replace('game-roblox', 'roblox').replace('game-steam', 'steam-wallet').replace('game-wr', 'wild-rift').replace('game-aov', 'arena-of-valor').replace('game-zzz', 'zenless-zone-zero').replace('game-', '')}` : `/products/${cartItems[0].productId}`) : '/topup'}
+                    href={
+                      cartItems[0]?.productSlug
+                        ? (cartItems[0].category === 'GAME_TOPUP' || !cartItems[0].category
+                            ? `/topup/${cartItems[0].productSlug}`
+                            : `/products/${cartItems[0].productSlug}`)
+                        : cartItems[0]?.productId
+                        ? (cartItems[0].productId.startsWith('game-')
+                            ? `/topup/${cartItems[0].productId.replace('game-', '')}`
+                            : `/products/${cartItems[0].productId}`)
+                        : '/topup'
+                    }
                     onClick={() => { playClick(); closeAll(); }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl gradient-primary text-white font-bold text-xs shadow-neon-violet transition-all active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl btn-primary text-white font-bold text-xs shadow-brand transition-all active:scale-[0.98]"
                   >
                     <Zap className="w-3.5 h-3.5" /> Lanjutkan Pembayaran
                   </Link>

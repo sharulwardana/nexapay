@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/../auth';
+import { auth } from '@/auth';
 import { z } from 'zod';
 import { sanitizeInput } from '@/lib/sanitize';
 import rateLimit from '@/lib/rateLimit';

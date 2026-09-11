@@ -26,7 +26,7 @@ export default function TrackClient() {
       <main className="min-h-screen pt-28 tablet:pt-36 pb-24">
         <div className="container-app max-w-xl">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold mb-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-xs font-bold mb-4 shadow-sm">
               <Receipt className="w-4 h-4" />
               <span>Cek & Lacak Pesanan</span>
             </div>
@@ -36,9 +36,7 @@ export default function TrackClient() {
             </p>
           </div>
 
-          <div className="glass-card p-6 tablet:p-8 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-
+          <div className="bg-[#121620] p-6 tablet:p-8 rounded-2xl border border-white/10 shadow-xl relative overflow-hidden">
             <form onSubmit={handleSearch} className="space-y-4 relative z-10">
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -58,7 +56,7 @@ export default function TrackClient() {
                         toast.error('Gagal mengakses clipboard');
                       }
                     }}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/25 text-primary text-[10.5px] sm:text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-sm"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/25 text-brand-500 text-[10.5px] sm:text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-sm"
                   >
                     <Clipboard className="w-3 h-3" />
                     <span>Tempel</span>
@@ -71,29 +69,29 @@ export default function TrackClient() {
                     value={invoiceId}
                     onChange={(e) => setInvoiceId(e.target.value)}
                     placeholder="Contoh: NXP-M7X9K2-AB12"
-                    className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-background/70 border border-border/80 text-sm tablet:text-base font-mono font-bold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-inner"
+                    className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-[#0B0E14] border border-white/10 text-sm tablet:text-base font-mono font-bold uppercase tracking-wider focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/25 transition-all text-foreground placeholder:text-muted-foreground/50"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 rounded-2xl gradient-primary text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:shadow-neon-violet hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
+                className="w-full py-3.5 rounded-xl btn-primary text-white font-bold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-brand"
               >
                 <span>Lacak Status Pesanan Sekarang</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-border/40 grid grid-cols-2 gap-4 text-center">
-              <div className="p-3 rounded-xl bg-muted/20 border border-border/30">
-                <ShieldCheck className="w-5 h-5 text-primary mx-auto mb-1" />
-                <p className="text-xs font-bold">100% Terverifikasi</p>
+            <div className="mt-6 pt-6 border-t border-white/5 grid grid-cols-2 gap-3 text-center">
+              <div className="p-3 rounded-xl bg-[#181E2B] border border-white/5">
+                <ShieldCheck className="w-5 h-5 text-brand-500 mx-auto mb-1" />
+                <p className="text-xs font-bold text-foreground">100% Terverifikasi</p>
                 <p className="text-[10px] text-muted-foreground">Sistem Otomatis 24/7</p>
               </div>
-              <div className="p-3 rounded-xl bg-muted/20 border border-border/30">
-                <Sparkles className="w-5 h-5 text-primary mx-auto mb-1" />
-                <p className="text-xs font-bold">Proses Kilat</p>
+              <div className="p-3 rounded-xl bg-[#181E2B] border border-white/5">
+                <Sparkles className="w-5 h-5 text-brand-500 mx-auto mb-1" />
+                <p className="text-xs font-bold text-foreground">Proses Kilat</p>
                 <p className="text-[10px] text-muted-foreground">1 - 3 Detik Masuk</p>
               </div>
             </div>

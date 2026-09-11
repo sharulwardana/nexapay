@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
+import { auth } from '@/auth';
 import { isAdminEmail } from '@/lib/admin-check';
 
 export { isAdminEmail };

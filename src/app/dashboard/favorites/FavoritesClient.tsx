@@ -45,15 +45,15 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
 
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 bg-background">
         <div className="container-app max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
-            <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+            <Link href="/dashboard" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-lg tablet:text-xl font-bold">Favorit</h1>
-              <p className="text-xs text-muted-foreground">{favorites.length} produk tersimpan</p>
+              <h1 className="text-lg tablet:text-xl font-bold font-heading">Game & Produk Favorit</h1>
+              <p className="text-xs text-muted-foreground">{favorites.length} item tersimpan</p>
             </div>
           </div>
 
@@ -61,32 +61,34 @@ export default function FavoritesClient({ initialFavorites }: { initialFavorites
             {favorites.map((item) => (
               <div
                 key={item.id}
-                className="glass-card p-4 flex items-center gap-3"
+                className="bg-[#121620] border border-white/10 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm"
               >
                 {/* Icon */}
-                <div className="w-12 h-12 tablet:w-14 tablet:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-                  <Gamepad2 className="w-6 h-6 text-primary/60" />
+                <div className="w-12 h-12 tablet:w-14 tablet:h-14 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center flex-shrink-0">
+                  <Gamepad2 className="w-6 h-6 text-brand-500" />
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-sm font-semibold leading-snug line-clamp-2">{item.name}</h3>
-                  <p className="text-[10px] text-muted-foreground">{item.publisher} • {item.category}</p>
-                  <p className="text-xs font-bold text-primary mt-0.5">Mulai {formatCurrency(item.minPrice)}</p>
+                  <h3 className="text-xs sm:text-sm font-semibold leading-snug line-clamp-2 font-heading">{item.name}</h3>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{item.publisher} • {item.category}</p>
+                  <p className="text-xs font-bold text-brand-500 mt-1">Mulai {formatCurrency(item.minPrice)}</p>
                 </div>
 
                 {/* Actions */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Link
                     href={item.category === 'GAME_TOPUP' ? `/topup/${item.slug}` : `/products/${item.slug}`}
-                    className="p-2 rounded-lg gradient-primary text-white hover:shadow-neon-violet transition-all"
+                    className="p-2.5 rounded-xl btn-primary text-white shadow-brand transition-all flex items-center justify-center"
+                    aria-label="Beli Sekarang"
                   >
                     <ShoppingCart className="w-4 h-4" />
                   </Link>
                   <button
                     onClick={() => removeFavorite(item.productId, item.name)}
                     disabled={loadingId === item.productId}
-                    className="p-2 rounded-lg border border-border text-muted-foreground hover:text-red-500 hover:border-red-500/30 transition-all disabled:opacity-50"
+                    className="p-2.5 rounded-xl border border-white/10 text-muted-foreground hover:text-red-400 hover:border-red-500/30 transition-all disabled:opacity-50"
+                    aria-label="Hapus dari Favorit"
                   >
                     {loadingId === item.productId ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                   </button>

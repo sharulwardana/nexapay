@@ -4,10 +4,9 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Tag, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Tag, Sparkles, ArrowRight } from 'lucide-react';
 import { promotions as fallbackPromotions } from '@/data/testimonials';
 import { cn } from '@/lib/utils';
-import TiltCard from '@/components/shared/TiltCard';
 
 export interface DbBanner {
   id: string;
@@ -22,17 +21,10 @@ interface PromoCarouselProps {
 }
 
 const slideVariants = {
-  enter: (d: number) => ({ x: d > 0 ? '80%' : '-80%', opacity: 0, scale: 0.95 }),
-  center: { x: 0, opacity: 1, scale: 1 },
-  exit: (d: number) => ({ x: d > 0 ? '-80%' : '80%', opacity: 0, scale: 0.95 }),
+  enter: (d: number) => ({ x: d > 0 ? '40%' : '-40%', opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (d: number) => ({ x: d > 0 ? '-40%' : '40%', opacity: 0 }),
 };
-
-const gradients = [
-  'from-violet-600 via-fuchsia-500 to-cyan-500',
-  'from-cyan-600 via-teal-500 to-emerald-500',
-  'from-amber-500 via-orange-500 to-rose-500',
-  'from-blue-600 via-violet-500 to-purple-600',
-];
 
 export default function PromoCarousel({ banners = [] }: PromoCarouselProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -64,7 +56,7 @@ export default function PromoCarousel({ banners = [] }: PromoCarouselProps) {
     const interval = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % items.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [items.length]);
 
@@ -73,179 +65,145 @@ export default function PromoCarousel({ banners = [] }: PromoCarouselProps) {
     setCurrent(index);
   };
 
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrent((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrent((prev) => (prev + 1) % items.length);
+  };
+
   const activeItem = items[current] || items[0];
 
   return (
-    <section ref={ref} className="pt-24 tablet:pt-28 pb-6 tablet:pb-10">
-      <h1 className="sr-only">NexaPay - Platform Top Up Game Tercepat dan Termurah di Indonesia</h1>
+    <section ref={ref} className="py-6 tablet:py-8">
       <div className="container-app">
-        {/* Live Activity Telemetry Badge */}
-        <div className="flex items-center justify-between gap-2 mb-3.5 flex-wrap">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/80 border border-border/60 backdrop-blur-md text-[11px] font-semibold text-foreground/90 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span><strong className="text-emerald-400">2,418</strong> Gamers Aktif Transaksi</span>
-            <span className="text-muted-foreground">•</span>
-            <span className="text-muted-foreground hidden sm:inline">Proses Instan &lt; 3 Detik ⚡</span>
+        {/* Section Header */}
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-5 rounded-full bg-[#FF7300]" />
+            <h2 className="heading-card">Promo &amp; Event Spesial</h2>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground font-mono">
-            <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/5">Direct Publisher API</span>
-            <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/5">100% Legal & Garansi</span>
-          </div>
+          <Link
+            href="/promo"
+            className="text-xs font-semibold text-slate-400 hover:text-[#FF7300] transition-colors flex items-center gap-1"
+          >
+            <span>Semua Promo</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.98 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
-        >
-          {/* Carousel */}
-          <TiltCard>
-            <div className="relative rounded-2xl tablet:rounded-3xl overflow-hidden aspect-[2/1] tablet:aspect-[3/1] lg:aspect-[3.5/1] shadow-2xl">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={current}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0 cursor-grab active:cursor-grabbing"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.15}
-                  onDragEnd={(_e, { offset, velocity }) => {
-                    const swipeThreshold = 50;
-                    const swipePower = Math.abs(offset.x) * velocity.x;
-                    if (offset.x < -swipeThreshold || swipePower < -500) {
-                      setDirection(1);
-                      setCurrent((p) => (p + 1) % items.length);
-                    } else if (offset.x > swipeThreshold || swipePower > 500) {
-                      setDirection(-1);
-                      setCurrent((p) => (p - 1 + items.length) % items.length);
-                    }
-                  }}
+        {/* Banner Slide Frame */}
+        <div className="relative rounded-2xl bg-[#121620] border border-white/10 overflow-hidden shadow-lg">
+          <div className="relative h-[180px] xs:h-[210px] sm:h-[260px] tablet:h-[300px] w-full overflow-hidden">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={activeItem.id || current}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <Link
+                  href={activeItem.link || '/promo'}
+                  className="relative block w-full h-full group"
                 >
-                  {/* Background: Custom Banner Image or Aurora Gradient */}
+                  {/* Background Image or Clean Dark Surface */}
                   {activeItem.image ? (
-                    <div className="absolute inset-0">
-                      <Image 
-                        src={activeItem.image} 
-                        alt={activeItem.title} 
-                        fill 
-                        className="object-cover"
-                        priority
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent" />
-                    </div>
+                    <Image
+                      src={activeItem.image}
+                      alt={activeItem.title}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 1200px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-102"
+                    />
                   ) : (
-                    <>
-                      <div className={cn('absolute inset-0 bg-gradient-to-br', gradients[current % gradients.length])} />
-                      <div className="absolute inset-0 opacity-30">
-                        <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[80%] bg-white/10 rounded-full blur-[80px]" />
-                        <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[70%] bg-black/10 rounded-full blur-[60px]" />
-                      </div>
-                      <div className="absolute inset-0 bg-grid-pattern opacity-[0.04]" />
-                    </>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#121620] via-[#161D2C] to-[#121620]">
+                      <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-[#FF7300]/10 to-transparent pointer-events-none" />
+                    </div>
                   )}
 
-                  {/* Content */}
-                  <div className="absolute inset-0 flex items-center p-6 tablet:p-10 lg:p-14 z-10">
-                    <div className="max-w-lg">
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15, duration: 0.4 }}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 mb-3"
-                      >
-                        <Tag className="w-3 h-3 text-white" />
-                        <span className="text-[10px] tablet:text-xs font-bold text-white/90 tracking-wide">
-                          {activeItem.code}
-                        </span>
-                      </motion.div>
-                      <motion.h3
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.4 }}
-                        className="text-lg tablet:text-2xl lg:text-3xl font-bold font-heading text-white mb-2 tracking-tight drop-shadow-lg"
-                      >
-                        {activeItem.title}
-                      </motion.h3>
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.25, duration: 0.4 }}
-                        className="text-xs tablet:text-sm text-white/75 mb-4 tablet:mb-6 line-clamp-2"
-                      >
-                        {activeItem.subtitle}
-                      </motion.p>
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.4 }}
-                      >
-                        <Link
-                          href={activeItem.link}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gray-950 text-xs tablet:text-sm font-bold font-heading hover:bg-white/90 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:scale-95 shadow-md"
-                        >
-                          <Sparkles className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse" />
-                          <span>Klaim Promo Spesial ⚡</span>
-                        </Link>
-                      </motion.div>
+                  {/* Gradient Overlay for Text Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-black/40 to-transparent tablet:bg-gradient-to-r tablet:from-[#0B0E14]/95 tablet:via-[#0B0E14]/70 tablet:to-transparent" />
+
+                  {/* Text Content */}
+                  <div className="absolute inset-0 p-5 sm:p-8 tablet:p-10 flex flex-col justify-end tablet:justify-center max-w-xl z-10">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#161D2C] border border-[#FF7300]/40 text-[#FF851A] text-[10px] sm:text-xs font-extrabold w-fit mb-2 sm:mb-3 shadow-sm">
+                      <Tag className="w-3 h-3" />
+                      <span>{activeItem.code}</span>
+                    </div>
+
+                    <h3 className="font-heading font-extrabold text-base sm:text-2xl tablet:text-3xl text-white line-clamp-2 leading-snug">
+                      {activeItem.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-slate-300 line-clamp-2 mt-1 sm:mt-2 leading-relaxed hidden xs:block">
+                      {activeItem.subtitle}
+                    </p>
+
+                    <div className="mt-3 sm:mt-4">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FF7300] group-hover:underline">
+                        <span>Klaim Promo Sekarang</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
                     </div>
                   </div>
+                </Link>
+              </motion.div>
+            </AnimatePresence>
 
-                  {/* Decorative circles */}
-                  <div className="absolute -right-16 -bottom-16 w-56 h-56 tablet:w-72 tablet:h-72 rounded-full bg-white/5 border border-white/5" />
-                  <div className="absolute -right-8 -bottom-8 w-32 h-32 tablet:w-44 tablet:h-44 rounded-full bg-white/5" />
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Arrows */}
-              {items.length > 1 && (
-                <>
-                  <button
-                    onClick={() => { setDirection(-1); setCurrent((p) => (p - 1 + items.length) % items.length); }}
-                    className="hidden tablet:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white items-center justify-center hover:bg-black/50 hover:scale-105 transition-all"
-                    aria-label="Previous"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => { setDirection(1); setCurrent((p) => (p + 1) % items.length); }}
-                    className="hidden tablet:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white items-center justify-center hover:bg-black/50 hover:scale-105 transition-all"
-                    aria-label="Next"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </>
-              )}
-            </div>
-          </TiltCard>
-
-          {/* Dots — animated pill style */}
-          {items.length > 1 && (
-            <div className="flex items-center justify-center gap-1.5 mt-5">
-              {items.map((_, index) => (
+            {/* Navigation Arrows (Desktop/Tablet only to prevent text overlap on mobile) */}
+            {items.length > 1 && (
+              <>
                 <button
-                  key={index}
-                  onClick={() => goTo(index)}
-                  className="relative rounded-full transition-all duration-400"
-                  aria-label={`Slide ${index + 1}`}
+                  onClick={prevSlide}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FF7300] text-white border border-white/10 hidden sm:flex items-center justify-center transition-all z-20 active:scale-95 cursor-pointer shadow-md"
+                  aria-label="Promo Sebelumnya"
                 >
-                  <div className={cn(
-                    'rounded-full transition-all duration-400',
-                    current === index
-                      ? 'w-7 h-2 bg-primary shadow-lg shadow-primary/30'
-                      : 'w-2 h-2 bg-muted-foreground/20 hover:bg-muted-foreground/40'
-                  )} />
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FF7300] text-white border border-white/10 hidden sm:flex items-center justify-center transition-all z-20 active:scale-95 cursor-pointer shadow-md"
+                  aria-label="Promo Berikutnya"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Dots Indicator */}
+          {items.length > 1 && (
+            <div className="py-2.5 bg-[#0E121B] border-t border-white/[0.06] flex items-center justify-center gap-1">
+              {items.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goTo(idx)}
+                  className="p-2 flex items-center justify-center cursor-pointer min-w-[28px] min-h-[28px]"
+                  aria-label={`Slide ${idx + 1}`}
+                >
+                  <span
+                    className={cn(
+                      'h-1.5 rounded-full transition-all duration-300 block',
+                      idx === current
+                        ? 'w-6 bg-[#FF7300]'
+                        : 'w-1.5 bg-white/20 hover:bg-white/40'
+                    )}
+                  />
                 </button>
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

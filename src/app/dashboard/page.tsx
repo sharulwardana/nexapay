@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import DashboardClient from './DashboardClient';
-import { auth } from '@/../auth';
+import { auth } from '@/auth';
 
 export const metadata = {
   title: 'Dashboard | NexaPay',

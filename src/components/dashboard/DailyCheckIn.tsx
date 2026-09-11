@@ -57,7 +57,7 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#F97316', '#F59E0B', '#10B981'],
+        colors: ['#FF7300', '#F59E0B', '#10B981'],
         disableForReducedMotion: true
       });
 
@@ -84,7 +84,7 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
             "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md transition-all duration-300",
             hasClaimed
               ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-              : "bg-gradient-to-br from-amber-400 via-orange-500 to-primary text-white shadow-orange-500/25"
+              : "bg-brand-500 text-white shadow-brand"
           )}>
             {hasClaimed ? (
               <CalendarCheck2 className="w-5 h-5 text-emerald-400" />
@@ -102,14 +102,14 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
           "px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide uppercase border shrink-0",
           hasClaimed 
             ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" 
-            : "bg-amber-500/15 text-amber-400 border-amber-500/30"
+            : "bg-brand-500/15 text-brand-400 border-brand-500/30"
         )}>
           {hasClaimed ? 'Selesai' : 'Gratis'}
         </span>
       </div>
 
       {/* Middle Description Box */}
-      <div className="p-3 rounded-xl bg-surface/80 border border-border/40 text-left w-full">
+      <div className="p-3 rounded-xl bg-[#181E2B] border border-white/5 text-left w-full">
         <p className="text-xs text-muted-foreground leading-relaxed">
           {hasClaimed ? (
             <span className="text-emerald-400 font-medium flex items-center gap-1.5">
@@ -130,7 +130,7 @@ export default function DailyCheckIn({ initialHasClaimed = false }: { initialHas
           "w-full py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 flex items-center justify-center gap-2 select-none shadow-md",
           hasClaimed 
             ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/35 cursor-not-allowed" 
-            : "bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-[0_4px_15px_rgba(249,115,22,0.4)] active:scale-95 cursor-pointer uppercase"
+            : "btn-primary text-white shadow-brand active:scale-95 cursor-pointer uppercase"
         )}
       >
         {isAnimating ? (

@@ -37,11 +37,11 @@ export default function AdminSidebar({ adminUser }: {
         {/* Header */}
         <div className="flex items-center justify-between h-16 px-5 border-b border-white/10 flex-shrink-0">
           <Link href="/admin" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-amber-600 flex items-center justify-center shadow-lg shadow-brand/25">
               <Zap className="w-4 h-4 text-white fill-white" />
             </div>
             <span className="font-heading font-black tracking-tight text-base">
-              Nexa<span className="text-violet-400">Admin</span>
+              Nexa<span className="text-brand-500">Admin</span>
             </span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors">
@@ -52,7 +52,7 @@ export default function AdminSidebar({ adminUser }: {
         {/* Admin Profile Card */}
         <div className="p-3 border-b border-white/10 bg-white/[0.02] flex-shrink-0">
           <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-xs font-bold text-white shadow-lg flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-amber-600 flex items-center justify-center text-xs font-bold text-white shadow-lg shadow-brand/20 flex-shrink-0">
               {adminUser?.name ? adminUser.name.charAt(0) : 'A'}
             </div>
             <div className="flex-1 min-w-0">
@@ -62,7 +62,7 @@ export default function AdminSidebar({ adminUser }: {
             <Link
               href="/"
               onClick={() => setSidebarOpen(false)}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-violet-400 hover:text-violet-300 transition-colors flex-shrink-0"
+              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-brand-400 hover:text-brand-300 transition-colors flex-shrink-0"
               title="Kembali ke Website Utama"
             >
               <Zap className="w-4 h-4" />
@@ -98,17 +98,17 @@ export default function AdminSidebar({ adminUser }: {
                   <motion.div
                     layoutId="admin-sidebar-active-pill"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    className="absolute inset-0 bg-gradient-to-r from-violet-600/25 via-fuchsia-600/15 to-transparent border border-violet-500/30 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.25)]"
+                    className="absolute inset-0 bg-gradient-to-r from-brand-500/25 via-amber-500/15 to-transparent border border-brand-500/30 rounded-xl shadow-[0_0_20px_rgba(255,115,0,0.25)]"
                   />
                 )}
                 {isActive && (
                   <motion.div
                     layoutId="admin-sidebar-active-bar"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-violet-400 via-fuchsia-400 to-violet-500 rounded-r-full shadow-[0_0_12px_#c084fc]"
+                    className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-brand-400 via-amber-400 to-brand-500 rounded-r-full shadow-[0_0_12px_#FF7300]"
                   />
                 )}
-                <item.icon className={cn("w-4 h-4 relative z-10 transition-colors duration-300", isActive ? "text-violet-300 drop-shadow-[0_0_8px_rgba(167,139,250,0.8)]" : "text-white/40 group-hover:text-white/70")} />
+                <item.icon className={cn("w-4 h-4 relative z-10 transition-colors duration-300", isActive ? "text-brand-400 drop-shadow-[0_0_8px_rgba(255,115,0,0.8)]" : "text-white/40 group-hover:text-white/70")} />
                 <span className={cn("relative z-10 transition-colors", isActive ? "text-white font-bold drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-white/50 group-hover:text-white")}>{item.label}</span>
               </Link>
             );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, X } from 'lucide-react';
 import { useSoundEffect } from '@/hooks/useSoundEffect';
@@ -12,11 +13,14 @@ interface NavNotificationsProps {
 }
 
 export default function NavNotifications({ isOpen, onToggle }: NavNotificationsProps) {
+  const { status } = useSession();
   const { playHover, playClick } = useSoundEffect();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore();
 
-  // Fetch real notifications from database
+  // Fetch real notifications from database only for authenticated users
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const fetchNotifications = async () => {
       try {
         const res = await fetch('/api/user/notifications');
@@ -34,9 +38,9 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 15000); // Polling every 15s for live notifications
+    const interval = setInterval(fetchNotifications, 30000); // Polling every 30s
     return () => clearInterval(interval);
-  }, []);
+  }, [status]);
 
   const handleMarkAsRead = async (id: string) => {
     markAsRead(id);
@@ -73,11 +77,11 @@ export default function NavNotifications({ isOpen, onToggle }: NavNotificationsP
         }}
         onMouseEnter={playHover}
         className="relative flex items-center px-2 py-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-        aria-label="Notifications"
+        aria-label={unreadCount > 0 ? `${unreadCount > 9 ? '9+' : unreadCount} Notifikasi Baru` : 'Notifikasi'}
       >
         <Bell className="w-4 h-4" />
         {unreadCount > 0 && (
-          <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center animate-pulse">
+          <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#D22D2D] text-white text-[9px] font-black flex items-center justify-center animate-pulse shadow-sm">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}

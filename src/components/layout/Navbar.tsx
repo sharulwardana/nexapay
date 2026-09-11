@@ -4,15 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSearchStore } from '@/store/globalStore';
 import { getLoyaltyRank } from '@/store/userStore';
-import MarqueePromo from '@/components/shared/MarqueePromo';
 import { useSoundEffect } from '@/hooks/useSoundEffect';
 
-// Refactored Components
+// Sub-components
 import NavLinks from './navbar/NavLinks';
 import NavInlineSearch from './navbar/NavInlineSearch';
 import NavNotifications from './navbar/NavNotifications';
@@ -35,7 +33,7 @@ export default function Navbar() {
   const { setIsOpen: setSearchOpen } = useSearchStore();
   const [mounted, setMounted] = useState(false);
 
-  // Loyalty calculations — use shared getLoyaltyRank() (single source of truth)
+  // Loyalty calculations
   const points = session?.user?.loyaltyPoints || 0;
   const { rank, nextRank, progressPercent } = getLoyaltyRank(points);
 
@@ -63,37 +61,32 @@ export default function Navbar() {
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
-          'border-b bg-background/90 backdrop-blur-2xl border-border/40',
-          'shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_rgba(0,0,0,0.03)]',
-          'dark:shadow-[0_1px_3px_rgba(0,0,0,0.2),0_4px_20px_rgba(0,0,0,0.15)]'
+          'bg-[#0B0E14]/80 backdrop-blur-xl border-b border-white/[0.08]',
+          'shadow-[0_4px_24px_rgba(0,0,0,0.4)]'
         )}
       >
-        {/* Gradient accent line at the very top */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        {/* Specular top highlight line */}
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
 
-        <MarqueePromo />
         <div className="container-app">
           <div className="flex items-center justify-between h-14 tablet:h-16">
             
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative w-7 h-7 tablet:w-8 tablet:h-8">
-                <div className="absolute inset-0 rounded-lg gradient-primary shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-white font-heading font-bold text-sm tablet:text-base">N</span>
-                </div>
+            {/* Logo with Canonical Orange */}
+            <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 group select-none min-w-0">
+              <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#FF7300] to-[#E66800] flex items-center justify-center shadow-md shadow-[#FF7300]/25 group-hover:shadow-lg group-hover:shadow-[#FF7300]/40 transition-all duration-200 border border-white/20 flex-shrink-0">
+                <span className="text-white font-heading font-extrabold text-xs sm:text-base tracking-tight">N</span>
               </div>
-              <span className="hidden min-[360px]:inline font-heading font-bold text-base tablet:text-lg tracking-tight">
+              <span className="font-heading font-bold text-sm sm:text-base tablet:text-lg tracking-tight truncate">
                 <span className="text-foreground">Nexa</span>
-                <span className="text-muted-foreground">Pay</span>
+                <span className="text-primary">Pay</span>
               </span>
             </Link>
 
-            {/* Desktop Links */}
+            {/* Desktop Navigation Links */}
             <NavLinks />
 
-            {/* Actions (Search, Currency, Notif, Cart, Profile, Mobile Menu) */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
+            {/* Actions (Search, Currency, Notifications, Cart, Profile, Mobile Menu) */}
+            <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
               <NavInlineSearch />
 
               <div className="hidden tablet:block">
@@ -124,20 +117,20 @@ export default function Navbar() {
                 />
               </div>
 
-              {/* Mobile Menu Toggle */}
+              {/* Mobile Menu Toggle Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all lg:hidden ml-1"
-                aria-label="Menu"
+                className="p-1.5 sm:p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all lg:hidden ml-0.5 sm:ml-1 active:scale-95"
+                aria-label="Menu Navigasi"
               >
-                <Menu className="w-5 h-5" />
+                <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Drawer Menu */}
       {mounted && (
         <NavMobileMenu 
           isOpen={isMobileMenuOpen} 

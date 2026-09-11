@@ -151,14 +151,14 @@ export default function WalletClient({
 
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 bg-background">
         <div className="container-app max-w-2xl">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <Link href="/dashboard" className="p-2 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+            <Link href="/dashboard" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-lg tablet:text-xl font-bold">Wallet NexaPay</h1>
+            <h1 className="text-lg tablet:text-xl font-bold font-heading">Wallet NexaPay</h1>
           </div>
 
           {/* 3D Holographic Metallic NexaPay Card (2026 Edition) */}

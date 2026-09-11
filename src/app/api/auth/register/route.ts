@@ -58,10 +58,21 @@ export async function POST(req: NextRequest) {
     // Hash password with bcrypt (cost factor 12)
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Generate a unique referral code (e.g. NAME1234)
-    const baseName = (name || email.split('@')[0]).replace(/[^a-zA-Z0-9]/g, '').substring(0, 5).toUpperCase();
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    const generatedReferralCode = `${baseName}${randomNum}`;
+    // Generate a unique collision-free referral code (e.g. NAMEA8F29C)
+    let generatedReferralCode = '';
+    const baseName = (name || email.split('@')[0]).replace(/[^a-zA-Z0-9]/g, '').substring(0, 4).toUpperCase() || 'NX';
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const candidate = `${baseName}${randomSuffix}`;
+      const existing = await prisma.user.findUnique({ where: { referralCode: candidate } });
+      if (!existing) {
+        generatedReferralCode = candidate;
+        break;
+      }
+    }
+    if (!generatedReferralCode) {
+      generatedReferralCode = `NX${Date.now().toString(36).toUpperCase()}`;
+    }
 
     let referrerId: string | null = null;
 

@@ -65,7 +65,7 @@ export default function AdminClient({
   };
 
   const statsCards = [
-    { label: 'Total Pendapatan', value: stats.totalRevenue, change: stats.revenueGrowth ?? 0, icon: DollarSign, color: 'from-violet-500 to-fuchsia-600', shadow: 'shadow-violet-500/20' },
+    { label: 'Total Pendapatan', value: stats.totalRevenue, change: stats.revenueGrowth ?? 0, icon: DollarSign, color: 'from-brand-500 to-amber-600', shadow: 'shadow-brand-500/20' },
     { label: 'Total Transaksi', value: stats.totalTransactions, change: stats.transactionGrowth ?? 0, icon: ShoppingCart, color: 'from-blue-500 to-cyan-500', shadow: 'shadow-blue-500/20' },
     { label: 'Pengguna Terdaftar', value: stats.totalUsers, change: stats.userGrowth ?? 0, icon: Users, color: 'from-emerald-400 to-teal-500', shadow: 'shadow-emerald-500/20' },
     { label: 'Pengguna Baru Hari Ini', value: stats.newUsersToday, change: stats.newUserGrowth ?? 0, icon: UserPlus, color: 'from-orange-400 to-pink-500', shadow: 'shadow-orange-500/20' },
@@ -96,7 +96,7 @@ export default function AdminClient({
             className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-bold text-white/80 hover:text-white transition-all cursor-pointer shadow-sm active:scale-95"
             title="Refresh Data Live"
           >
-            <RefreshCw className={cn("w-3.5 h-3.5 text-violet-400", isRefreshing && "animate-spin")} />
+            <RefreshCw className={cn("w-3.5 h-3.5 text-brand-400", isRefreshing && "animate-spin")} />
             <span className="hidden sm:inline">Refresh Live</span>
           </button>
         </div>
@@ -182,7 +182,7 @@ export default function AdminClient({
                             className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-white/80 hover:text-white flex items-center justify-between transition-colors"
                           >
                             <span>Analitik Lengkap</span>
-                            <BarChart3 className="w-3.5 h-3.5 text-violet-400" />
+                            <BarChart3 className="w-3.5 h-3.5 text-brand-400" />
                           </button>
 
                           <button
@@ -271,16 +271,16 @@ export default function AdminClient({
                               className={cn(
                                 "w-full rounded-t-xl transition-all duration-300 relative",
                                 hoveredBar === i 
-                                  ? "bg-gradient-to-t from-violet-600 to-fuchsia-400 shadow-[0_0_15px_rgba(167,139,250,0.5)]" 
+                                  ? "bg-gradient-to-t from-brand-600 to-amber-400 shadow-[0_0_15px_rgba(255,115,0,0.5)]" 
                                   : d.value > 0
-                                    ? "bg-gradient-to-t from-violet-600 to-fuchsia-500 shadow-[0_0_12px_rgba(139,92,246,0.35)]"
+                                    ? "bg-gradient-to-t from-brand-600 to-amber-500 shadow-[0_0_12px_rgba(255,115,0,0.35)]"
                                     : "bg-gradient-to-t from-white/5 to-white/10"
                               )}
                             >
                               <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                             </motion.div>
                           </div>
-                          <span className={cn("text-[10px] font-bold transition-colors", hoveredBar === i || d.value > 0 ? "text-violet-300" : "text-white/40")}>
+                          <span className={cn("text-[10px] font-bold transition-colors", hoveredBar === i || d.value > 0 ? "text-brand-300" : "text-white/40")}>
                             {d.day}
                           </span>
                         </div>
@@ -297,7 +297,7 @@ export default function AdminClient({
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">Produk Terlaris</h3>
-                  <div className="p-1.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                  <div className="p-1.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
                     <Activity className="w-4 h-4" />
                   </div>
                 </div>
@@ -307,7 +307,7 @@ export default function AdminClient({
                     <div key={product.name} className="group cursor-default">
                       <div className="flex items-center justify-between gap-3 mb-2">
                         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                          <span className="text-xs font-black text-white/20 w-4 group-hover:text-violet-400 transition-colors flex-shrink-0">0{i + 1}</span>
+                          <span className="text-xs font-black text-white/20 w-4 group-hover:text-brand-400 transition-colors flex-shrink-0">0{i + 1}</span>
                           <div className="min-w-0 flex-1">
                             <p className="text-xs sm:text-sm font-bold text-white/90 group-hover:text-white transition-colors">{product.name}</p>
                             <p className="text-[10px] text-white/40">{formatNumber(product.count)} pesanan</p>
@@ -322,7 +322,7 @@ export default function AdminClient({
                         <motion.div 
                           initial={{ width: 0 }} animate={{ width: `${Math.max((product.revenue / (topProducts[0]?.revenue || 1)) * 100, 5)}%` }}
                           transition={{ duration: 1, delay: 0.8 + (i * 0.1) }}
-                          className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full"
+                          className="h-full bg-gradient-to-r from-brand-500 to-amber-500 rounded-full"
                         />
                       </div>
                     </div>
@@ -349,7 +349,7 @@ export default function AdminClient({
                 </div>
                 <Link
                   href="/admin/transactions"
-                  className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 text-violet-300 text-xs font-bold whitespace-nowrap flex-shrink-0 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/20 text-brand-300 text-xs font-bold whitespace-nowrap flex-shrink-0 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                 >
                   <span>Lihat Semua</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -371,7 +371,7 @@ export default function AdminClient({
                   <tbody className="divide-y divide-white/5">
                     {recentTransactions.map((tx) => (
                       <tr key={tx.id} className="hover:bg-white/[0.02] transition-colors group">
-                        <td className="p-4 text-xs font-mono text-violet-300 group-hover:text-violet-400 transition-colors whitespace-nowrap">
+                        <td className="p-4 text-xs font-mono text-brand-300 group-hover:text-brand-400 transition-colors whitespace-nowrap">
                           {tx.invoiceId || tx.id}
                         </td>
                         <td className="p-4 text-sm font-medium text-white/90">

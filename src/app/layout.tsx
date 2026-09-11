@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import dynamic from 'next/dynamic';
+import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Toaster } from 'sonner';
@@ -10,6 +11,25 @@ import JsonLd from '@/components/shared/JsonLd';
 import ClientOverlays from '@/components/shared/ClientOverlays';
 import MobileNav from '@/components/layout/MobileNav';
 import Navbar from '@/components/layout/Navbar';
+import { cn } from '@/lib/utils';
+
+const fontInter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const fontSpaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
+
+const fontJetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -39,27 +59,31 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     url: '/',
     siteName: 'NexaPay',
-    title: 'NexaPay — Level Up Instantly',
+    title: 'NexaPay — Level Up Instantly | Top Up Game & Produk Digital',
     description:
-      'Platform top-up game & produk digital #1 di Indonesia. Proses instan, harga termurah, 500+ game & produk digital.',
-    images: [{ url: '/icons/icon-512x512.png', width: 512, height: 512, alt: 'NexaPay' }],
+      'Top up game dan produk digital resmi termurah, tercepat, dan terpercaya di Indonesia. Proses otomatis 24 jam.',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'NexaPay Gaming Top Up',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NexaPay — Level Up Instantly',
-    description: 'Platform top-up game & produk digital #1 di Indonesia.',
-    images: ['/icons/icon-512x512.png'],
+    title: 'NexaPay — Top Up Game Termurah & Tercepat',
+    description: 'Top up game dan produk digital resmi dengan proses instan 24 jam.',
+    images: ['/images/og-image.jpg'],
+    creator: '@nexapay',
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+  },
+  other: {
+    google: 'notranslate',
   },
   icons: {
     icon: '/favicon.ico',
@@ -74,8 +98,7 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -84,7 +107,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html
+      lang="id"
+      translate="no"
+      className={cn("notranslate", fontInter.variable, fontSpaceGrotesk.variable, fontJetbrainsMono.variable)}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <meta name="google" content="notranslate" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className="font-sans antialiased min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary"
         suppressHydrationWarning

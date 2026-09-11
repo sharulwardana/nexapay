@@ -22,18 +22,16 @@ export default function MobileNav() {
   const lastScrollY = useRef(0);
   const scrollDelta = useRef(0);
 
-  // Buttery smooth scroll hysteresis filter (Zero flutter / Zero rapid toggle)
+  // Smooth scroll hysteresis filter
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const diff = latest - lastScrollY.current;
     
-    // Accumulate directional scroll delta
     if (diff > 0) {
       scrollDelta.current = Math.max(0, scrollDelta.current) + diff;
     } else {
       scrollDelta.current = Math.min(0, scrollDelta.current) + diff;
     }
 
-    // Only morph on sustained, deliberate scrolling
     if (latest > 100 && scrollDelta.current > 35) {
       setIsShrunk(true);
     } else if (scrollDelta.current < -25 || latest < 30) {
@@ -60,44 +58,40 @@ export default function MobileNav() {
 
   return (
     <nav
-      aria-label="Navigasi Mobile Liquid Glass iOS 26"
-      className="fixed inset-x-0 z-50 lg:hidden pointer-events-none flex justify-center px-2"
+      aria-label="Navigasi Utama"
+      className="fixed inset-x-0 z-50 tablet:hidden pointer-events-none flex justify-center px-2"
       style={{
         bottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* 2026 Proportional Large Stadium Capsule (Enlarged across Mobile S, M, L with 100% Identical Precise Aspect Ratio) */}
+      {/* Refined Contextual Liquid Glass Dock */}
       <div
         className={cn(
-          'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation backface-hidden',
-          // Ultra-smooth 120 FPS hardware-accelerated CSS transition
+          'pointer-events-auto relative mx-auto transform-gpu will-change-[width,height] touch-manipulation',
           'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          // Proportionally Enlarged 2D Morphing
           isShrunk
-            ? 'w-[80%] max-w-[305px] xs:max-w-[335px] sm:max-w-[365px] h-[48px] sm:h-[50px]' // Shrunk large compact
-            : 'w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] h-[62px] sm:h-[66px]', // Expanded Large Stadium Pill
-          'rounded-full overflow-hidden p-[3px]', // Exact uniform margin
-          // Pure Crystal Translucent Liquid Glass (Zero Black Shadow on ANY page)
-          'bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150',
-          'border border-white/20 dark:border-white/15',
-          'shadow-[0_0_20px_rgba(249,115,22,0.12),inset_0_1px_1.5px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.1)]'
+            ? 'w-[82%] max-w-[310px] xs:max-w-[340px] sm:max-w-[370px] h-[50px]'
+            : 'w-[96%] max-w-[420px] xs:max-w-[460px] sm:max-w-[500px] h-[64px]',
+          'rounded-full overflow-hidden p-1',
+          'bg-[#0E121B]/85 backdrop-blur-2xl backdrop-saturate-150',
+          'border border-white/12',
+          'shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.15)]'
         )}
       >
-        {/* Top Edge Specular Reflex */}
-        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+        {/* Specular Edge Line */}
+        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-20" />
 
-        {/* 5 Strictly Equal 20% Columns Grid */}
+        {/* 5 Equal Columns */}
         <div className="relative grid grid-cols-5 items-center h-full w-full">
-          {/* Active Tab Bubble — Large Proportional Stadium Capsule (Identical Shape) */}
+          {/* Active Tab Highlight Pill */}
           {activeIndex !== -1 && (
             <div
               className={cn(
                 'absolute inset-0 w-1/5 h-full rounded-full pointer-events-none z-0',
                 'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform',
-                // Glowing Cyber Orange Theme Liquid Capsule
-                'bg-gradient-to-b from-primary/30 via-primary/20 to-primary/10',
-                'border border-primary/50',
-                'shadow-[0_0_14px_rgba(249,115,22,0.3),inset_0_1px_1.5px_rgba(255,255,255,0.4)]'
+                'bg-gradient-to-b from-[#FF7300]/20 to-[#FF7300]/10',
+                'border border-[#FF7300]/40',
+                'shadow-[0_0_12px_rgba(255,115,0,0.25),inset_0_1px_0_rgba(255,255,255,0.25)]'
               )}
               style={{
                 transform: `translateX(${activeIndex * 100}%)`,
@@ -116,27 +110,25 @@ export default function MobileNav() {
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={item.label}
                 className={cn(
-                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full select-none active:scale-90',
-                  'transition-colors duration-200 px-0.5',
-                  isActive ? 'text-primary font-bold' : 'text-zinc-400 hover:text-white'
+                  'relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full select-none active:scale-95',
+                  'transition-colors duration-200 px-0.5 min-h-[44px]',
+                  isActive ? 'text-[#FF7300] font-bold' : 'text-slate-400 hover:text-white'
                 )}
               >
-                {/* Fixed-Position Icon Container (Enlarged & Immune to any vertical jumps) */}
-                <div className="relative flex items-center justify-center w-full">
+                {/* Icon Container */}
+                <div className="relative flex items-center justify-center">
                   <Icon
                     className={cn(
                       'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-                      isShrunk
-                        ? 'w-[19px] h-[19px] sm:w-[20px] sm:h-[20px]'
-                        : 'w-[21px] h-[21px] sm:w-[23px] sm:h-[23px]',
+                      isShrunk ? 'w-[18px] h-[18px]' : 'w-[20px] h-[20px]',
                       isActive
-                        ? 'stroke-[2.5] text-primary drop-shadow-[0_0_8px_rgba(249,115,22,0.65)]'
-                        : 'stroke-[1.8] opacity-75 hover:opacity-100 text-zinc-300'
+                        ? 'stroke-[2.2] text-[#FF7300]'
+                        : 'stroke-[1.8] text-slate-400'
                     )}
                   />
                 </div>
 
-                {/* Sub-grid CSS Smooth Height Collapse for Label (Enlarged Crisp Typography) */}
+                {/* Text Label */}
                 <div
                   className={cn(
                     'grid transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden',
@@ -146,10 +138,10 @@ export default function MobileNav() {
                   <span
                     className={cn(
                       'font-heading tracking-tight leading-none text-center min-h-0 overflow-hidden pb-0.5',
-                      'text-[10px] xs:text-[10.5px] sm:text-[11px]',
+                      'text-[10px] xs:text-[11px]',
                       isActive
-                        ? 'font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
-                        : 'font-medium text-zinc-300'
+                        ? 'font-bold text-[#FF7300]'
+                        : 'font-medium text-slate-300'
                     )}
                   >
                     {item.label}

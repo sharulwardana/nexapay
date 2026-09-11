@@ -171,22 +171,22 @@ export default function ScratchAndWin() {
         initial={{ scale: 0 }}
         animate={{ 
           scale: 1,
-          y: [0, -5, 0],
+          y: [0, -4, 0],
         }}
         transition={{ 
           scale: { type: 'spring', stiffness: 350, damping: 30 },
-          y: { repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.5 }
+          y: { repeat: Infinity, duration: 4, ease: 'easeInOut', delay: 0.5 }
         }}
-        whileHover={{ scale: 1.08, rotate: 6 }}
-        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
         onClick={() => {
           setIsOpen(true);
         }}
-        className="flex fixed bottom-[138px] right-3 sm:right-4 tablet:right-6 tablet:bottom-[84px] w-11 h-11 sm:w-12 sm:h-12 tablet:w-14 tablet:h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.4)] hover:shadow-[0_6px_25px_rgba(245,158,11,0.55)] items-center justify-center z-40 transition-shadow duration-200 cursor-pointer"
-        aria-label="Scratch & Win Hadiah"
+        className="flex fixed bottom-[80px] left-2 xs:left-3 sm:left-4 tablet:left-auto tablet:right-6 tablet:bottom-[88px] w-9 h-9 xs:w-11 xs:h-11 sm:w-12 sm:h-12 tablet:w-13 tablet:h-13 liquid-glass rounded-full border border-brand-500/30 shadow-[0_8px_24px_rgba(0,0,0,0.4),0_0_16px_rgba(255,115,0,0.2)] hover:border-brand-500/60 hover:shadow-[0_8px_28px_rgba(255,115,0,0.35)] items-center justify-center z-40 transition-all duration-200 cursor-pointer text-brand-500"
+        aria-label="FREE — Gosok & Menang Hadiah Harian"
       >
-        <Gift className="w-5 h-5 tablet:w-6 tablet:h-6 text-white" />
-        <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white font-black text-[9px] border-2 border-background animate-bounce">
+        <Gift className="w-5 h-5 tablet:w-5.5 tablet:h-5.5 text-brand-500" />
+        <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-brand-500 text-black font-black text-[9px] border border-[#0B0E14] shadow-sm">
           FREE
         </span>
       </motion.button>
@@ -200,52 +200,54 @@ export default function ScratchAndWin() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/75 backdrop-blur-md"
             />
             
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: 16 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-sm bg-card border border-border shadow-2xl rounded-3xl overflow-hidden z-10 text-center p-6"
+              exit={{ scale: 0.95, opacity: 0, y: 16 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-sm bg-[#121620] border border-white/10 shadow-2xl rounded-2xl overflow-hidden z-10 text-center p-6"
             >
               <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 p-1 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground"
+                className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Tutup modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
 
-              <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto mb-4">
-                <Gift className="w-8 h-8" />
+              <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/25 text-brand-500 flex items-center justify-center mx-auto mb-3.5 shadow-sm">
+                <Gift className="w-7 h-7 text-brand-500" />
               </div>
-              <h2 className="heading-3 mb-2">Gosok & Menang!</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Gosok kartu di bawah ini untuk mendapatkan hadiah kejutan Loyalty Points harian.
+              <h2 className="heading-3 text-lg font-heading font-bold text-foreground mb-1.5">Gosok & Menang!</h2>
+              <p className="text-xs text-muted-foreground mb-5 max-w-xs mx-auto">
+                Gosok kartu di bawah ini untuk mendapatkan kejutan Loyalty Points harian dari NexaPay.
               </p>
 
-              <div className="relative w-full h-40 rounded-2xl overflow-hidden bg-muted border-2 border-dashed border-border flex items-center justify-center select-none">
+              <div className="relative w-full h-40 rounded-xl overflow-hidden bg-[#181E2B] border border-white/10 flex items-center justify-center select-none">
                 {isFetching ? (
                   <div className="flex flex-col items-center gap-2">
-                    <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                    <Loader2 className="w-6 h-6 text-brand-500 animate-spin" />
                     <span className="text-xs text-muted-foreground">Menyiapkan kartu...</span>
                   </div>
                 ) : hasPlayedToday ? (
                   <div className="text-center p-4 flex flex-col items-center justify-center">
-                    <CheckCircle2 className="w-10 h-10 text-emerald-400 mb-2" />
+                    <CheckCircle2 className="w-9 h-9 text-emerald-400 mb-2" />
                     <h3 className="font-bold text-foreground text-sm mb-1">Sudah Gosok Hari Ini!</h3>
-                    <p className="text-xs text-muted-foreground">Kamu sudah mengambil kesempatan gosok kartu harian. Kembali lagi besok jam 00:00 WIB!</p>
+                    <p className="text-[11px] text-muted-foreground">Kamu sudah mengambil kesempatan gosok kartu harian. Kembali lagi besok jam 00:00 WIB!</p>
                   </div>
                 ) : (
                   <>
                     {/* The revealed prize underneath */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                      <p className="text-sm font-bold text-muted-foreground mb-1">SELAMAT! KAMU DAPAT</p>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-500/15 via-[#181E2B] to-[#121620]">
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">SELAMAT! KAMU DAPAT</p>
                       <div className="flex items-center gap-2">
-                        <Coins className="w-6 h-6 text-yellow-500" />
-                        <span className="text-3xl font-black gradient-text">+{pointsWon}</span>
+                        <Coins className="w-6 h-6 text-amber-400" />
+                        <span className="text-3xl font-black text-brand-500 font-heading">+{pointsWon}</span>
                       </div>
-                      <p className="text-xs font-bold text-primary mt-1">Loyalty Points</p>
+                      <p className="text-[11px] font-bold text-brand-400 mt-0.5">Nexa Loyalty Points</p>
                     </div>
 
                     {/* The scratchable overlay */}

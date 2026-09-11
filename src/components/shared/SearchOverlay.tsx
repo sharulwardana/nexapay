@@ -68,47 +68,49 @@ export default function SearchOverlay() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60]"
+            className="fixed inset-0 bg-black/75 backdrop-blur-md z-[60]"
             onClick={handleClose}
           />
 
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            initial={{ opacity: 0, y: -12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ duration: 0.15, ease: [0.33, 1, 0.68, 1] }}
+            exit={{ opacity: 0, y: -12, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className="fixed top-0 left-0 right-0 z-[61] p-4 tablet:p-6 tablet:pt-24"
           >
-            <div className="max-w-xl mx-auto rounded-xl bg-card border border-border shadow-xl overflow-hidden" role="dialog" aria-label="Pencarian" aria-modal="true">
+            <div className="max-w-xl mx-auto rounded-2xl bg-[#121620] border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.7)] overflow-hidden" role="dialog" aria-label="Pencarian" aria-modal="true">
               {/* Input */}
               <div className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-50" />
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-border relative z-10">
-                  <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 text-primary animate-pulse" aria-hidden="true" />
+                <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10 relative z-10 bg-[#181E2B]/80 backdrop-blur-md">
+                  <div className="w-7 h-7 rounded-lg bg-brand-500/10 border border-brand-500/25 flex items-center justify-center flex-shrink-0">
+                    <Search className="w-4 h-4 text-brand-500" aria-hidden="true" />
                   </div>
+                  <label htmlFor="global-search-input" className="sr-only">Cari produk</label>
                   <input
+                    id="global-search-input"
+                    name="globalSearch"
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Tanya AI: 'game tembak-tembakan'..."
-                    className="flex-1 bg-transparent text-[16px] tablet:text-sm outline-none placeholder:text-muted-foreground/50 text-foreground"
+                    placeholder="Cari game, pulsa, token PLN, atau voucher..."
+                    className="flex-1 bg-transparent text-sm tablet:text-base outline-none placeholder:text-muted-foreground/60 text-foreground"
                     autoFocus
                     aria-label="Cari produk"
                   />
-                  <button onClick={handleClose} className="p-1 rounded-md hover:bg-muted transition-colors" aria-label="Tutup pencarian">
-                    <X className="w-4 h-4 text-muted-foreground" />
+                  <button onClick={handleClose} className="p-1 rounded-lg hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors" aria-label="Tutup pencarian">
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
               {/* Content */}
               <div className="max-h-[60vh] overflow-y-auto">
-                {/* AI Recommendation Context (Mock) */}
+                {/* Search Context Header */}
                 {query.length > 2 && results.length > 0 && (
                   <div className="px-4 pt-3 pb-1 flex items-center gap-2">
-                    <Bot className="w-3 h-3 text-primary" />
-                    <span className="text-[10px] font-medium text-primary">Rekomendasi Pintar NexaAI</span>
+                    <Sparkles className="w-3.5 h-3.5 text-brand-500" />
+                    <span className="text-[11px] font-bold text-brand-400 font-heading">Hasil Pencarian Produk</span>
                   </div>
                 )}
                 {/* Results */}

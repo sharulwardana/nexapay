@@ -71,9 +71,9 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
   const displayList = transactions.slice(0, 5);
 
   const content = (
-    <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
+    <div className="bg-[#121620] rounded-2xl overflow-hidden border border-white/10 shadow-xl">
       {/* Header */}
-      <div className="p-3.5 sm:p-5 tablet:p-6 border-b border-border/50 flex items-center justify-between gap-3 bg-card/50 backdrop-blur-md">
+      <div className="p-3.5 sm:p-5 tablet:p-6 border-b border-white/5 flex items-center justify-between gap-3 bg-[#181E2B]">
         <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 shadow-sm">
             <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 animate-pulse" />
@@ -81,7 +81,7 @@ export default function RealTimeTransactions({ compact = false }: { compact?: bo
           <div className="min-w-0 flex-1">
             <h3 className="font-heading font-bold text-xs sm:text-sm tablet:text-base text-foreground flex items-center gap-1.5">
               <span>Aktivitas Transaksi Real-Time</span>
-              <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 hidden sm:inline" />
+              <Zap className="w-3.5 h-3.5 text-brand-400 fill-brand-400 hidden sm:inline" />
             </h3>
             <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight mt-0.5 truncate">
               Pantau pesanan yang baru saja berhasil diproses instan

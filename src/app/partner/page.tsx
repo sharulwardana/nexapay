@@ -91,29 +91,26 @@ const tiers = [
 export default function PartnerPage() {
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden aurora-bg">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none" />
-
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 relative overflow-hidden bg-background">
         <div className="container-app max-w-5xl relative z-10">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-bold font-heading text-muted-foreground hover:text-primary mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold font-heading text-muted-foreground hover:text-brand-500 mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Kembali ke Beranda
           </Link>
 
           {/* Hero Header */}
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-md mb-4 shadow-sm">
-              <Handshake className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-[11px] font-bold tracking-widest text-emerald-400 uppercase font-heading">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 mb-4 shadow-sm">
+              <Handshake className="w-3.5 h-3.5 text-brand-500" />
+              <span className="text-[11px] font-bold tracking-widest text-brand-500 uppercase font-heading">
                 Nexa Merchant & Partner Ecosystem
               </span>
             </div>
             <h1 className="heading-1 mb-4">
               Bangun Bisnis Top-Up <br className="hidden sm:block" />
-              <span className="gradient-text">Dengan Direct API Tercepat</span>
+              <span className="text-brand-500">Dengan Direct API Tercepat</span>
             </h1>
             <p className="body-default max-w-2xl mx-auto text-muted-foreground">
               Bergabunglah dengan ribuan mitra agen dan distributor di seluruh Indonesia. Nikmati integrasi mudah, harga modal terendah, dan uptime server 99.9%.
@@ -125,10 +122,10 @@ export default function PartnerPage() {
             {perks.map((perk) => (
               <div
                 key={perk.title}
-                className="p-5 rounded-3xl bg-card/60 border border-border/80 hover:border-primary/50 backdrop-blur-xl transition-all duration-300 flex flex-col justify-between group shadow-lg"
+                className="p-5 rounded-2xl bg-[#121620] border border-white/10 hover:border-brand-500/40 transition-all duration-200 flex flex-col justify-between group shadow-sm"
               >
                 <div>
-                  <div className={cn('w-11 h-11 rounded-2xl bg-gradient-to-br flex items-center justify-center text-white shadow-md mb-4 group-hover:scale-105 transition-transform', perk.color)}>
+                  <div className={cn('w-11 h-11 rounded-xl bg-gradient-to-br flex items-center justify-center text-white shadow-md mb-4 group-hover:scale-105 transition-transform', perk.color)}>
                     <perk.icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-sm font-bold font-heading mb-1.5 text-foreground">{perk.title}</h3>
@@ -141,7 +138,7 @@ export default function PartnerPage() {
           {/* Reseller Tiers */}
           <div className="mb-16">
             <div className="text-center mb-10">
-              <span className="text-[11px] font-bold tracking-widest text-primary uppercase font-heading block mb-1">
+              <span className="text-[11px] font-bold tracking-widest text-brand-500 uppercase font-heading block mb-1">
                 Pilihan Skema Kemitraan
               </span>
               <h2 className="heading-2">Pilih Tier yang Sesuai untuk Bisnis Anda</h2>
@@ -152,13 +149,12 @@ export default function PartnerPage() {
                 <div
                   key={tier.name}
                   className={cn(
-                    'p-6 tablet:p-8 rounded-3xl bg-card/70 border backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between relative shadow-xl',
-                    tier.color,
-                    tier.isPopular && 'ring-1 ring-primary/40 bg-card/90'
+                    'p-6 tablet:p-8 rounded-2xl bg-[#121620] border border-white/10 transition-all duration-200 flex flex-col justify-between relative shadow-xl',
+                    tier.isPopular ? 'border-brand-500/60 ring-1 ring-brand-500/30' : ''
                   )}
                 >
                   {tier.isPopular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full gradient-primary text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-brand-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm font-heading">
                       {tier.badge}
                     </div>
                   )}
@@ -167,7 +163,7 @@ export default function PartnerPage() {
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-black font-heading text-foreground">{tier.name}</h3>
                       {!tier.isPopular && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-muted/60 text-muted-foreground text-[10px] font-bold">
+                        <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-muted-foreground text-[10px] font-bold">
                           {tier.badge}
                         </span>
                       )}
@@ -176,9 +172,9 @@ export default function PartnerPage() {
                       {tier.desc}
                     </p>
 
-                    <div className="p-4 rounded-2xl bg-white/[0.02] border border-border/50 mb-6 space-y-1">
-                      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Minimal Saldo Awal</p>
-                      <p className="text-lg font-black text-primary font-heading">{tier.minDeposit}</p>
+                    <div className="p-4 rounded-xl bg-[#181E2B] border border-white/5 mb-6 space-y-1">
+                      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider font-mono">Minimal Saldo Awal</p>
+                      <p className="text-lg font-black text-brand-500 font-heading">{tier.minDeposit}</p>
                       <p className="text-[11px] text-emerald-400 font-semibold">{tier.discount}</p>
                     </div>
 
@@ -196,10 +192,10 @@ export default function PartnerPage() {
                   <a
                     href={`mailto:partner@nexapay.id?subject=Pendaftaran%20Kemitraan%20NexaPay%20(${tier.name})`}
                     className={cn(
-                      'w-full py-3.5 rounded-2xl font-bold font-heading text-xs text-center flex items-center justify-center gap-2 transition-all shadow-md',
+                      'w-full py-3.5 rounded-xl font-bold font-heading text-xs text-center flex items-center justify-center gap-2 transition-all cursor-pointer',
                       tier.isPopular
-                        ? 'gradient-primary text-white hover:shadow-neon-orange hover:opacity-95'
-                        : 'bg-muted/40 hover:bg-muted text-foreground border border-border'
+                        ? 'btn-primary text-white shadow-brand'
+                        : 'btn-secondary text-foreground'
                     )}
                   >
                     <Send className="w-3.5 h-3.5" /> Daftar {tier.name}
@@ -210,8 +206,8 @@ export default function PartnerPage() {
           </div>
 
           {/* Quick Integration / API Box */}
-          <div className="p-8 tablet:p-10 rounded-3xl bg-card/60 border border-border/80 backdrop-blur-2xl shadow-2xl relative overflow-hidden text-center space-y-6">
-            <div className="w-14 h-14 rounded-2xl gradient-primary text-white flex items-center justify-center mx-auto shadow-lg shadow-primary/25">
+          <div className="p-8 tablet:p-10 rounded-2xl bg-[#121620] border border-white/10 shadow-xl relative overflow-hidden text-center space-y-6">
+            <div className="w-14 h-14 rounded-2xl bg-brand-500 text-white flex items-center justify-center mx-auto shadow-brand">
               <Code2 className="w-7 h-7" />
             </div>
 
@@ -227,13 +223,13 @@ export default function PartnerPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <a
                 href="mailto:partner@nexapay.id?subject=Request%20Dokumentasi%20API%20NexaPay"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl gradient-primary text-white text-xs font-bold font-heading hover:shadow-neon-orange transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl btn-primary text-white text-xs font-bold font-heading shadow-brand transition-all flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" /> Hubungi Tim Kemitraan (partner@nexapay.id)
               </a>
               <Link
                 href="/contact"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-muted/40 hover:bg-muted border border-border text-foreground text-xs font-bold font-heading transition-all"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl btn-secondary text-foreground text-xs font-bold font-heading transition-all"
               >
                 Live Support CS 24/7
               </Link>

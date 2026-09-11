@@ -19,7 +19,7 @@ const primaryTabs = [
 ];
 
 const secondaryItems = [
-  { label: 'Promo & Voucher', href: '/admin/promos', icon: Megaphone, color: 'text-violet-400 bg-violet-500/10 border-violet-500/20' },
+  { label: 'Promo & Voucher', href: '/admin/promos', icon: Megaphone, color: 'text-brand-400 bg-brand-500/10 border-brand-500/20' },
   { label: 'Banner Hero', href: '/admin/banners', icon: ImageIcon, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
   { label: 'Analitik Performa', href: '/admin/analytics', icon: BarChart3, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
 ];
@@ -50,7 +50,7 @@ export default function AdminMobileDock({ adminUser }: {
       <div
         className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] inset-x-0 mx-auto z-50 lg:hidden w-[calc(100%-2rem)] max-w-[380px] pointer-events-auto"
       >
-        <div className="relative p-1.5 rounded-full bg-[#0b0c13]/96 backdrop-blur-2xl border border-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.95),0_0_24px_rgba(139,92,246,0.2)] grid grid-cols-5 items-center gap-0.5">
+        <div className="relative p-1.5 rounded-full bg-[#0b0c13]/96 backdrop-blur-2xl border border-white/15 shadow-[0_16px_40px_rgba(0,0,0,0.95),0_0_24px_rgba(255,115,0,0.2)] grid grid-cols-5 items-center gap-0.5">
           {primaryTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = pathname === tab.href || (tab.href !== '/admin' && pathname.startsWith(tab.href));
@@ -68,11 +68,11 @@ export default function AdminMobileDock({ adminUser }: {
                 {isActive && (
                   <motion.div
                     layoutId="activeAdminDockTab"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-600/40 via-fuchsia-600/30 to-violet-600/40 border border-violet-500/50 shadow-[0_0_15px_rgba(139,92,246,0.35)]"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-brand-500/40 via-amber-500/30 to-brand-500/40 border border-brand-500/50 shadow-[0_0_15px_rgba(255,115,0,0.35)]"
                     transition={{ type: "spring", stiffness: 450, damping: 32 }}
                   />
                 )}
-                <Icon className={cn("w-4 h-4 sm:w-4.5 sm:h-4.5 relative z-10 transition-all duration-300", isActive && "scale-110 text-violet-300 drop-shadow-[0_0_8px_rgba(167,139,250,0.5)]")} />
+                <Icon className={cn("w-4 h-4 sm:w-4.5 sm:h-4.5 relative z-10 transition-all duration-300", isActive && "scale-110 text-brand-400 drop-shadow-[0_0_8px_rgba(255,115,0,0.5)]")} />
                 <span className={cn("text-[9.5px] tracking-tight leading-none mt-1 relative z-10 block w-full text-center truncate px-0.5 font-heading", isActive ? "font-bold text-white" : "font-medium")}>
                   {tab.label}
                 </span>
@@ -133,7 +133,7 @@ export default function AdminMobileDock({ adminUser }: {
               {/* Drawer Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3.5">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-white/10 flex items-center justify-center text-violet-400 font-bold">
+                  <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-500/20 to-amber-500/20 border border-white/10 flex items-center justify-center text-brand-400 font-bold">
                     <Shield className="w-4 h-4" />
                   </div>
                   <div>
@@ -186,7 +186,7 @@ export default function AdminMobileDock({ adminUser }: {
               {adminUser && (
                 <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center font-bold text-xs text-white shadow-md flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-500 to-amber-600 flex items-center justify-center font-bold text-xs text-white shadow-md flex-shrink-0">
                       {adminUser.name?.[0] || 'A'}
                     </div>
                     <div className="min-w-0">

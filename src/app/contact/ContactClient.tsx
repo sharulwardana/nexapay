@@ -89,8 +89,8 @@ export default function ContactClient() {
               {[
                 { icon: MessageCircle, title: 'Live Priority Chat', info: 'Respon Kilat CS', subtitle: 'Rata-rata balasan < 1 menit', color: 'from-emerald-500 to-teal-600', badge: 'Tercepat' },
                 { icon: Mail, title: 'Official Email', info: 'support@nexapay.id', subtitle: 'Penyelesaian masalah teknis & refund', color: 'from-cyan-500 to-blue-600' },
-                { icon: Phone, title: 'Call Center Hotline', info: '0800-123-4567', subtitle: 'Bebas pulsa 24 jam nonstop', color: 'from-violet-500 to-purple-600' },
-                { icon: MapPin, title: 'Headquarter', info: 'Nexa Tower Cyber Hub', subtitle: 'Jakarta Selatan, Indonesia', color: 'from-amber-500 to-orange-600' },
+                { icon: Phone, title: 'Customer Care WhatsApp', info: '+62 812-8888-NEXA', subtitle: 'Layanan responsif 24 jam nonstop', color: 'from-violet-500 to-purple-600' },
+                { icon: MapPin, title: 'Operational Office', info: 'Cyber 2 Tower, Kuningan', subtitle: 'Jakarta Selatan, Indonesia', color: 'from-amber-500 to-orange-600' },
               ].map((contact) => (
                 <div
                   key={contact.title}

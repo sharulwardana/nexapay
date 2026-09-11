@@ -7,7 +7,7 @@ import { ArrowRight, Gamepad2, Smartphone, Zap, Gift, Tv, Wallet, Ticket, Wifi }
 import { cn } from '@/lib/utils';
 import { CATEGORIES } from '@/lib/constants';
 import type { ProductWithDenominations } from '@/types';
-import CyberGameCard from '@/components/shared/CyberGameCard';
+import GameCard from '@/components/shared/GameCard';
 
 const iconMap: Record<string, React.ElementType> = {
   Gamepad2, Ticket, Smartphone, Wifi, Zap, Gift, Tv, Wallet,
@@ -118,7 +118,7 @@ export default function TrendingProducts({ games }: { games: ProductWithDenomina
                 variants={itemVariant}
                 className="h-full"
               >
-                <CyberGameCard game={product} index={index} />
+                <GameCard game={product} index={index} />
               </motion.div>
             );
           })}

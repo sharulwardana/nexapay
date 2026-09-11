@@ -85,7 +85,10 @@ export default function NavInlineSearch() {
         ) : (
           <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
         )}
+        <label htmlFor="nav-game-search" className="sr-only">Cari game</label>
         <input
+          id="nav-game-search"
+          name="search"
           type="text"
           value={query}
           onFocus={() => { playClick(); setIsOpen(true); }}
@@ -217,7 +220,10 @@ export default function NavInlineSearch() {
                 ) : (
                   <Search className="w-4 h-4 text-primary flex-shrink-0" />
                 )}
+                <label htmlFor="mobile-nav-game-search" className="sr-only">Ketik nama game atau produk</label>
                 <input
+                  id="mobile-nav-game-search"
+                  name="mobileSearch"
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}

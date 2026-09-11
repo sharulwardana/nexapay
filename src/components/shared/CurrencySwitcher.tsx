@@ -50,12 +50,12 @@ export default function CurrencySwitcher({
         className={cn(
           'inline-flex items-center gap-1.5 rounded-xl border transition-all duration-200 focus:outline-none',
           compact
-            ? 'px-2 py-1 text-[11px] font-bold bg-white/[0.04] border-white/10 hover:border-primary/40 hover:bg-white/[0.08] text-foreground shadow-sm'
-            : 'px-2.5 py-1.5 text-xs font-semibold bg-card/60 border-border/80 hover:border-primary/50 text-foreground backdrop-blur-md shadow-sm'
+            ? 'px-2 py-1 text-[11px] font-bold bg-[#121620] border-white/10 hover:border-primary/40 hover:bg-[#161D2C] text-white shadow-sm'
+            : 'px-2.5 py-1.5 text-xs font-semibold bg-[#121620] border-white/10 hover:border-primary/50 text-white backdrop-blur-md shadow-sm'
         )}
       >
         <span className="text-xs leading-none">{activeCurrency.flag}</span>
-        <span className="font-mono font-bold tracking-tight text-[11px] text-foreground">
+        <span className="font-mono font-bold tracking-tight text-[11px] text-white">
           {activeCurrency.code}
         </span>
         <ChevronDown

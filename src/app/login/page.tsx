@@ -77,12 +77,12 @@ export default function LoginPage() {
       <div className="absolute inset-0 gradient-hero" />
       <div className="absolute inset-0 grid-pattern opacity-30" />
       <motion.div
-        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-cyan-500/10 blur-[120px]"
+        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-primary/10 blur-[120px]"
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 8, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-teal-500/10 blur-[120px]"
+        className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-amber-500/10 blur-[120px]"
         animate={{ scale: [1.2, 1, 1.2] }}
         transition={{ duration: 10, repeat: Infinity }}
       />

@@ -41,6 +41,7 @@ export default async function PaymentStatusPage({ params }: { params: Promise<{ 
         gameServerId={transaction.gameServerId || ''}
         status={transaction.status}
         expiresAt={transaction.expiresAt?.toISOString() || null}
+        category={transaction.category || transaction.product?.category || 'GAME_TOPUP'}
       />
   );
 }

@@ -17,9 +17,9 @@ export default function DashboardError({
 
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 aurora-bg flex items-center justify-center">
+      <main className="min-h-screen pt-28 tablet:pt-32 pb-24 bg-background flex items-center justify-center">
         <div className="container-app max-w-lg text-center">
-          <div className="glass-card p-8 border border-red-500/20 shadow-2xl">
+          <div className="bg-[#121620] p-8 border border-red-500/20 rounded-2xl shadow-2xl">
             <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-4 text-red-500">
               <AlertCircle className="w-8 h-8" />
             </div>
@@ -34,7 +34,7 @@ export default function DashboardError({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <button
                 onClick={() => reset()}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gradient-primary text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl btn-primary text-white text-xs font-bold transition-all shadow-brand active:scale-95 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Muat Ulang
               </button>

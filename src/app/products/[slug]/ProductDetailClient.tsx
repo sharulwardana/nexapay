@@ -208,19 +208,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   return (
     <>
-      {/* Background Decorative Ambient Glow */}
-      <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 blur-[140px] pointer-events-none rounded-full z-0" />
-
-      <main className="min-h-screen pt-28 pb-36 tablet:pt-36 tablet:pb-24 relative z-10 aurora-bg">
+      <main className="min-h-screen pt-28 pb-36 tablet:pt-36 tablet:pb-24 relative z-10 bg-background">
         <div className="container-app max-w-7xl 4k:max-w-[1600px] relative z-10">
 
-          {/* Top Hero Banner Header — Streamlined 2026 Digital Service Grade */}
-          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-5 sm:mb-8 border border-border/60 glass-card shadow-2xl">
-            <div className="relative min-h-[120px] sm:min-h-[150px] w-full bg-gradient-to-r from-background via-card to-background overflow-hidden flex items-center p-3.5 sm:p-6">
-              {/* Dynamic Ambient Glow */}
-              <div className={cn('absolute -right-16 -top-16 w-64 h-64 rounded-full blur-[90px] opacity-25 bg-gradient-to-br', productColors.from, productColors.to)} />
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-transparent pointer-events-none" />
-
+          {/* Top Hero Banner Header — Digital Service Grade */}
+          <div className="relative rounded-2xl overflow-hidden mb-5 sm:mb-8 border border-white/10 bg-[#121620] shadow-xl">
+            <div className="relative min-h-[120px] sm:min-h-[140px] w-full bg-[#181E2B] overflow-hidden flex items-center p-3.5 sm:p-6">
               <div className="relative z-10 flex items-center gap-3.5 sm:gap-6 w-full">
                 {/* Digital Product Logo / Artwork Container */}
                 <div className="relative w-16 h-16 sm:w-22 sm:h-22 rounded-xl sm:rounded-2xl overflow-hidden border border-primary/30 shadow-[0_0_20px_rgba(255,115,0,0.2)] flex-shrink-0 bg-slate-950/90 flex items-center justify-center">
@@ -277,7 +270,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
               {/* STEP 1: Account Identification / Data Tujuan */}
               <section ref={accountSectionRef} id="step-account">
-                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl">
+                <div className="bg-[#121620] p-4 sm:p-5 tablet:p-6 rounded-2xl border border-white/10 relative overflow-hidden group shadow-xl">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -323,7 +316,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
               {/* STEP 2: Select Denomination / Pilih Nominal */}
               <section ref={denomSectionRef} id="step-denom">
-                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28">
+                <div className="bg-[#121620] p-4 sm:p-5 tablet:p-6 rounded-2xl border border-white/10 relative overflow-hidden group shadow-xl scroll-mt-28">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -438,7 +431,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
                           {/* Active Selected Checkmark Top-Right Badge */}
                           {isSelected && (
-                            <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full gradient-primary text-white flex items-center justify-center shadow-lg border-2 border-background animate-in zoom-in duration-200 z-20">
+                            <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shadow-lg border-2 border-background animate-in zoom-in duration-200 z-20">
                               <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                             </div>
                           )}
@@ -451,7 +444,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
               {/* STEP 3: Payment Method / Pilih Pembayaran */}
               <section ref={paymentSectionRef} id="step-payment">
-                <div className="glass-card p-4 sm:p-5 tablet:p-6 rounded-2xl relative overflow-hidden group shadow-xl scroll-mt-28">
+                <div className="bg-[#121620] p-4 sm:p-5 tablet:p-6 rounded-2xl border border-white/10 relative overflow-hidden group shadow-xl scroll-mt-28">
                   <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-border/40">
                     <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary/25 to-primary/10 text-primary border border-primary/30 flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_12px_rgba(255,115,0,0.2)] flex-shrink-0 font-heading">
@@ -539,7 +532,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
               {/* STEP 4: Optional Promo Code / Voucher Box in Main Flow (Mobile only: < 768px) */}
               <section id="step-promo" className="md:hidden">
-                <div className="glass-card p-4 sm:p-5 rounded-2xl border border-border/80 relative z-10 shadow-lg">
+                <div className="bg-[#121620] p-4 sm:p-5 rounded-2xl border border-white/10 relative z-10 shadow-lg">
                   <div className="flex items-center gap-2 mb-3">
                     <Ticket className="w-4 h-4 text-primary" />
                     <h3 className="text-xs sm:text-sm font-bold font-heading text-foreground">
@@ -574,7 +567,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
             {/* Right Column: Sticky Summary & Checkout Widget (Tablet & Desktop: >= 768px) */}
             <div className="hidden md:block md:col-span-5 lg:col-span-4 sticky top-28 xl:top-32 self-start z-30">
-              <div className="glass-card p-4 sm:p-5 xl:p-6 rounded-3xl border border-border/80 shadow-2xl space-y-3.5 sm:space-y-4 xl:space-y-5 relative overflow-hidden">
+              <div className="bg-[#121620] p-4 sm:p-5 xl:p-6 rounded-2xl border border-white/10 shadow-xl space-y-3.5 sm:space-y-4 xl:space-y-5 relative overflow-hidden">
                   <div className="flex items-center justify-between border-b border-border/50 pb-3 gap-2">
                     <div className="flex items-center gap-1.5 min-w-0">
                       <Receipt className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-primary flex-shrink-0" />
@@ -706,7 +699,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       type="button"
                       onClick={handleCheckout}
                       disabled={!selectedDenom || !accountInput.trim() || !selectedPayment || isProcessing}
-                      className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl gradient-primary text-white text-sm font-bold font-heading shadow-xl shadow-primary/25 hover:shadow-neon-orange hover:opacity-95 disabled:opacity-50 transition-all cursor-pointer disabled:cursor-not-allowed"
+                      className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl btn-primary text-white text-sm font-bold font-heading shadow-brand disabled:opacity-50 transition-all cursor-pointer disabled:cursor-not-allowed"
                     >
                       {isProcessing ? (
                         <>
@@ -723,13 +716,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                       type="button"
                       onClick={handleAddToCart}
                       disabled={!selectedDenom || !accountInput.trim() || isProcessing}
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-card/60 border border-primary/40 text-primary text-xs font-bold font-heading hover:bg-primary/10 disabled:opacity-50 transition-all cursor-pointer disabled:cursor-not-allowed"
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl btn-secondary text-xs font-bold font-heading disabled:opacity-50 transition-all cursor-pointer disabled:cursor-not-allowed"
                     >
                       <ShoppingCart className="w-4 h-4" /> Tambah ke Keranjang
                     </button>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 flex-shrink-0" />
                     <span className="text-[11px] font-semibold leading-tight">Transaksi dienkripsi 256-bit SSL & diproses otomatis.</span>
                   </div>
@@ -741,7 +734,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       </main>
       <Footer />
 
-      {/* Pinnacle 2026 Cyber HUD Action Console (Mobile Phones Only: md:hidden — Tablet uses 2-column interface) */}
+      {/* Action Console (Mobile Phones Only: md:hidden) */}
       <div 
         className="fixed inset-x-0 z-50 md:hidden pointer-events-none flex justify-center px-2 xs:px-3 sm:px-4"
         style={{
@@ -750,32 +743,24 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div 
-          className="pointer-events-auto relative w-full max-w-[390px] xs:max-w-[440px] sm:max-w-[490px] h-[58px] xs:h-[62px] sm:h-[66px] rounded-2xl xs:rounded-3xl p-1.5 xs:p-2 sm:p-2.5 bg-[#0B0E1B]/95 dark:bg-[#070914]/95 backdrop-blur-2xl backdrop-saturate-200 border border-white/[0.14] dark:border-white/[0.12] shadow-none flex items-center justify-between gap-1.5 xs:gap-2.5 sm:gap-3 transition-all duration-300"
+          className="pointer-events-auto relative w-full max-w-[490px] h-[60px] xs:h-[64px] rounded-2xl p-1.5 xs:p-2 liquid-glass-dock flex items-center justify-between gap-2 shadow-2xl transition-all duration-300"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Laser-cut Cyber Neon Top Reflex Line */}
-          <div className="absolute top-0 inset-x-6 h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent pointer-events-none z-20" />
-
-          {/* Left Info: Product Item + Live Price (Zero Wrap on Mobile S, M, L) */}
-          <div className="flex-1 min-w-0 pl-1.5 xs:pl-2 sm:pl-3 flex flex-col justify-center">
+          {/* Left Info: Product Item + Live Price */}
+          <div className="flex-1 min-w-0 pl-1.5 xs:pl-2 flex flex-col justify-center">
             <div className="flex items-center gap-1 mb-0.5">
-              <span className="relative flex h-1.5 w-1.5 xs:h-2 xs:w-2 flex-shrink-0">
+              <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 xs:h-2 xs:w-2 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
               </span>
-              <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wider truncate font-mono max-w-[100px] xs:max-w-[130px] sm:max-w-[180px]">
+              <span className="text-[8.5px] xs:text-[9.5px] font-bold text-muted-foreground uppercase tracking-wider truncate font-mono max-w-[140px]">
                 {denom ? denom.label : 'Pilih Nominal'}
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-xs xs:text-sm sm:text-base font-black text-foreground font-heading tracking-tight leading-none truncate">
+              <span className="text-sm xs:text-base font-black text-foreground font-heading tracking-tight leading-none truncate">
                 {denom ? formatCurrency(total) : 'Rp 0'}
               </span>
-              {denom && (
-                <span className="text-[8px] xs:text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider hidden sm:inline font-mono">
-                  ⚡ Direct
-                </span>
-              )}
             </div>
           </div>
 
@@ -785,17 +770,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               type="button"
               onClick={handleAddToCart}
               disabled={isProcessing}
-              className="w-9 h-9 xs:w-10 xs:h-10 sm:w-11 sm:h-11 rounded-xl xs:rounded-2xl bg-white/[0.06] border border-white/15 hover:border-primary/50 text-foreground hover:text-primary flex items-center justify-center active:scale-90 transition-all cursor-pointer shadow-none flex-shrink-0"
+              className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl bg-white/5 border border-white/10 hover:border-brand-500/50 text-foreground hover:text-brand-500 flex items-center justify-center active:scale-90 transition-all cursor-pointer flex-shrink-0"
               aria-label="Tambah ke Keranjang"
             >
-              <ShoppingCart className="w-4 h-4 xs:w-4.5 xs:h-4.5" />
+              <ShoppingCart className="w-4 h-4" />
             </button>
 
             <button
               type="button"
               onClick={handleCheckout}
               disabled={isProcessing}
-              className="h-9 xs:h-10 sm:h-11 px-3 xs:px-4 sm:px-5 rounded-xl xs:rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-black text-[11px] xs:text-xs sm:text-sm font-heading shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_22px_rgba(249,115,22,0.45)] hover:scale-[1.02] active:scale-[0.96] transition-all cursor-pointer flex items-center justify-center gap-1 xs:gap-1.5 whitespace-nowrap"
+              className="h-9 xs:h-10 px-3.5 xs:px-4 rounded-xl btn-primary text-white font-bold text-xs xs:text-sm font-heading shadow-brand hover:scale-[1.01] active:scale-[0.96] transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
             >
               {isProcessing ? (
                 <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Proses</>
@@ -806,7 +791,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               ) : !selectedPayment ? (
                 <><CreditCard className="w-3.5 h-3.5 text-white/90" /> 3. Bayar</>
               ) : (
-                <><Zap className="w-3.5 h-3.5 text-amber-200 fill-amber-200 animate-pulse" /> Beli Sekarang</>
+                <><Zap className="w-3.5 h-3.5 text-white fill-white" /> Beli Sekarang</>
               )}
             </button>
           </div>

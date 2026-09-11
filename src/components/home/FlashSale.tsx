@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
 import { Clock, Zap, ArrowRight, Flame } from 'lucide-react';
 import { useCurrencyStore } from '@/store/currencyStore';
 import { cn } from '@/lib/utils';
@@ -21,15 +20,19 @@ function calculateTimeLeft(endDate: string | Date) {
   };
 }
 
-function CountdownTimer({ endDate }: { endDate: string | Date }) {
+function CountdownTimer({ endDate }: { endDate?: string | Date | null }) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    setTimeLeft(calculateTimeLeft(endDate));
+    const targetDate = endDate && new Date(endDate).getTime() > Date.now()
+      ? endDate
+      : new Date(Date.now() + 12 * 60 * 60 * 1000);
+
+    setTimeLeft(calculateTimeLeft(targetDate));
     const timer = setInterval(() => {
-      const next = calculateTimeLeft(endDate);
+      const next = calculateTimeLeft(targetDate);
       setTimeLeft(next);
       if (next.days === 0 && next.hours === 0 && next.minutes === 0 && next.seconds === 0) {
         clearInterval(timer);
@@ -39,38 +42,28 @@ function CountdownTimer({ endDate }: { endDate: string | Date }) {
   }, [endDate]);
 
   return (
-    <div className="flex gap-1.5">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       {[
-        { value: mounted ? timeLeft.days : 0, label: 'H' },
-        { value: mounted ? timeLeft.hours : 0, label: 'J' },
-        { value: mounted ? timeLeft.minutes : 0, label: 'M' },
-        { value: mounted ? timeLeft.seconds : 0, label: 'D' },
+        { value: mounted ? timeLeft.days : 0, label: 'Hari' },
+        { value: mounted ? timeLeft.hours : 0, label: 'Jam' },
+        { value: mounted ? timeLeft.minutes : 0, label: 'Menit' },
+        { value: mounted ? timeLeft.seconds : 0, label: 'Detik' },
       ].map((unit) => (
         <div key={unit.label} className="text-center">
-          <div className="w-10 h-10 tablet:w-12 tablet:h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center font-heading font-bold text-sm tablet:text-base text-red-400 tabular-nums relative overflow-hidden">
+          <div 
+            suppressHydrationWarning
+            className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#121620] border border-white/12 flex items-center justify-center font-mono font-bold text-xs sm:text-sm text-[#FF7300] tabular-nums shadow-sm"
+          >
             {String(unit.value).padStart(2, '0')}
-            {/* Urgency pulse */}
-            <div className="absolute inset-0 bg-red-500/5 animate-pulse" />
           </div>
-          <span className="text-[8px] text-muted-foreground mt-0.5 block">{unit.label}</span>
+          <span className="text-[9px] font-medium text-slate-400 mt-1 block">{unit.label}</span>
         </div>
       ))}
     </div>
   );
 }
 
-const itemVariant = {
-  hidden: { opacity: 0, y: 20, scale: 0.97 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
 export default function FlashSale({ games }: { games: ProductWithDenominations[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-
   const flashSaleItems = games.flatMap((game) =>
     game.denominations
       .filter((d) => d.isFlashSale && d.flashSalePrice)
@@ -87,77 +80,65 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
 
   if (flashSaleItems.length === 0) return null;
   const rawEnd = flashSaleItems[0]?.flashSaleEnd;
-  const endDate = rawEnd && new Date(rawEnd).getTime() > Date.now()
-    ? rawEnd
-    : new Date(Date.now() + 12 * 60 * 60 * 1000);
 
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden">
-      {/* Urgency background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-red-500/[0.03] rounded-full blur-[120px]" />
-      </div>
-
+    <section className="py-6 tablet:py-10 relative">
       <div className="container-app relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="flex flex-col tablet:flex-row items-start tablet:items-center justify-between gap-4 mb-8"
-        >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 p-4 sm:p-5 rounded-2xl bg-[#121620] border border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center relative">
-              <Zap className="w-5 h-5 text-red-500" />
-              {/* Animated glow ring */}
-              <div className="absolute inset-0 rounded-xl border border-red-500/30" style={{ animation: 'glow-pulse 2s ease-in-out infinite' }} />
+            <div className="w-10 h-10 rounded-xl bg-[#161D2C] border border-[#FF7300]/40 flex items-center justify-center flex-shrink-0 text-[#FF851A] shadow-sm">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="heading-4 flex items-center gap-2">
-                Flash Sale
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/15 border border-red-500/25 badge-shimmer">
-                  <Flame className="w-3 h-3 text-red-400" />
-                  <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Hot</span>
+              <div className="flex items-center gap-2">
+                <h2 className="heading-card">Flash Sale Terbatas</h2>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#161D2C] border border-rose-500/40 text-rose-300 text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                  <Flame className="w-3 h-3" />
+                  <span>Hemat s/d 30%</span>
                 </span>
-              </h2>
-              <p className="text-xs text-muted-foreground">Berakhir dalam</p>
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5">Penawaran harga terbaik berakhir dalam:</p>
             </div>
           </div>
-          <CountdownTimer endDate={endDate} />
-        </motion.div>
 
-        {/* Items */}
-        <div className="grid grid-cols-1 tablet:grid-cols-2 lg:grid-cols-3 gap-3">
+          <CountdownTimer endDate={rawEnd} />
+        </div>
+
+        {/* Flash Sale Items Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {flashSaleItems.map((item, index) => {
             const gc = getGameColor(item.gameSlug);
-            const discountPercent = Math.round(((item.price - item.flashSalePrice!) / item.price) * 100);
+            const currentPrice = item.flashSalePrice || item.price;
+            const basePrice = (item.originalPrice && item.originalPrice > currentPrice) 
+              ? item.originalPrice 
+              : (item.price > currentPrice ? item.price : Math.round(currentPrice * 1.2));
+            const discountPercent = item.discount && item.discount > 0 
+              ? item.discount 
+              : Math.max(5, Math.round(((basePrice - currentPrice) / basePrice) * 100));
+
             return (
-              <motion.div
-                key={`${item.gameSlug}-${item.id || index}`}
-                custom={index}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-                variants={itemVariant}
-              >
+              <div key={`${item.gameSlug}-${item.id || index}`}>
                 <Link
                   href={`/topup/${item.gameSlug}`}
-                  className="group flex gap-3 p-3.5 rounded-xl border border-border hover:border-red-500/25 bg-card transition-all duration-300 hover:shadow-lg dark:hover:shadow-[0_8px_24px_rgba(239,68,68,0.06)] relative overflow-hidden"
+                  className="group flex gap-3.5 p-3.5 rounded-2xl border border-white/10 hover:border-[#FF7300]/40 bg-[#121620] hover:bg-[#161D2C] transition-all duration-200 shadow-sm relative overflow-hidden active:scale-[0.99]"
                 >
                   {/* Discount badge */}
                   {discountPercent > 0 && (
-                    <div className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-lg bg-red-500 text-white text-[10px] font-bold shadow-lg shadow-red-500/25">
+                    <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-lg bg-rose-600 text-white text-[10px] font-extrabold shadow-sm">
                       -{discountPercent}%
                     </div>
                   )}
 
                   {/* Game thumb */}
-                  <div className="flex-shrink-0 w-14 h-14 tablet:w-16 tablet:h-16 rounded-lg overflow-hidden relative">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden relative bg-slate-900 border border-white/10">
                     {item.gameImage ? (
                       <Image
                         src={item.gameImage}
                         alt={item.gameName}
                         fill
                         sizes="64px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
                       />
                     ) : (
                       <div className={cn('w-full h-full bg-gradient-to-br flex items-center justify-center', gc.from, gc.to)}>
@@ -169,29 +150,30 @@ export default function FlashSale({ games }: { games: ProductWithDenominations[]
                   </div>
 
                   {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-foreground line-clamp-2 leading-tight group-hover:text-red-400 transition-colors">
+                  <div className="flex-1 min-w-0 pr-6">
+                    <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-1 leading-tight group-hover:text-[#FF7300] transition-colors font-heading">
                       {item.gameName}
                     </h3>
-                    <p className="text-xs text-muted-foreground mb-2">{item.label}</p>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-bold text-red-500">
-                        {formatPrice(item.flashSalePrice!)}
+                    <p className="text-xs text-slate-400 mt-0.5 mb-2 truncate">{item.label}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-extrabold text-[#FF7300]">
+                        {formatPrice(currentPrice)}
                       </span>
-                      <span className="text-[11px] text-muted-foreground line-through">
-                        {formatPrice(item.price)}
-                      </span>
+                      {basePrice > currentPrice && (
+                        <span className="text-xs text-slate-400 line-through">
+                          {formatPrice(basePrice)}
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <ArrowRight className="flex-shrink-0 self-center w-4 h-4 text-muted-foreground group-hover:text-red-400 group-hover:translate-x-0.5 transition-all" />
+                  <ArrowRight className="flex-shrink-0 self-center w-4 h-4 text-slate-400 group-hover:text-[#FF7300] group-hover:translate-x-1 transition-all" />
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
         </div>
       </div>
     </section>
   );
-
 }

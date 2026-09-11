@@ -7,82 +7,51 @@ import PromoCarousel from '@/components/home/PromoCarousel';
 import PopularGames from '@/components/home/PopularGames';
 import TrendingProducts from '@/components/home/TrendingProducts';
 import FlashSale from '@/components/home/FlashSale';
-import StatsCounter from '@/components/home/StatsCounter';
+import WhyNexaPay from '@/components/home/WhyNexaPay';
 import PaymentPartners from '@/components/home/PaymentPartners';
 
-// Lazy load heavy / below-fold components to reduce initial JS bundle
+// Lazy load below-the-fold component
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'));
 
 function SectionSkeleton() {
   return (
     <div className="section-padding">
-      <div className="container-app h-48 rounded-2xl bg-muted/20 animate-pulse" />
+      <div className="container-app h-48 rounded-2xl bg-white/[0.04] animate-pulse" />
     </div>
   );
 }
 
-export const revalidate = 60; // ISR: revalidate home page every 60s
+export const revalidate = 120; // ISR: cache homepage for 2 minutes
 
 export default async function HomePage() {
   let games: import('@/types').ProductWithDenominations[] = [];
   let banners: Array<{ id: string; title: string; subtitle?: string | null; image?: string | null; link?: string | null }> = [];
-  let stats = { products: 50, users: 1250, transactions: 3500 };
 
   try {
-    // 1. Fetch DB Banners
-    banners = await prisma.banner.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      select: { id: true, title: true, subtitle: true, image: true, link: true },
-    });
-
-    // 2. Fetch real database statistics
-    const [pCount, uCount, txCount] = await Promise.all([
-      prisma.product.count({ where: { isActive: true } }),
-      prisma.user.count(),
-      prisma.transaction.count({ where: { status: { in: ['COMPLETED', 'PAID'] } } }),
+    // Fetch banners and products in parallel (non-blocking)
+    const [bannersData, productsData] = await Promise.all([
+      prisma.banner.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: 'asc' },
+        select: { id: true, title: true, subtitle: true, image: true, link: true },
+      }).catch(() => []),
+      prisma.product.findMany({
+        where: { isActive: true },
+        include: {
+          denominations: {
+            where: { isActive: true },
+          },
+        },
+        orderBy: { sortOrder: 'asc' },
+      }).catch(() => []),
     ]);
 
-    stats = {
-      products: pCount,
-      users: uCount,
-      transactions: txCount,
-    };
+    banners = bannersData;
 
-    // 3. Aggregate real-time completed transaction counts per game product
-    const topSalesRaw = await prisma.transaction.groupBy({
-      by: ['productId'],
-      where: {
-        status: { in: ['COMPLETED', 'PAID'] },
-        productId: { not: null }
-      },
-      _count: { id: true }
-    });
-
-    const salesCountMap = new Map(topSalesRaw.map(s => [s.productId, (s._count as { id?: number } | null)?.id ?? 0]));
-
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      include: {
-        denominations: {
-          where: { isActive: true },
-        },
-      },
-      orderBy: { sortOrder: 'asc' },
-    });
-
-    if (products && products.length > 0) {
-      // Sort products by real transaction volume (most bought games first)
-      products.sort((a, b) => {
-        const countA = salesCountMap.get(a.id) || 0;
-        const countB = salesCountMap.get(b.id) || 0;
-        if (countB !== countA) return countB - countA;
-        return a.sortOrder - b.sortOrder;
-      });
-
+    if (productsData && productsData.length > 0) {
       const staticMap = new Map(digitalProducts.map((p) => [p.slug, p]));
       const validSlugs = new Set(digitalProducts.map((p) => p.slug));
-      const filteredDbProducts = products.filter((p) => validSlugs.has(p.slug));
+      const filteredDbProducts = productsData.filter((p) => validSlugs.has(p.slug));
       const dbSlugs = new Set(filteredDbProducts.map((p) => p.slug));
       const missingFromDb = digitalProducts.filter((p) => !dbSlugs.has(p.slug));
       const combined = [...filteredDbProducts, ...missingFromDb];
@@ -108,25 +77,20 @@ export default async function HomePage() {
 
   return (
     <>
-      <main id="main-content" className="min-h-screen pb-24 aurora-bg w-full max-w-full overflow-x-hidden">
-        {/* Aurora decorative orbs */}
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="floating-orb w-[600px] h-[600px] -top-[200px] -left-[200px] bg-violet-500/[0.06]" />
-          <div className="floating-orb w-[500px] h-[500px] top-[40%] -right-[150px] bg-cyan-500/[0.04]" style={{ animationDelay: '3s' }} />
-          <div className="floating-orb w-[400px] h-[400px] bottom-[10%] left-[20%] bg-orange-500/[0.04]" style={{ animationDelay: '6s' }} />
-        </div>
-
-        {/* Content (Clean & Simple Layout) */}
+      <main id="main-content" className="min-h-screen pb-20 w-full max-w-full overflow-x-hidden">
+        {/* Content-first layout: No bloated hero. Straight to content like Codashop/UniPin. */}
         <div className="relative z-10">
+          {/* Spacer for fixed navbar */}
+          <div className="pt-16 tablet:pt-18" />
           <PromoCarousel banners={banners} />
           <PopularGames games={games} />
           <FlashSale games={games} />
           <TrendingProducts games={games} />
-          <StatsCounter stats={stats} />
+          <WhyNexaPay />
+          <PaymentPartners />
           <Suspense fallback={<SectionSkeleton />}>
             <Testimonials />
           </Suspense>
-          <PaymentPartners />
         </div>
       </main>
       <Footer />

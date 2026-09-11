@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth-helpers';
 import { z } from 'zod';
 import type { Role } from '@/types';
+import { logAdminAudit } from '@/lib/audit';
 
 const updateUserBalanceSchema = z.object({
   userId: z.string().min(1, 'User ID required'),
@@ -34,8 +35,6 @@ export async function toggleUserRole(userId: string, currentRole: string) {
     return { success: false, error: error instanceof Error ? error.message : 'Failed to update role' };
   }
 }
-
-import { logAdminAudit } from '@/lib/audit';
 
 export async function updateUserBalance(userId: string, amount: number) {
   try {

@@ -61,15 +61,15 @@ export default function DashboardClient({
 
   return (
     <>
-      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 aurora-bg">
+      <main className="min-h-screen pt-28 tablet:pt-30 pb-24 bg-background">
         <div className="container-app max-w-5xl">
           {/* Top Section Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             {/* Profile Card */}
             <div className="lg:col-span-2">
-              <SpotlightCard className="h-full p-5 tablet:p-6 bg-card border-border" spotlightColor="rgba(255, 255, 255, 0.05)">
+              <SpotlightCard className="h-full p-5 tablet:p-6 bg-[#121620] border-white/10 rounded-2xl shadow-sm" spotlightColor="rgba(255, 255, 255, 0.05)">
                 <div className="flex items-center gap-3.5 tablet:gap-4">
-                  <div className="w-14 h-14 tablet:w-16 tablet:h-16 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 flex items-center justify-center text-xl tablet:text-2xl font-black text-white font-heading shadow-lg shadow-amber-500/20 flex-shrink-0">
+                  <div className="w-14 h-14 tablet:w-16 tablet:h-16 rounded-2xl bg-brand-500 flex items-center justify-center text-xl tablet:text-2xl font-black text-white font-heading shadow-brand flex-shrink-0">
                     {dbUser.name ? dbUser.name[0] : 'U'}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -82,22 +82,22 @@ export default function DashboardClient({
                     </div>
                     <p className="text-xs tablet:text-sm text-muted-foreground break-all leading-tight">{dbUser.email}</p>
                     <p className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
-                      <Shield className="w-3 h-3 text-amber-400" /> Member sejak {new Date(dbUser.createdAt).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                      <Shield className="w-3 h-3 text-brand-400" /> Member sejak {new Date(dbUser.createdAt).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
                     </p>
                   </div>
                   <Link
                     href="/dashboard/settings"
-                    className="p-2.5 rounded-xl border border-border bg-muted/30 hover:bg-muted transition-all flex-shrink-0"
+                    className="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex-shrink-0"
                   >
                     <Settings className="w-4 h-4 tablet:w-5 tablet:h-5 text-muted-foreground hover:text-foreground" />
                   </Link>
                 </div>
 
                 {/* Loyalty Progress */}
-                <div className="mt-6 p-4 rounded-xl bg-surface border border-border/50">
+                <div className="mt-6 p-4 rounded-xl bg-[#181E2B] border border-white/5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
                       <span className="text-sm font-bold text-foreground">{dbUser.loyaltyPoints.toLocaleString('id-ID')} <span className="font-normal text-muted-foreground">NexaPoints</span></span>
                     </div>
                     {nextLevel && (
@@ -106,10 +106,10 @@ export default function DashboardClient({
                       </span>
                     )}
                   </div>
-                  <div className="w-full h-2.5 rounded-full bg-muted overflow-hidden relative">
+                  <div className="w-full h-2 rounded-full bg-black/40 overflow-hidden relative">
                     <div
                       style={{ width: `${progress}%` }}
-                      className="absolute top-0 left-0 h-full rounded-full bg-primary transition-all duration-500"
+                      className="absolute top-0 left-0 h-full rounded-full bg-brand-500 transition-all duration-500"
                     />
                   </div>
                   {nextLevel && (
@@ -123,34 +123,34 @@ export default function DashboardClient({
 
             {/* Daily Reward Card */}
             <div className="lg:col-span-1">
-              <SpotlightCard className="h-full p-5 tablet:p-6 bg-card border-border flex flex-col justify-center" spotlightColor="rgba(255, 255, 255, 0.05)">
+              <SpotlightCard className="h-full p-5 tablet:p-6 bg-[#121620] border-white/10 rounded-2xl flex flex-col justify-center shadow-sm" spotlightColor="rgba(255, 255, 255, 0.05)">
                 <DailyCheckIn initialHasClaimed={initialHasClaimed} />
               </SpotlightCard>
             </div>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 tablet:gap-4 mb-6">
-            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-1.5 sm:mb-2">
-                <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+          <div className="grid grid-cols-3 gap-1.5 xs:gap-2 sm:gap-3 tablet:gap-4 mb-6">
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-2 xs:p-2.5 sm:p-4 tablet:p-5 text-center shadow-sm min-w-0">
+              <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-brand-500/10 flex items-center justify-center mb-1 xs:mb-1.5 sm:mb-2">
+                <Wallet className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-brand-500" />
               </div>
-              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{formatCurrency(dbUser.walletBalance || 0)}</p>
-              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Saldo Wallet</p>
+              <p className="text-[11px] xs:text-xs sm:text-base tablet:text-lg font-bold font-heading truncate tracking-tight">{formatCurrency(dbUser.walletBalance || 0)}</p>
+              <p className="text-[9px] xs:text-[9.5px] sm:text-[11px] text-muted-foreground truncate">Saldo Wallet</p>
             </div>
-            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center mb-1.5 sm:mb-2">
-                <Receipt className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" />
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-2 xs:p-2.5 sm:p-4 tablet:p-5 text-center shadow-sm min-w-0">
+              <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center mb-1 xs:mb-1.5 sm:mb-2">
+                <Receipt className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-cyan-400" />
               </div>
-              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{totalTransactions}</p>
-              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Total Transaksi</p>
+              <p className="text-[11px] xs:text-xs sm:text-base tablet:text-lg font-bold font-heading truncate tracking-tight">{totalTransactions}</p>
+              <p className="text-[9px] xs:text-[9.5px] sm:text-[11px] text-muted-foreground truncate">Total Transaksi</p>
             </div>
-            <div className="solid-card p-2.5 sm:p-4 tablet:p-5 text-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-green-500/10 flex items-center justify-center mb-1.5 sm:mb-2">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+            <div className="bg-[#121620] border border-white/10 rounded-2xl p-2 xs:p-2.5 sm:p-4 tablet:p-5 text-center shadow-sm min-w-0">
+              <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-10 sm:h-10 mx-auto rounded-full bg-emerald-500/10 flex items-center justify-center mb-1 xs:mb-1.5 sm:mb-2">
+                <TrendingUp className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-emerald-400" />
               </div>
-              <p className="text-xs sm:text-base tablet:text-lg font-bold font-heading">{formatCurrency(totalSpent)}</p>
-              <p className="text-[9.5px] sm:text-[11px] text-muted-foreground">Total Belanja</p>
+              <p className="text-[11px] xs:text-xs sm:text-base tablet:text-lg font-bold font-heading truncate tracking-tight">{formatCurrency(totalSpent)}</p>
+              <p className="text-[9px] xs:text-[9.5px] sm:text-[11px] text-muted-foreground truncate">Total Belanja</p>
             </div>
           </div>
 
@@ -161,7 +161,7 @@ export default function DashboardClient({
                 key={action.href}
                 href={action.href}
                 prefetch={true}
-                className="flex flex-col items-center gap-1 p-1.5 xs:p-2 tablet:p-3 rounded-2xl hover:bg-muted/30 transition-all group text-center"
+                className="flex flex-col items-center gap-1 p-1.5 xs:p-2 tablet:p-3 rounded-xl hover:bg-white/5 transition-all group text-center"
               >
                 <div className={cn('w-9 h-9 xs:w-10 xs:h-10 tablet:w-12 tablet:h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform', action.color)}>
                   <action.icon className="w-4 h-4 xs:w-5 xs:h-5 text-white" />
@@ -174,12 +174,12 @@ export default function DashboardClient({
           </div>
 
           {/* Referral Code */}
-          <div className="glass-card p-4 mb-6 bg-gradient-to-r from-primary/5 to-accent/5">
+          <div className="bg-[#121620] border border-white/10 rounded-2xl p-4 mb-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Kode Referral Kamu</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold font-mono gradient-text">{dbUser.referralCode || 'NXP-OFFICIAL'}</span>
+                  <span className="text-lg font-bold font-mono text-brand-500">{dbUser.referralCode || 'NXP-OFFICIAL'}</span>
                   <button
                     onClick={() => {
                       if (dbUser.referralCode) {
@@ -187,27 +187,27 @@ export default function DashboardClient({
                         toast.success('Kode referral berhasil disalin!');
                       }
                     }}
-                    className="p-1.5 rounded-lg hover:bg-muted/50 transition-all cursor-pointer"
+                    className="p-1.5 rounded-lg hover:bg-white/5 transition-all cursor-pointer"
                     aria-label="Salin Kode Referral"
                   >
                     <Copy className="w-4 h-4 text-muted-foreground" />
                   </button>
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-1">Ajak teman & dapatkan Rp 10.000</p>
+                <p className="text-[10px] text-muted-foreground mt-1">Ajak teman & dapatkan bonus NexaPoints</p>
               </div>
-              <Gift className="w-8 h-8 text-primary/30" />
+              <Gift className="w-8 h-8 text-brand-500/30" />
             </div>
           </div>
 
           {/* Recent Transactions */}
-          <div className="glass-card overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="text-sm font-semibold">Transaksi Terakhir</h2>
-              <Link href="/dashboard/transactions" className="text-xs text-primary hover:text-primary-hover font-bold flex items-center gap-1 hover:translate-x-0.5 transition-all">
+          <div className="bg-[#121620] border border-white/10 rounded-2xl overflow-hidden shadow-sm">
+            <div className="flex items-center justify-between p-4 border-b border-white/5">
+              <h2 className="text-sm font-semibold text-foreground font-heading">Transaksi Terakhir</h2>
+              <Link href="/dashboard/transactions" className="text-xs text-brand-500 hover:text-brand-400 font-bold flex items-center gap-1 hover:translate-x-0.5 transition-all">
                 Lihat Semua <ChevronRight className="w-3 h-3" />
               </Link>
             </div>
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-white/5">
               {recentTransactions.length === 0 ? (
                 <div className="p-4 sm:p-6">
                   <EmptyState

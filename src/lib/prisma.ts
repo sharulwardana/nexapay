@@ -14,7 +14,13 @@ const prismaClientSingleton = () => {
     ssl: isRemote ? { rejectUnauthorized: false } : undefined,
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
+    connectionTimeoutMillis: 25000, // Generous buffer for cloud serverless DB cold starts (Supabase/Neon)
+    keepAlive: true,
+  })
+
+  // Absorb background idle connection drops from serverless poolers
+  pool.on('error', (err) => {
+    console.warn('[PgPool] Background idle connection warning (non-fatal):', err?.message || err);
   })
 
   const adapter = new PrismaPg(pool)

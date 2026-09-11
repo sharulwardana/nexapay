@@ -7,6 +7,7 @@ import { Clock, Copy, Home, Receipt, CheckCircle2, Loader2, AlertCircle, XCircle
 import { cn, formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import Footer from '@/components/layout/Footer';
 
 interface PaymentStatusClientProps {
   txId: string;
@@ -18,6 +19,7 @@ interface PaymentStatusClientProps {
   gameServerId: string;
   status: string;
   expiresAt: string | null;
+  category?: string;
 }
 
 function ExpiryCountdown({ expiresAt }: { expiresAt: string }) {
@@ -64,9 +66,18 @@ export default function PaymentStatusClient({
   gameServerId,
   status: initialStatus,
   expiresAt,
+  category,
 }: PaymentStatusClientProps) {
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
   const [isSimulating, setIsSimulating] = useState(false);
+
+  const accountLabel = ['PULSA', 'PAKET_DATA', 'EWALLET_TOPUP'].includes(category || '')
+    ? 'Nomor Handphone'
+    : category === 'PLN'
+    ? 'Nomor Meter / ID PLN'
+    : ['GIFT_CARD', 'STREAMING'].includes(category || '')
+    ? 'Kontak Pengiriman'
+    : 'ID Akun Game';
 
   const isCompleted = currentStatus === 'COMPLETED' || currentStatus === 'PAID';
   const isFailed = currentStatus === 'FAILED';
@@ -150,6 +161,7 @@ export default function PaymentStatusClient({
   const current = statusConfig[currentStatus as keyof typeof statusConfig] || statusConfig.COMPLETED;
 
   return (
+    <>
     <main className="min-h-screen pt-32 tablet:pt-36 pb-24 relative overflow-hidden">
       {/* Animated Background Glow */}
       {isCompleted && (
@@ -265,7 +277,7 @@ export default function PaymentStatusClient({
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">Target Account</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">{accountLabel}</p>
                     <p className="text-sm font-semibold">{gameUserId}{gameServerId ? ` (Zone: ${gameServerId})` : ''}</p>
                   </div>
                   <div>
@@ -345,7 +357,7 @@ export default function PaymentStatusClient({
                 `---------------------------------------%0A` +
                 `📄 *No Invoice:* ${txId}%0A` +
                 `🎮 *Produk:* ${productName} - ${denomLabel}%0A` +
-                `🎯 *ID Akun:* ${gameUserId}${gameServerId ? ` (${gameServerId})` : ''}%0A` +
+                `🎯 *${accountLabel}:* ${gameUserId}${gameServerId ? ` (${gameServerId})` : ''}%0A` +
                 `💳 *Metode:* ${paymentMethod.toUpperCase()}%0A` +
                 `💰 *Total Bayar:* ${formatCurrency(totalAmount)}%0A` +
                 `⚡ *Status:* ${isCompleted ? 'BERHASIL ✅' : currentStatus}%0A` +
@@ -403,5 +415,7 @@ export default function PaymentStatusClient({
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

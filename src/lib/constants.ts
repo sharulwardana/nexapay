@@ -13,13 +13,6 @@ export const NAV_LINKS = [
   { label: 'Help', href: '/help' },
 ] as const;
 
-export const MOBILE_NAV_LINKS = [
-  { label: 'Home', href: '/', icon: 'Home' },
-  { label: 'Top Up', href: '/topup', icon: 'Gamepad2' },
-  { label: 'Promo', href: '/promo', icon: 'Percent' },
-  { label: 'Riwayat', href: '/dashboard/transactions', icon: 'Receipt' },
-  { label: 'Profil', href: '/dashboard', icon: 'User' },
-] as const;
 
 export const PAYMENT_METHODS = [
   {

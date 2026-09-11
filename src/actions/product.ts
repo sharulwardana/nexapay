@@ -51,12 +51,34 @@ export async function deleteProduct(id: string) {
       return { success: false, error: 'Invalid product ID' };
     }
 
+    // Check if product has any recorded transactions
+    const transactionCount = await prisma.transaction.count({
+      where: { productId: id }
+    });
+
+    if (transactionCount > 0) {
+      // Soft-delete to preserve audit trail and financial history
+      await prisma.product.update({
+        where: { id },
+        data: { isActive: false }
+      });
+      revalidatePath('/admin/products');
+      revalidatePath('/topup');
+      revalidatePath('/products');
+      return { 
+        success: true, 
+        softDeleted: true, 
+        message: 'Produk telah memiliki riwayat transaksi, status diubah menjadi Nonaktif (Soft-Deleted) demi keamanan riwayat keuangan.' 
+      };
+    }
+
     await prisma.product.delete({
       where: { id }
     });
     revalidatePath('/admin/products');
     revalidatePath('/topup');
-    return { success: true };
+    revalidatePath('/products');
+    return { success: true, message: 'Produk berhasil dihapus permanen.' };
   } catch (error: unknown) {
     console.error('Failed to delete product:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Failed to delete product' };

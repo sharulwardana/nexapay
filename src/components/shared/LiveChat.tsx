@@ -128,11 +128,17 @@ export default function LiveChat() {
             whileTap={{ scale: 0.92 }}
             exit={{ scale: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-[84px] right-3 sm:right-4 tablet:bottom-6 tablet:right-6 z-40 w-11 h-11 sm:w-12 sm:h-12 tablet:w-14 tablet:h-14 rounded-full bg-gradient-to-tr from-primary to-orange-500 text-white shadow-[0_4px_20px_rgba(255,115,0,0.35)] hover:shadow-[0_6px_25px_rgba(255,115,0,0.5)] transition-shadow duration-200 flex items-center justify-center cursor-pointer"
-            aria-label="Open Chat"
+            className={cn(
+              "fixed z-40 rounded-full bg-brand-500 hover:bg-brand-600 text-white shadow-[0_4px_20px_rgba(255,115,0,0.35)] hover:shadow-[0_6px_25px_rgba(255,115,0,0.5)] transition-all duration-200 flex items-center justify-center cursor-pointer",
+              isShrunk 
+                ? "bottom-[74px] right-2 w-9 h-9 xs:w-10 xs:h-10 opacity-85 scale-90" 
+                : "bottom-[80px] right-2 xs:right-3 w-9 h-9 xs:w-11 xs:h-11 opacity-100",
+              "tablet:bottom-6 tablet:right-6 tablet:w-14 tablet:h-14 tablet:opacity-100 tablet:scale-100"
+            )}
+            aria-label="Buka Chat CS"
           >
-            <MessageCircle className="w-5 h-5" />
-            <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-background animate-pulse" />
+            <MessageCircle className="w-5 h-5 text-white" />
+            <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0B0E14] animate-pulse" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -141,22 +147,23 @@ export default function LiveChat() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed z-50 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col bottom-[88px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-110px)]"
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            transition={{ duration: 0.2 }}
+            className="fixed z-50 bg-[#121620] border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col bottom-[88px] right-4 left-4 tablet:bottom-6 tablet:right-6 tablet:left-auto w-[calc(100vw-32px)] tablet:w-[380px] h-[500px] max-h-[calc(100vh-110px)]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Bot className="w-3.5 h-3.5 text-primary" />
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#181E2B]/90 backdrop-blur-md flex-shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-brand-500" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">NexaBot AI</p>
-                  <div className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-[10px] text-muted-foreground">Online 24/7</span>
+                  <p className="text-sm font-bold text-foreground font-heading leading-tight">NexaBot CS</p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span className="text-[10px] text-muted-foreground">Siap Membantu 24/7</span>
                   </div>
                 </div>
               </div>
@@ -167,13 +174,13 @@ export default function LiveChat() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#25D366] text-white text-[10px] font-bold hover:bg-[#20BD5A] transition-colors"
                 >
-                  WhatsApp CS
+                  WhatsApp
                 </a>
-                <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-lg hover:bg-muted transition-colors" aria-label="Minimize">
-                  <Minus className="w-4 h-4 text-muted-foreground" />
+                <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-lg hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors" aria-label="Minimize">
+                  <Minus className="w-4 h-4" />
                 </button>
-                <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-lg hover:bg-muted transition-colors" aria-label="Close">
-                  <X className="w-4 h-4 text-muted-foreground" />
+                <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-lg hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors" aria-label="Close">
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -183,26 +190,26 @@ export default function LiveChat() {
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   className={cn('flex', msg.sender === 'user' ? 'justify-end' : 'justify-start')}
                 >
                   <div className={cn(
-                    'max-w-[80%] px-3 py-2 rounded-2xl text-sm',
+                    'max-w-[82%] px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm',
                     msg.sender === 'user'
-                      ? 'bg-primary text-white rounded-br-md'
-                      : 'bg-muted text-foreground rounded-bl-md'
+                      ? 'bg-brand-500 text-white rounded-br-xs shadow-sm'
+                      : 'bg-[#181E2B] text-foreground rounded-bl-xs border border-white/5'
                   )}>
                     {msg.sender === 'bot' && (
-                      <div className="flex items-center gap-1 mb-0.5">
-                        <Sparkles className="w-3 h-3 text-primary" />
-                        <span className="text-[10px] font-medium text-primary">NexaBot</span>
+                      <div className="flex items-center gap-1 mb-1">
+                        <Sparkles className="w-3 h-3 text-brand-400" />
+                        <span className="text-[10px] font-bold text-brand-400">NexaBot</span>
                       </div>
                     )}
-                    <p className="leading-relaxed text-[13px]">{msg.text}</p>
+                    <p className="leading-relaxed text-[12.5px] sm:text-[13px]">{msg.text}</p>
                     <p className={cn(
                       'text-[9px] mt-1',
-                      msg.sender === 'user' ? 'text-white/60' : 'text-muted-foreground'
+                      msg.sender === 'user' ? 'text-white/70' : 'text-muted-foreground'
                     )}>
                       {mounted ? msg.time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '--:--'}
                     </p>
@@ -212,10 +219,10 @@ export default function LiveChat() {
           
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="flex gap-2 items-center bg-card border border-border p-3 rounded-2xl rounded-tl-none shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="flex gap-1.5 items-center bg-[#181E2B] border border-white/5 px-3 py-2 rounded-2xl rounded-tl-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               )}
@@ -225,12 +232,12 @@ export default function LiveChat() {
 
             {/* Quick Actions */}
             {messages.length <= 2 && (
-              <div className="px-4 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
+              <div className="px-4 pb-2 flex gap-1.5 overflow-x-auto no-scrollbar">
                 {quickActions.map((action) => (
                   <button
                     key={action}
                     onClick={() => { setInput(action); setTimeout(() => { const form = document.querySelector('[data-chat-form]') as HTMLFormElement; form?.requestSubmit(); }, 50); }}
-                    className="flex-shrink-0 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-medium hover:bg-primary/20 transition-colors"
+                    className="flex-shrink-0 px-2.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-[11px] font-medium hover:bg-brand-500/20 transition-colors"
                   >
                     {action}
                   </button>
@@ -239,7 +246,7 @@ export default function LiveChat() {
             )}
 
             {/* Input */}
-            <div className="p-3 border-t border-border flex-shrink-0">
+            <div className="p-3 border-t border-white/10 bg-[#181E2B]/60 flex-shrink-0">
               <form
                 data-chat-form
                 onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
@@ -250,13 +257,14 @@ export default function LiveChat() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ketik pesan..."
-                  className="flex-1 px-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                  placeholder="Ketik pertanyaan kamu..."
+                  className="flex-1 px-3 py-2 rounded-xl bg-[#0B0E14] border border-white/10 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30 transition-all"
                 />
                 <button
                   type="submit"
                   disabled={!input.trim()}
-                  className="p-2.5 rounded-xl bg-primary text-white disabled:opacity-50 transition-all hover:bg-primary/90"
+                  className="p-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white disabled:opacity-40 transition-all cursor-pointer flex-shrink-0"
+                  aria-label="Kirim pesan"
                 >
                   <Send className="w-4 h-4" />
                 </button>

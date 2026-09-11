@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { auth } from '@/../auth';
+import { auth } from '@/auth';
 import { PAYMENT_METHODS, getLoyaltyDiscount } from '@/lib/constants';
 import { sendPushToUser } from '@/lib/push';
 import { generateInvoiceId } from '@/lib/utils';
@@ -19,6 +19,7 @@ const checkoutSchema = z.object({
   gameUserId: z.string().min(1, 'Game User ID required').max(50).transform(sanitizeInput),
   gameServerId: z.string().max(20).transform(sanitizeInput).optional(),
   paymentMethod: z.string().min(1, 'Payment method required').max(30),
+  promoCode: z.string().max(30).transform((v) => v.toUpperCase().trim()).optional(),
 });
 
 
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
     const isGuest = !userId;
 
     try {
-      // Limit to 3 checkout requests per minute per IP / User
+      // Limit to 5 checkout requests per minute per IP / User
       const clientIp = req.headers.get('x-forwarded-for') || 'anon';
       await limiter.check(5, userId || clientIp);
     } catch {
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const { productId, denominationId, gameUserId, gameServerId, paymentMethod } = parsed.data;
+    const { productId, denominationId, gameUserId, gameServerId, paymentMethod, promoCode } = parsed.data;
 
     // 1. Fetch Denomination and validate
     const denomination = await prisma.denomination.findUnique({
@@ -110,9 +111,45 @@ export async function POST(req: NextRequest) {
       if (!user) throw new Error('User not found');
 
       // Calculate discount using unified LOYALTY_LEVELS (matches frontend)
-      const discount = isGuest ? 0 : getLoyaltyDiscount(user.loyaltyPoints);
-      const discountAmount = Math.floor(basePrice * (discount / 100));
-      const subtotal = basePrice - discountAmount;
+      const loyaltyDiscount = isGuest ? 0 : getLoyaltyDiscount(user.loyaltyPoints);
+      const loyaltyDiscountAmount = Math.floor(basePrice * (loyaltyDiscount / 100));
+
+      // Calculate Promo Code discount from database if provided
+      let promoDiscountAmount = 0;
+      let validPromoCode: string | null = null;
+
+      if (promoCode) {
+        const promo = await tx.promo.findUnique({
+          where: { code: promoCode },
+        });
+
+        const now = new Date();
+        if (
+          promo &&
+          promo.isActive &&
+          now >= promo.startDate &&
+          now <= promo.endDate &&
+          (promo.usageLimit === -1 || promo.usageCount < promo.usageLimit) &&
+          basePrice >= promo.minPurchase
+        ) {
+          validPromoCode = promo.code;
+          if (promo.type === 'PERCENTAGE') {
+            const calculated = Math.floor(basePrice * (promo.value / 100));
+            promoDiscountAmount = promo.maxDiscount ? Math.min(calculated, promo.maxDiscount) : calculated;
+          } else {
+            promoDiscountAmount = Math.min(promo.value, basePrice);
+          }
+
+          // Increment promo usage
+          await tx.promo.update({
+            where: { id: promo.id },
+            data: { usageCount: { increment: 1 } },
+          });
+        }
+      }
+
+      const totalDiscount = Math.min(basePrice, loyaltyDiscountAmount + promoDiscountAmount);
+      const subtotal = Math.max(0, basePrice - totalDiscount);
       const fee = paymentInfo.fee;
       const totalAmount = subtotal + fee;
 
@@ -153,6 +190,8 @@ export async function POST(req: NextRequest) {
         ? null
         : new Date(Date.now() + 24 * 60 * 60 * 1000);
 
+      const isPhoneCategory = ['PULSA', 'PAKET_DATA', 'EWALLET_TOPUP'].includes(denomination.product.category);
+
       const transaction = await tx.transaction.create({
         data: {
           userId: targetUserId,
@@ -163,8 +202,10 @@ export async function POST(req: NextRequest) {
           paymentMethod,
           gameUserId,
           gameServerId: gameServerId || null,
-          amount: subtotal,
-          discount: discountAmount,
+          phoneNumber: isPhoneCategory ? gameUserId : null,
+          promoCode: validPromoCode,
+          amount: basePrice,
+          discount: totalDiscount,
           totalAmount,
           status: transactionStatus,
           expiresAt,
@@ -182,7 +223,13 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      return { transaction, pointsEarned: isWalletPayment ? pointsEarned : 0, isWalletPayment };
+      return { 
+        transaction, 
+        pointsEarned: isWalletPayment ? pointsEarned : 0, 
+        isWalletPayment,
+        promoApplied: !!validPromoCode,
+        promoDiscount: promoDiscountAmount,
+      };
     });
 
     // Send push notification if completed via wallet

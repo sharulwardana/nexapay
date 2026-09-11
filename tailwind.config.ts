@@ -18,6 +18,8 @@ const config: Config = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          hover: 'hsl(var(--primary-hover))',
+          active: 'hsl(var(--primary-active))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -43,25 +45,34 @@ const config: Config = {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
-        neon: {
-          cyan: '#06B6D4',
-          blue: '#3B82F6',
-          gold: '#F59E0B',
-          green: '#10B981',
-          rose: '#F43F5E',
+        surface: {
+          base: 'hsl(var(--surface-base))',
+          card: 'hsl(var(--surface-card))',
+          'card-hover': 'hsl(var(--surface-card-hover))',
+          elevated: 'hsl(var(--surface-elevated))',
+          subtle: 'hsl(var(--surface-subtle))',
         },
+        /* Canonical NexaPay Brand Orange: #FF7300 */
         brand: {
           50: '#FFF7ED',
           100: '#FFEDD5',
           200: '#FED7AA',
           300: '#FDBA74',
-          400: '#FB923C',
-          500: '#F97316',
-          600: '#EA580C',
-          700: '#C2410C',
-          800: '#9A3412',
-          900: '#7C2D12',
-          950: '#431407',
+          400: '#FF9138',
+          500: '#FF7300', // Canonical Brand Orange
+          600: '#E66800', // Hover
+          700: '#CC5C00', // Active
+          800: '#A34900',
+          900: '#7A3700',
+          950: '#421D00',
+        },
+        /* Controlled semantic accents */
+        neon: {
+          orange: '#FF7300',
+          gold: '#F59E0B',
+          green: '#10B981',
+          cyan: '#06B6D4',
+          rose: '#EF4444',
         },
       },
       fontFamily: {
@@ -73,6 +84,19 @@ const config: Config = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        'brand': '0 4px 16px -2px rgba(255, 115, 0, 0.3)',
+        'brand-lg': '0 8px 28px -4px rgba(255, 115, 0, 0.38)',
+        'elevated': '0 8px 24px -4px rgba(0, 0, 0, 0.4)',
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+        'card': '0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+        'card-hover': '0 8px 24px -4px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 115, 0, 0.25)',
+        /* Legacy fallback mappings */
+        'neon-orange': '0 4px 16px -2px rgba(255, 115, 0, 0.3)',
+        'neon-violet': '0 4px 16px -2px rgba(255, 115, 0, 0.25)',
+        'neon-gold': '0 4px 16px -2px rgba(245, 158, 11, 0.3)',
+        'neon-cyan': '0 4px 16px -2px rgba(6, 182, 212, 0.25)',
       },
       keyframes: {
         'accordion-down': {
@@ -86,64 +110,21 @@ const config: Config = {
         shimmer: {
           '100%': { transform: 'translateX(100%)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
-        },
-        glow: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' },
-        },
-        'slide-up': {
-          '0%': { transform: 'translateY(100%)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        'slide-down': {
-          '0%': { transform: 'translateY(-100%)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        pulse_neon: {
-          '0%, 100%': { boxShadow: '0 0 3px var(--neon-color), 0 0 8px var(--neon-color)' },
-          '50%': { boxShadow: '0 0 6px var(--neon-color), 0 0 16px var(--neon-color)' },
-        },
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
         },
-        'count-up': {
-          '0%': { transform: 'translateY(100%)' },
-          '100%': { transform: 'translateY(0)' },
+        'fade-in': {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         shimmer: 'shimmer 2s infinite',
-        float: 'float 6s ease-in-out infinite',
-        glow: 'glow 2s ease-in-out infinite',
-        'slide-up': 'slide-up 0.5s ease-out',
-        'slide-down': 'slide-down 0.5s ease-out',
-        'fade-in': 'fade-in 0.5s ease-out',
-        'pulse-neon': 'pulse_neon 2s ease-in-out infinite',
         marquee: 'marquee 30s linear infinite',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'hero-pattern': 'radial-gradient(ellipse at top, rgba(6, 182, 212, 0.1) 0%, transparent 50%)',
-        'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-      },
-      boxShadow: {
-        'neon-violet': '0 0 3px rgba(6, 182, 212, 0.2), 0 0 8px rgba(6, 182, 212, 0.1)',
-        'neon-gold': '0 0 3px rgba(245, 158, 11, 0.2), 0 0 8px rgba(245, 158, 11, 0.1)',
-        'glass': '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
-        'glass-dark': '0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15)',
-        'card-hover': '0 2px 8px rgba(0,0,0,0.05), 0 8px 20px rgba(0,0,0,0.04)',
-        'elevated': '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)',
+        'fade-in': 'fade-in 0.3s ease-out',
       },
       screens: {
         'mobile-s': '320px',

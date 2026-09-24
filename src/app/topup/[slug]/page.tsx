@@ -26,15 +26,17 @@ const getGameData = cache(async (slug: string): Promise<Product | null> => {
 
   if (!dbGame && !staticGame) return null;
 
-  const resolved = {
-    ...(dbGame || {}),
-    ...(staticGame || {}),
-    denominations: (staticGame?.denominations && staticGame.denominations.length > 0)
-      ? staticGame.denominations
-      : (dbGame?.denominations || []),
-  } as unknown as Product;
+  if (dbGame) {
+    return {
+      ...(staticGame || {}),
+      ...dbGame,
+      denominations: (dbGame.denominations && dbGame.denominations.length > 0)
+        ? dbGame.denominations
+        : (staticGame?.denominations || []),
+    } as unknown as Product;
+  }
 
-  return resolved;
+  return staticGame as unknown as Product;
 });
 
 // Incremental Static Regeneration: Cache rendered pages on the server for 2 minutes

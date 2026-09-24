@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
 import { PAYMENT_METHODS, getLoyaltyDiscount } from '@/lib/constants';
+import { digitalProducts } from '@/data/products';
 import { sendPushToUser } from '@/lib/push';
 import { generateInvoiceId } from '@/lib/utils';
 import { z } from 'zod';
@@ -48,12 +49,91 @@ export async function POST(req: NextRequest) {
     const { productId, denominationId, gameUserId, gameServerId, paymentMethod, promoCode } = parsed.data;
 
     // 1. Fetch Denomination and validate
-    const denomination = await prisma.denomination.findUnique({
+    let denomination = await prisma.denomination.findUnique({
       where: { id: denominationId },
       include: { product: true }
     });
 
-    if (!denomination || denomination.productId !== productId) {
+    // Auto-heal / fallback: if denomination not found in DB, check static catalog and upsert
+    if (!denomination) {
+      const staticProd = digitalProducts.find(
+        p => p.id === productId || p.slug === productId || p.denominations.some(d => d.id === denominationId)
+      );
+      const staticDenom = staticProd?.denominations.find(d => d.id === denominationId);
+
+      if (staticProd && staticDenom) {
+        let dbProd = await prisma.product.findFirst({
+          where: {
+            OR: [
+              { id: productId },
+              { slug: staticProd.slug },
+            ]
+          }
+        });
+
+        if (!dbProd) {
+          dbProd = await prisma.product.create({
+            data: {
+              name: staticProd.name,
+              slug: staticProd.slug,
+              category: staticProd.category,
+              subcategory: staticProd.subcategory,
+              description: staticProd.description,
+              image: staticProd.image || '',
+              bannerImage: staticProd.bannerImage,
+              publisher: staticProd.publisher,
+              isActive: staticProd.isActive ?? true,
+            }
+          });
+        }
+
+        denomination = await prisma.denomination.upsert({
+          where: { id: staticDenom.id },
+          update: {
+            productId: dbProd.id,
+            label: staticDenom.label,
+            value: staticDenom.value,
+            price: staticDenom.price,
+            originalPrice: staticDenom.originalPrice,
+            discount: staticDenom.discount,
+            stock: staticDenom.stock ?? -1,
+            isActive: staticDenom.isActive ?? true,
+            isPopular: staticDenom.isPopular ?? false,
+            isFlashSale: staticDenom.isFlashSale ?? false,
+            flashSalePrice: staticDenom.flashSalePrice,
+          },
+          create: {
+            id: staticDenom.id,
+            productId: dbProd.id,
+            label: staticDenom.label,
+            value: staticDenom.value,
+            price: staticDenom.price,
+            originalPrice: staticDenom.originalPrice,
+            discount: staticDenom.discount,
+            stock: staticDenom.stock ?? -1,
+            isActive: staticDenom.isActive ?? true,
+            isPopular: staticDenom.isPopular ?? false,
+            isFlashSale: staticDenom.isFlashSale ?? false,
+            flashSalePrice: staticDenom.flashSalePrice,
+          },
+          include: { product: true }
+        });
+      }
+    }
+
+    if (!denomination) {
+      return NextResponse.json({ error: 'Invalid denomination or product' }, { status: 400 });
+    }
+
+    // Flexible product match check: matches DB ID, slug, or static ID
+    const isProductMatch =
+      denomination.productId === productId ||
+      denomination.product.id === productId ||
+      denomination.product.slug === productId ||
+      `game-${denomination.product.slug}` === productId ||
+      (digitalProducts.find(p => p.slug === denomination.product.slug)?.id === productId);
+
+    if (!isProductMatch) {
       return NextResponse.json({ error: 'Invalid denomination or product' }, { status: 400 });
     }
 
@@ -195,10 +275,10 @@ export async function POST(req: NextRequest) {
       const transaction = await tx.transaction.create({
         data: {
           userId: targetUserId,
-          productId,
+          productId: denomination.productId,
           productName: denomination.product.name,
           category: denomination.product.category,
-          denominationId,
+          denominationId: denomination.id,
           paymentMethod,
           gameUserId,
           gameServerId: gameServerId || null,

@@ -55,11 +55,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   // Fallback to static product
   const staticProduct = digitalProducts.find(p => p.slug === resolvedParams.slug);
-  if (staticProduct) {
+  if (!product && staticProduct) {
+    product = staticProduct as unknown as Product;
+  } else if (product && staticProduct) {
     product = {
-      ...(product || {}),
       ...staticProduct,
-      denominations: staticProduct.denominations,
+      ...product,
+      denominations: (product.denominations && product.denominations.length > 0)
+        ? product.denominations
+        : staticProduct.denominations,
     } as unknown as Product;
   }
 
